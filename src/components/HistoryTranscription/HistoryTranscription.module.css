@@ -1,0 +1,114 @@
+.history {
+    display: flex;
+    width: 300px;
+    margin-bottom: 17px;
+    padding: 15px 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    border-radius: 10px;
+    background: #FFF;
+    box-shadow: 0px 0px 5px 3px rgba(151, 151, 151, 0.25);
+}
+
+.transciption {
+    color: #3F3F3F;
+    font-family: 'Inter';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.25px;
+}
+
+.metrics {
+    color: #000;
+    font-family: 'Inter';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.25px;
+}
+
+.model {
+    color: #000;
+    font-family: 'Inter';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: -0.25px;
+}
+
+.date {
+    color: #3F3F3F;
+    text-align: right;
+    font-family: 'Inter';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: -0.25px;
+}
+
+.history {
+    display: flex;
+    width: 300px;
+    margin-bottom: 17px;
+    padding: 15px 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    border-radius: 10px;
+    background: #FFF;
+    box-shadow: 0px 0px 5px 3px rgba(151, 151, 151, 0.25);
+    cursor: pointer;
+}
+
+.transciption {
+    color: #3F3F3F;
+    font-family: 'Inter';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.25px;
+}
+
+.metrics {
+    color: #3F3F3F;
+    font-family: 'Inter';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.25px;
+}
+
+.model {
+    color: #000;
+    font-family: 'Inter';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: -0.25px;
+}
+
+.date {
+    color: #3F3F3F;
+    font-family: 'Inter';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.25px;
+}
+
+.date {
+    text-align: left;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+}

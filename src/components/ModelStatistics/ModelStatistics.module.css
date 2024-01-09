@@ -1,0 +1,45 @@
+.title {
+    color: #000;
+    font-family: 'Inter';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: -0.25px;
+}
+
+.table {
+    width: 885px;
+    height: 220px;
+    border-collapse: collapse;
+}
+
+.table td {
+    color: #000;
+    text-align: center;
+    font-family: 'Inter';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.25px;
+}
+
+.table td,
+.table th {
+    border-bottom: solid 1px black;
+    padding-top: 18px;
+    padding-bottom: 18px;
+    text-align: center;
+}
+
+.metric {
+    color: #000;
+    text-align: center;
+    font-family: 'Inter';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -0.25px;
+}
