@@ -1,0 +1,23 @@
+.title {
+    color: #000;
+    font-family: 'Inter';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: -0.25px;
+}
+
+.list {
+    color: #000;
+    font-family: 'Inter';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.25px;
+}
+
+.list li{
+    margin-bottom: 20px;
+}

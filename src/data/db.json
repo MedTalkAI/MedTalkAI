@@ -60,12 +60,32 @@
         "variance": "0.83",
         "std_deviation": "0.83"
       },
+      "cosine": {
+        "mean": "0.83",
+        "variance": "0.83",
+        "std_deviation": "0.83"
+      },
+      "bleu": {
+        "mean": "0.83",
+        "variance": "0.83",
+        "std_deviation": "0.83"
+      },
       "updated_at": "2019-01-01 00:00:00"
     },
     {
       "id": 2,
       "name": "wav2vec2",
       "wer": {
+        "mean": "0.83",
+        "variance": "0.83",
+        "std_deviation": "0.83"
+      },
+      "cosine": {
+        "mean": "0.83",
+        "variance": "0.83",
+        "std_deviation": "0.83"
+      },
+      "bleu": {
         "mean": "0.83",
         "variance": "0.83",
         "std_deviation": "0.83"
@@ -80,12 +100,32 @@
         "variance": "0.83",
         "std_deviation": "0.83"
       },
+      "cosine": {
+        "mean": "0.83",
+        "variance": "0.83",
+        "std_deviation": "0.83"
+      },
+      "bleu": {
+        "mean": "0.83",
+        "variance": "0.83",
+        "std_deviation": "0.83"
+      },
       "updated_at": "2019-01-01 00:00:00"
     },
     {
       "id": 4,
       "name": "wav2vec2 + lm5",
       "wer": {
+        "mean": "0.83",
+        "variance": "0.83",
+        "std_deviation": "0.83"
+      },
+      "cosine": {
+        "mean": "0.83",
+        "variance": "0.83",
+        "std_deviation": "0.83"
+      },
+      "bleu": {
         "mean": "0.83",
         "variance": "0.83",
         "std_deviation": "0.83"
