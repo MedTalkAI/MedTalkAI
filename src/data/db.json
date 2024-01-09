@@ -3,18 +3,94 @@
     {
       "id": 1,
       "name": "John Doe",
-      "email": "jonhdoe@insight.com"
+      "email": "jonhdoe@insight.com",
+      "type": "admin"
     },
     {
       "id": 2,
       "name": "Jane Smith",
-      "email": "janesmith@insight.com"
+      "email": "janesmith@insight.com",
+      "type": "analyst"
     },
     {
       "id": 3,
       "name": "Alex Johnson",
-      "email": "alexjohnson@insight.com"
+      "email": "alexjohnson@insight.com",
+      "type": "doctor"
     }
   ],
-  "trancriptions": []
+  "trancriptions": [
+    {
+      "id": 1,
+      "name": "anamnese 18",
+      "model_transcription": "paciente fezisameis qeacusou e potir oidismo",
+      "corrected_transcription": "paciente fez exame que acusou hipotiroidismo",
+      "kappa": "0.83",
+      "wer": "0.83",
+      "cosine": "0.36",
+      "bleu": "0.33"
+    },
+    {
+      "id": 2,
+      "name": "anamnese 18",
+      "model_transcription": "paciente fezisameis qeacusou e potir oidismo",
+      "corrected_transcription": "paciente fez exame que acusou hipotiroidismo",
+      "kappa": "0.83",
+      "wer": "0.83",
+      "cosine": "0.36",
+      "bleu": "0.33"
+    },
+    {
+      "id": 3,
+      "name": "anamnese 18",
+      "model_transcription": "paciente fezisameis qeacusou e potir oidismo",
+      "corrected_transcription": "paciente fez exame que acusou hipotiroidismo",
+      "kappa": "0.83",
+      "wer": "0.83",
+      "cosine": "0.36",
+      "bleu": "0.33"
+    }
+  ],
+  "models": [
+    {
+      "id": 1,
+      "name": "hubert",
+      "wer": {
+        "mean": "0.83",
+        "variance": "0.83",
+        "std_deviation": "0.83"
+      },
+      "updated_at": "2019-01-01 00:00:00"
+    },
+    {
+      "id": 2,
+      "name": "wav2vec2",
+      "wer": {
+        "mean": "0.83",
+        "variance": "0.83",
+        "std_deviation": "0.83"
+      },
+      "updated_at": "2019-01-01 00:00:00"
+    },
+    {
+      "id": 3,
+      "name": "whisper",
+      "wer": {
+        "mean": "0.83",
+        "variance": "0.83",
+        "std_deviation": "0.83"
+      },
+      "updated_at": "2019-01-01 00:00:00"
+    },
+    {
+      "id": 4,
+      "name": "wav2vec2 + lm5",
+      "wer": {
+        "mean": "0.83",
+        "variance": "0.83",
+        "std_deviation": "0.83"
+      },
+      "updated_at": "2019-01-01 00:00:00"
+    }
+  ]
 }
