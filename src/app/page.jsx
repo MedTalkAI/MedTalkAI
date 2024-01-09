@@ -22,7 +22,9 @@ export default function Home() {
 
     const user = { username, password };
 
-    // handle submit -> check if user is valid
+    // handle submit -> check if user exists
+
+    setIsLoading(false);
   };
   return (
     <main className={styles.container}>
@@ -46,12 +48,24 @@ export default function Home() {
           <p>Sign in to access the plataform</p>
           <div className={styles.input}>
             <label htmlFor="username">Username:</label>
-            <input type="text" id="username" name="username" required />
+            <input
+              type="text"
+              id="username"
+              name="username"
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
           </div>
 
           <div className={styles.input}>
             <label htmlFor="password">Password:</label>
-            <input type="password" id="password" name="password" required />
+            <input
+              type="password"
+              id="password"
+              name="password"
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
           </div>
           <button type="submit" disabled={isLoading}>
             {isLoading && <span>Loging...</span>}
