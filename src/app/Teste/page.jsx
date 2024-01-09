@@ -1,7 +1,17 @@
 import Metrics from "@/components/Metrics";
+import data from "../../data/db.json";
+import ModelStatistics from "@/components/ModelStatistics";
 
 const Teste = () => {
-  return <Metrics wer={"0.30"} bleu={"0.83"} cosine={"0.90"} kappa={"0"}/>
+  const metrics = data.models[1];
+  return (
+    <ModelStatistics
+      model={metrics.name}
+      wers={metrics.wer}
+      bleus={metrics.bleu}
+      cosines={metrics.cosine}
+    />
+  );
 };
 
 export default Teste;
