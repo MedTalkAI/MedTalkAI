@@ -1,19 +1,7 @@
-import HistoryTranscription from "@/components/HistoryTranscription";
-import data from "../../data/db.json";
+import Metrics from "@/components/Metrics";
 
 const Teste = () => {
-  console.log(data.trancriptions);
-  return data.trancriptions.map((transcription) => (
-    <HistoryTranscription
-      transcription={transcription.model_transcription}
-      model={"Wav2Vec"}
-      date={"11/12/23"}
-      bleu={transcription.bleu}
-      cosine={transcription.cosine}
-      wer={transcription.wer}
-      kappa={transcription.kappa}
-    />
-  ));
+  return <Metrics wer={"0.30"} bleu={"0.83"} cosine={"0.90"} kappa={"0"}/>
 };
 
 export default Teste;
