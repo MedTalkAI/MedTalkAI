@@ -5,19 +5,17 @@ import { useState } from "react";
 
 export default function AudioTeste() {
   const [audioUrl, setAudioUrl] = useState(null);
-  const [audioName, setAudioName] = useState(null);
 
-  const handleAudioUrlChange = (url, name) => {
+  const handleAudioUrlChange = (url) => {
     setAudioUrl(url);
-    setAudioName(name);
   };
-  
+
   return (
-    <div>
-      <h1>Audio Teste</h1>
-      <AudioRecorderComponent onAudioUrlChange={handleAudioUrlChange} />
-      {audioUrl && <p>{audioUrl}</p>}
-      {audioName && <p>{audioName}</p>}
+    <div style={{margin: '300px 250px'}}>
+      {/* <h1>Audio Teste</h1> */}
+      <div>
+        <AudioRecorderComponent onAudioUrlChange={handleAudioUrlChange} />
+      </div>
     </div>
   );
 }
