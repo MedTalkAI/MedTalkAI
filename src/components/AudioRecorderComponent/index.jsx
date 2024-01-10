@@ -16,6 +16,20 @@ const AudioRecorderComponent = ({ onAudioUrlChange, doctor }) => {
     onAudioUrlChange(url, name);
   };
 
+  const handleTranscribe = () => {
+    const formData = new FormData();
+    formData.append("audio", audioUrl);
+    formData.append("model", model);
+    formData.append("date", new Date().getDate().toString());
+
+    // fetch("http://localhost:5000/transcribe", {
+    //   method: "POST",
+    //   body: formData,
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => console.log(data));
+  };
+
   return (
     <main className={styles.containter}>
       <div className={styles.select_form}>
@@ -48,7 +62,9 @@ const AudioRecorderComponent = ({ onAudioUrlChange, doctor }) => {
           <audio controls src={audioUrl}></audio>
         </div>
       )}
-      <button disabled={model === "" || !audioUrl}>Transcribe</button>
+      <button disabled={model === "" || !audioUrl} onClick={handleTranscribe}>
+        Transcribe
+      </button>
     </main>
   );
 };
