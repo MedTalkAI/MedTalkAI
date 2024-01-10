@@ -1,15 +1,20 @@
-import Style from "./Metrics.module.css"
+import Style from "./Metrics.module.css";
 
-const Metrics = ({ wer, bleu, cosine, kappa }) => {
+const Metrics = ({ transcription, wer, bleu, cosine, kappa }) => {
   return (
     <div className={Style.metrics}>
       <h1 className={Style.title}>Metrics</h1>
-      <ul className={Style.list}>
-        <li>WER: {wer}</li>
-        <li>BLEU: {bleu}</li>
-        <li>Cosine Similarity: {cosine}</li>
-        <li>KAPPA: {kappa}</li>
-      </ul>
+      {transcription && (
+        <ul className={Style.list}>
+          <li><b>WER:</b> {wer}</li>
+          <li><b>BLEU:</b> {bleu}</li>
+          <li><b>Cosine Similarity:</b> {cosine}</li>
+          <li><b>KAPPA:</b> {kappa}</li>
+        </ul>
+      )}
+      {!transcription && (
+        <p>No transcription performed</p>
+      )}
     </div>
   );
 };

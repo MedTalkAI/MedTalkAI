@@ -14,17 +14,18 @@
 
 .history .transciption {
     color: #3F3F3F;
-    font-family: 'Inter';
+    font-family: Raleway;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
     letter-spacing: -0.25px;
+    text-align: justify;
 }
 
 .history .metrics {
     color: #3F3F3F;
-    font-family: 'Inter';
+    font-family: Raleway;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
@@ -34,7 +35,7 @@
 
 .model {
     color: #000;
-    font-family: 'Inter';
+    font-family: Raleway;
     font-size: 12px;
     font-style: normal;
     font-weight: 500;
@@ -44,7 +45,7 @@
 
 .date {
     color: #3F3F3F;
-    font-family: 'Inter';
+    font-family: Inter;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;

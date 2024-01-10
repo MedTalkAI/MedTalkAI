@@ -2,7 +2,7 @@ import { useState } from "react";
 import { AudioRecorder } from "react-audio-voice-recorder";
 import styles from "./AudioRecorderComponent.module.css";
 
-const AudioRecorderComponent = ({ onAudioUrlChange, doctor }) => {
+const AudioRecorderComponent = ({ onTrascribe, doctor }) => {
   const [audioUrl, setAudioUrl] = useState(null);
   const [audioName, setAudioName] = useState(null);
   const [model, setModel] = useState("");
@@ -13,7 +13,6 @@ const AudioRecorderComponent = ({ onAudioUrlChange, doctor }) => {
     const name =
       "Audio recorded from browser [" + new Date().toLocaleString() + "]";
     setAudioName(name);
-    onAudioUrlChange(url, name);
   };
 
   const handleTranscribe = () => {
@@ -21,13 +20,7 @@ const AudioRecorderComponent = ({ onAudioUrlChange, doctor }) => {
     formData.append("audio", audioUrl);
     formData.append("model", model);
     formData.append("date", new Date().getDate().toString());
-
-    // fetch("http://localhost:5000/transcribe", {
-    //   method: "POST",
-    //   body: formData,
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => console.log(data));
+    onTrascribe(audioUrl, model, new Date().getDate().toString());
   };
 
   return (
@@ -40,7 +33,7 @@ const AudioRecorderComponent = ({ onAudioUrlChange, doctor }) => {
             echoCancellation: true,
           }}
           onNotAllowedOrFound={(err) => console.table(err)}
-          downloadOnSavePress={false}
+          downloadOnSavePress={true}
           downloadFileExtension="webm"
           showVisualizer={true}
         />

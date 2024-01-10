@@ -34,7 +34,7 @@ export default function Home() {
           type: foundUser.type,
         })
       );
-      router.push("/Transcription");
+      router.push("/transcription");
     } else {
       // Login error
     }
