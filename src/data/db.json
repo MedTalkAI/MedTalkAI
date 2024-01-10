@@ -4,18 +4,24 @@
       "id": 1,
       "name": "John Doe",
       "email": "jonhdoe@insight.com",
+      "username": "jonhdoe",
+      "password": "123456",
       "type": "admin"
     },
     {
       "id": 2,
       "name": "Jane Smith",
       "email": "janesmith@insight.com",
+      "username": "janesmith",
+      "password": "123456",
       "type": "analyst"
     },
     {
       "id": 3,
       "name": "Alex Johnson",
       "email": "alexjohnson@insight.com",
+      "username": "alexjohnson",
+      "password": "123456",
       "type": "doctor"
     }
   ],
