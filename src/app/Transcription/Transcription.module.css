@@ -1,0 +1,79 @@
+.transcription {}
+
+.transcription header {}
+
+.content {
+    display: flex;
+    flex-direction: row;
+    margin-top: 40px;
+    margin-left: 5%;
+    margin-right: 5%;
+    gap: 5%;
+}
+
+.content main {
+    flex: 2.5;
+    border: 1px solid red;
+}
+
+.content aside {
+    flex: 1;
+    height: 100vh;
+    overflow-y: auto;
+    border: 1px solid rgb(200, 0, 255);
+}
+
+
+.content main h1 {
+    color: #000;
+    font-family: 'Inter';
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: -0.25px;
+}
+
+.content aside h1 {
+    color: #000;
+    font-family: 'Inter';
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: -0.25px;
+}
+
+.controls {
+    width: 100%;
+    border: 1px solid blue;
+}
+
+.results {
+    width: 100%;
+    border: 1px solid green;
+}
+
+.results {
+    width: 100%;
+    border: 1px solid yellow;
+}
+
+.model {
+    width: 100%;
+    border: 1px solid aquamarine;
+}
+
+@media screen and (max-width: 870px) {
+    .content {
+        flex-direction: column;
+        margin-left: 5%;
+        margin-right: 5%;
+        gap: 5%;
+    }
+
+    .content main,
+    .content aside {
+        flex: auto;
+    }
+}

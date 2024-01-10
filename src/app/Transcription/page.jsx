@@ -1,21 +1,32 @@
-import TranscriptionResult from "@/components/TranscriptionResult";
+import Navbar from "@/components/Navbar";
+import Style from "./Transcription.module.css";
 
 const Transcription = () => {
   return (
-    <div>
-      <h1>Trasncription</h1>
-      <TranscriptionResult
-        text={
-          "O pacient relta uma séri de sintomas que tm impactad signitivamnt em sua qualidade de vid. Entre eles, dstaca-se a persistnt fadga, acompnhada por dores musculares e articulres frequentes."
-        }
-        isEditable={false}
-      />
-      <TranscriptionResult
-        text={
-          "O pacient relta uma séri de sintomas que tm impactad signitivamnt em sua qualidade de vid. Entre eles, dstaca-se a persistnt fadga, acompnhada por dores musculares e articulres frequentes."
-        }
-        isEditable={true}
-      />
+    <div className={Style.transcription}>
+      <header>
+        <Navbar />
+      </header>
+      <div className={Style.content}>
+        <main>
+          <h1>Analysis</h1>
+          <div className={Style.controls}>
+            <h2>Controls</h2>
+          </div>
+          <div className={Style.results}>
+            <h2>Results</h2>
+          </div>
+          <div className={Style.metrics}>
+            <h2>Metrics</h2>
+          </div>
+          <div className={Style.model}>
+            <h2>Model Statistics</h2>
+          </div>
+        </main>
+        <aside>
+          <h1>History</h1>
+        </aside>
+      </div>
     </div>
   );
 };
