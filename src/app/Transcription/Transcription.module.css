@@ -1,0 +1,100 @@
+.transcription {}
+
+.transcription header {}
+
+.content {
+    display: flex;
+    flex-direction: row;
+    margin-top: 40px;
+    margin-left: 2%;
+    margin-right: 2%;
+    gap: 2%;
+}
+
+.content main {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.content aside {
+    flex: 1;
+    padding: 10px;
+    height: auto;
+    overflow-y: auto;
+}
+
+
+.content aside .title {
+    color: #000;
+    font-family: 'Inter';
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: -0.25px;
+}
+
+.content .title {
+    color: #000;
+    font-family: 'Inter';
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: -0.25px;
+}
+
+.content main .controls {
+    width: 100%;
+}
+
+.content main .results {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+}
+
+.content main .results {
+    width: 100%;
+}
+
+.content main .model {
+    width: 100%;
+}
+
+.historyTranscriptions {
+    display: flex;
+    flex-direction: column;
+}
+
+@media screen and (max-width: 1160px) {
+    .content {
+        flex-direction: column;
+        margin-left: 5%;
+        margin-right: 5%;
+        gap: 5%;
+    }
+
+    .content main,
+    .content aside {
+        flex: auto;
+    }
+
+    .historyTranscriptions {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+}
+
+@media screen and (max-width: 750px) {
+    .content main .results {
+        display: flex;
+        flex-direction: column;
+    }
+}
