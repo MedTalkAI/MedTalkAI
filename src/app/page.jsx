@@ -3,14 +3,43 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
-"use client";
-
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import Image from "next/image";
 import styles from "./home.module.css";
+import hapvida from "../assets/hapvida.png";
+import insight from "../assets/insight.webp";
+import data from "../data/db.json";
 
 export default function Home() {
+  const router = useRouter();
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const user = { username, password };
+    const foundUser = data.users.find(
+      (u) => u.username === user.username && u.password === user.password
+    );
+    if (foundUser) {
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          name: foundUser.name,
+          email: foundUser.email,
+          type: foundUser.type,
+        })
+      );
+      router.push("/Transcription");
+    } else {
+      // Login error
+    }
+    setIsLoading(false);
+  };
   return (
     <main className={styles.container}>
       <div className={styles.description}>
