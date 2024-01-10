@@ -34,7 +34,9 @@
       "kappa": "0.83",
       "wer": "0.83",
       "cosine": "0.36",
-      "bleu": "0.33"
+      "bleu": "0.33",
+      "date": "10/01/2024",
+      "model": "Hubert"
     },
     {
       "id": 2,
@@ -44,7 +46,9 @@
       "kappa": "0.83",
       "wer": "0.83",
       "cosine": "0.36",
-      "bleu": "0.33"
+      "bleu": "0.33",
+      "date": "10/01/2024",
+      "model": "Hubert"
     },
     {
       "id": 3,
@@ -54,7 +58,81 @@
       "kappa": "0.83",
       "wer": "0.83",
       "cosine": "0.36",
-      "bleu": "0.33"
+      "bleu": "0.33",
+      "date": "10/01/2024",
+      "model": "Hubert"
+    },
+    {
+      "id": 4,
+      "name": "anamnese 22",
+      "model_transcription": "patient underwent urvopylonoscopy",
+      "corrected_transcription": "patient underwent uroscopy",
+      "kappa": "0.75",
+      "wer": "0.75",
+      "cosine": "0.40",
+      "bleu": "0.45",
+      "date": "12/01/2024",
+      "model": "Wav2Vec"
+    },
+    {
+      "id": 5,
+      "name": "anamnese 25",
+      "model_transcription": "pacienti had chest x-ray",
+      "corrected_transcription": "patient had a chest X-ray",
+      "kappa": "0.90",
+      "wer": "0.50",
+      "cosine": "0.60",
+      "bleu": "0.75",
+      "date": "15/01/2024",
+      "model": "Whisper"
+    },
+    {
+      "id": 6,
+      "name": "anamnese 30",
+      "model_transcription": "patient experienced bain durmage",
+      "corrected_transcription": "patient experienced brain damage",
+      "kappa": "0.80",
+      "wer": "0.60",
+      "cosine": "0.55",
+      "bleu": "0.65",
+      "date": "18/01/2024",
+      "model": "Wav2Vec + lm5"
+    },
+    {
+      "id": 7,
+      "name": "anamnese 40",
+      "model_transcription": "The patient presented with symptoms of dyspnea, chest pain, and coughing. Initial tests showed abnormalities in lung function.",
+      "corrected_transcription": "The patient presented with symptoms of dyspnea, chest pain, and coughing. Initial tests revealed abnormalities in lung function.",
+      "kappa": "0.87",
+      "wer": "0.80",
+      "cosine": "0.65",
+      "bleu": "0.60",
+      "date": "20/01/2024",
+      "model": "Wav2Vec"
+    },
+    {
+      "id": 8,
+      "name": "anamnese 45",
+      "model_transcription": "The examination revealed a possible myocardial infarction. Patient reported intense chest discomfort and shortness of breath.",
+      "corrected_transcription": "The examination revealed a probable myocardial infarction. The patient reported intense chest discomfort and difficulty in breathing.",
+      "kappa": "0.78",
+      "wer": "0.70",
+      "cosine": "0.50",
+      "bleu": "0.55",
+      "date": "25/01/2024",
+      "model": "Hubert"
+    },
+    {
+      "id": 9,
+      "name": "anamnese 50",
+      "model_transcription": "The patient underwent various neurological examinations due to persistent headaches and dizziness.",
+      "corrected_transcription": "The patient underwent several neurological examinations due to persistent headaches and dizziness.",
+      "kappa": "0.85",
+      "wer": "0.60",
+      "cosine": "0.70",
+      "bleu": "0.70",
+      "date": "30/01/2024",
+      "model": "Wav2Vec + lm5"
     }
   ],
   "models": [
