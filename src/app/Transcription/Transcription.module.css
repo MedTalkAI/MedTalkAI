@@ -1,13 +1,10 @@
-.transcription {}
-
-.transcription header {}
-
 .content {
     display: flex;
     flex-direction: row;
     margin-top: 40px;
     margin-left: 2%;
     margin-right: 2%;
+    margin-bottom: 70px;
     gap: 2%;
 }
 
@@ -25,20 +22,9 @@
     overflow-y: auto;
 }
 
-
-.content aside .title {
-    color: #000;
-    font-family: 'Inter';
-    font-size: 30px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    letter-spacing: -0.25px;
-}
-
 .content .title {
     color: #000;
-    font-family: 'Inter';
+    font-family: Raleway;
     font-size: 40px;
     font-style: normal;
     font-weight: 700;

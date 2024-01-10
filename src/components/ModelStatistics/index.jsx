@@ -2,7 +2,7 @@ import Style from "./ModelStatistics.module.css"
 
 const ModelStatistics = ({ model, wers, bleus, cosines }) => {
   const renderTable = () => {
-    const metrics = ["Average", "Variance", "SD"];
+    const metrics = ["Mean", "Variance", "SD"];
     const data = [
       { metric: "WER", values: [wers.mean, wers.variance, wers.std_deviation] },
       {
