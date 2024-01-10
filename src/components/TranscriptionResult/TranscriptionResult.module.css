@@ -2,8 +2,8 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
-    width: fit-content;
+    gap: 20px;
+    width: 50%;
 }
 
 .title {
@@ -30,6 +30,7 @@
     font-weight: 400;
     line-height: normal;
     letter-spacing: -0.25px;
+    width: 90%;
 }
 
 .textAreaFixed {
@@ -63,4 +64,13 @@
 .btnSaveEdits:hover {
     background: #6BB264;
     color: #ffffff;
+}
+
+@media screen and (max-width: 750px) {
+    .transcriptionResult {
+        width: 100%;
+    }
+    .textArea {
+        width: 93%;
+    }
 }
