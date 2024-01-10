@@ -2,7 +2,7 @@ import { useState } from "react";
 import { AudioRecorder } from "react-audio-voice-recorder";
 import styles from "./AudioRecorderComponent.module.css";
 
-const AudioRecorderComponent = ({ onAudioUrlChange }) => {
+const AudioRecorderComponent = ({ onAudioUrlChange, doctor }) => {
   const [audioUrl, setAudioUrl] = useState(null);
   const [audioName, setAudioName] = useState(null);
   const [model, setModel] = useState("");
@@ -30,15 +30,17 @@ const AudioRecorderComponent = ({ onAudioUrlChange }) => {
           downloadFileExtension="webm"
           showVisualizer={true}
         />
-        <select onChange={(e) => setModel(e.target.value)}>
-          <option value="" disabled selected>
-            Select a model
-          </option>
-          <option value="wav2vec2">Wav2Vec2</option>
-          <option value="hubert">HuBert</option>
-          <option value="whisper">Whisper</option>
-          <option value="wav2vec2 + lm5">Wav2Vec2 + lm5</option>
-        </select>
+        {!doctor && (
+          <select onChange={(e) => setModel(e.target.value)}>
+            <option value="" disabled selected>
+              Select a model
+            </option>
+            <option value="wav2vec2">Wav2Vec2</option>
+            <option value="hubert">HuBert</option>
+            <option value="whisper">Whisper</option>
+            <option value="wav2vec2 + lm5">Wav2Vec2 + lm5</option>
+          </select>
+        )}
       </div>
       {audioUrl && audioName && (
         <div className={styles.result}>

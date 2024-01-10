@@ -11,10 +11,13 @@ export default function AudioTeste() {
   };
 
   return (
-    <div style={{margin: '300px 250px'}}>
+    <div style={{ margin: "300px 250px" }}>
       {/* <h1>Audio Teste</h1> */}
       <div>
-        <AudioRecorderComponent onAudioUrlChange={handleAudioUrlChange} />
+        <AudioRecorderComponent
+          onAudioUrlChange={handleAudioUrlChange}
+          doctor={false}
+        />
       </div>
     </div>
   );
