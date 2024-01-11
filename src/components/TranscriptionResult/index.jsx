@@ -19,7 +19,7 @@ const TranscriptionResult = ({ text, isEditable }) => {
          @todo: alinhar verticamente o texto quando ele for vazio
       **/}
       <h1 className={Style.title}>
-        {isEditable ? "Corrected Transcript" : "Model Transcript"}
+        {isEditable ? "Corrected" : "Model"} Transcription
       </h1>
       <textarea
         className={`${Style.textArea} ${

@@ -36,10 +36,10 @@ const HistoryTranscription = ({
         className={Style.metrics}
         style={{ display: expanded ? "block" : "none" }}
       >
-        <li>WER: {wer}</li>
-        <li>BLEU: {bleu}</li>
-        <li>COSINE SIMILARITY: {cosine}</li>
-        <li>KAPPA: {kappa}</li>
+        <li><b>WER:</b> {wer}</li>
+        <li><b>BLEU:</b> {bleu}</li>
+        <li><b>COSINE SIMILARITY:</b> {cosine}</li>
+        <li><b>KAPPA:</b> {kappa}</li>
       </ul>
       <div
         style={{
