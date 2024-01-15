@@ -5,7 +5,7 @@ import styles from "./AudioRecorderComponent.module.css";
 const AudioRecorderComponent = ({ onTrascribe, doctor }) => {
   const [audioUrl, setAudioUrl] = useState(null);
   const [audioName, setAudioName] = useState(null);
-  const [model, setModel] = useState("");
+  const [model, setModel] = useState("Wav2Vec2 + lm5");
 
   const addAudioElement = (blob) => {
     const url = URL.createObjectURL(blob);
@@ -37,27 +37,27 @@ const AudioRecorderComponent = ({ onTrascribe, doctor }) => {
           downloadFileExtension="webm"
           showVisualizer={true}
         />
+
+        {audioUrl && audioName && (
+          <div className={styles.result}>
+            <audio controls src={audioUrl} />
+          </div>
+        )}
         {!doctor && (
-          <select onChange={(e) => setModel(e.target.value)}>
-            <option value="" disabled selected>
+          <select onChange={(e) => setModel(e.target.value)} value={model}>
+            <option value="" disabled>
               Select a model
             </option>
-            <option value="wav2vec2">Wav2Vec2</option>
-            <option value="hubert">HuBert</option>
-            <option value="whisper">Whisper</option>
-            <option value="wav2vec2 + lm5">Wav2Vec2 + lm5</option>
+            <option value="Wav2Vec2">Wav2Vec2</option>
+            <option value="HuBert">HuBert</option>
+            <option value="Whisper">Whisper</option>
+            <option value="Wav2Vec2 + lm5">Wav2Vec2 + lm5</option>
           </select>
         )}
+        <button disabled={model === "" || !audioUrl} onClick={handleTranscribe}>
+          Transcribe
+        </button>
       </div>
-      {audioUrl && audioName && (
-        <div className={styles.result}>
-          <p>{audioName}</p>
-          <audio controls src={audioUrl}></audio>
-        </div>
-      )}
-      <button disabled={model === "" || !audioUrl} onClick={handleTranscribe}>
-        Transcribe
-      </button>
     </main>
   );
 };

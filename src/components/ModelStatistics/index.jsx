@@ -1,17 +1,58 @@
-import Style from "./ModelStatistics.module.css"
+"use client";
 
-const ModelStatistics = ({ model, wers, bleus, cosines }) => {
+import React, { useState, useEffect } from "react";
+import Style from "./ModelStatistics.module.css";
+
+const ModelStatistics = ({ model }) => {
+  const [statistics, setStatistics] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:4000/models");
+        const data = await response.json();
+        // Assuming the data array contains multiple models and you want to find the one with the matching name
+        const selectedModel = data.find((item) => item.name === model);
+        setStatistics(selectedModel);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [model]);
+
   const renderTable = () => {
+    if (!statistics) {
+      return <p>Loading...</p>;
+    }
+
     const metrics = ["Mean", "Variance", "SD"];
+
     const data = [
-      { metric: "WER", values: [wers.mean, wers.variance, wers.std_deviation] },
+      {
+        metric: "WER",
+        values: [
+          statistics.wer.mean,
+          statistics.wer.variance,
+          statistics.wer.std_deviation,
+        ],
+      },
       {
         metric: "BLEU",
-        values: [bleus.mean, bleus.variance, bleus.std_deviation],
+        values: [
+          statistics.bleu.mean,
+          statistics.bleu.variance,
+          statistics.bleu.std_deviation,
+        ],
       },
       {
         metric: "COSINE SIMILARITY",
-        values: [cosines.mean, cosines.variance, cosines.std_deviation],
+        values: [
+          statistics.cosine.mean,
+          statistics.cosine.variance,
+          statistics.cosine.std_deviation,
+        ],
       },
     ];
 
@@ -21,7 +62,9 @@ const ModelStatistics = ({ model, wers, bleus, cosines }) => {
           <tr>
             <th></th>
             {metrics.map((metric, index) => (
-              <th className={Style.metric} key={index}>{metric}</th>
+              <th className={Style.metric} key={index}>
+                {metric}
+              </th>
             ))}
           </tr>
         </thead>

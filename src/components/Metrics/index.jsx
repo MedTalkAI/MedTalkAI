@@ -3,7 +3,7 @@ import Style from "./Metrics.module.css";
 const Metrics = ({ transcription, wer, bleu, cosine, kappa }) => {
   return (
     <div className={Style.metrics}>
-      <h1 className={Style.title}>Metrics</h1>
+      <h1 className={Style.title}>Evaluation Metrics</h1>
       {transcription && (
         <ul className={Style.list}>
           <li><b>WER:</b> {wer}</li>
