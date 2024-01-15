@@ -2,7 +2,16 @@ import { useState } from "react";
 import { AudioRecorder } from "react-audio-voice-recorder";
 import styles from "./AudioRecorderComponent.module.css";
 
-const AudioRecorderComponent = ({ onTrascribe, doctor }) => {
+const AudioRecorderComponent = ({ onTrascribe }) => {
+  const storedUser = localStorage.getItem("user");
+
+  let doctor = false;
+
+  if (storedUser) {
+    const user = JSON.parse(storedUser);
+    doctor = user.type === "doctor";
+  }
+  
   const [audioUrl, setAudioUrl] = useState(null);
   const [audioName, setAudioName] = useState(null);
   const [model, setModel] = useState("Wav2Vec2 + lm5");
