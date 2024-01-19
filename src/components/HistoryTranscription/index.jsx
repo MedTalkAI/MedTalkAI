@@ -4,13 +4,11 @@ import { useState, useEffect } from "react";
 
 const HistoryTranscription = ({ transcription }) => {
   let doctor = false;
-  useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       const user = JSON.parse(storedUser);
       doctor = user.type === "doctor";
     }
-  }, []);
   const [expanded, setExpanded] = useState(false);
 
   const handleExpand = () => {

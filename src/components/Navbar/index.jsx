@@ -9,19 +9,17 @@ import { useEffect } from "react";
 const Navbar = () => {
   let doctor = false;
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      const user = JSON.parse(storedUser);
-      doctor = user.type === "doctor";
-    }
-  }, []);
-  
+  const storedUser = localStorage.getItem("user");
+  if (storedUser) {
+    const user = JSON.parse(storedUser);
+    doctor = user.type === "doctor";
+  }
+
   return (
     <nav className="navbar">
       <div className="left-side">
         <Link href="/transcription">Transcription</Link>
-        <Link href="/history">History</Link>
+        {/* <Link href="/history">History</Link> */}
         {!doctor && <Link href="/statistics">Models Statistcs</Link>}
       </div>
       <div className="right-side">

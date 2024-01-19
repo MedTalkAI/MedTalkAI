@@ -8,13 +8,11 @@ const AudioRecorderComponent = ({ onTrascribe }) => {
 
   let doctor = false;
 
-  useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       const user = JSON.parse(storedUser);
       doctor = user.type === "doctor";
     }
-  }, []);
 
   const [audioUrl, setAudioUrl] = useState(null);
   const [audioName, setAudioName] = useState(null);

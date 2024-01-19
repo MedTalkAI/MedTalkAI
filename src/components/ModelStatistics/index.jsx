@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import Style from "./ModelStatistics.module.css";
+import { useRouter } from "next/navigation";
 
 const ModelStatistics = ({ model }) => {
+  const router = useRouter();
   const [statistics, setStatistics] = useState(null);
 
   useEffect(() => {
@@ -21,6 +23,10 @@ const ModelStatistics = ({ model }) => {
 
     fetchData();
   }, [model]);
+
+  const handlePretrain = () => {
+    router.push(`/pretrain/${model}`);
+  };
 
   const renderTable = () => {
     if (!statistics) {
@@ -84,8 +90,13 @@ const ModelStatistics = ({ model }) => {
 
   return (
     <div>
-      <h1 className={Style.title}>Model Statistics ({model})</h1>
-      {renderTable()}
+      <div className={Style.head}>
+        <h1 className={Style.title}>Model Statistics ({model})</h1>
+        <button onClick={handlePretrain}>Continued pretraining</button>
+      </div>
+      <div style={{ overflowX: "auto" }}>
+        {renderTable()}
+      </div>
     </div>
   );
 };

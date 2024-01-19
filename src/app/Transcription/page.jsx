@@ -15,25 +15,21 @@ const transcriptions = data.trancriptions;
 const Transcription = () => {
   let doctor = false;
 
-  useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       const user = JSON.parse(storedUser);
       doctor = user.type === "doctor";
     }
-  }, []);
 
   const [modelTranscription, setModelTranscription] = useState(null);
   const [model, setModel] = useState("Wav2Vec2 + lm5");
 
   const handleTrascribe = (url, model, date) => {
-    setTimeout(() => {
       setModelTranscription(
         "refere estado gripal há cerca de oito dias com cefaleia e obstrução nasal"
       );
       setModel(model);
       console.log(url, model, date);
-    }, 5000);
   };
 
   return (
