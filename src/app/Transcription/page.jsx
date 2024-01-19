@@ -7,30 +7,33 @@ import Metrics from "@/components/Metrics";
 import data from "../../data/db.json";
 import ModelStatistics from "@/components/ModelStatistics";
 import HistoryTranscription from "@/components/HistoryTranscription";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AudioRecorderComponent from "@/components/AudioRecorderComponent";
 
 const transcriptions = data.trancriptions;
 
 const Transcription = () => {
-  const storedUser = localStorage.getItem("user");
-
   let doctor = false;
 
-  if (storedUser) {
-    const user = JSON.parse(storedUser);
-    doctor = user.type === "doctor";
-  }
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      doctor = user.type === "doctor";
+    }
+  }, []);
 
   const [modelTranscription, setModelTranscription] = useState(null);
   const [model, setModel] = useState("Wav2Vec2 + lm5");
 
   const handleTrascribe = (url, model, date) => {
-    setModelTranscription(
-      "refere estado gripal há cerca de oito dias com cefaleia e obstrução nasal"
-    );
-    setModel(model);
-    console.log(url, model, date);
+    setTimeout(() => {
+      setModelTranscription(
+        "refere estado gripal há cerca de oito dias com cefaleia e obstrução nasal"
+      );
+      setModel(model);
+      console.log(url, model, date);
+    }, 5000);
   };
 
   return (

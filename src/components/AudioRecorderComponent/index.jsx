@@ -1,17 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AudioRecorder } from "react-audio-voice-recorder";
+import ReactLoading from "react-loading";
 import styles from "./AudioRecorderComponent.module.css";
 
 const AudioRecorderComponent = ({ onTrascribe }) => {
-  const storedUser = localStorage.getItem("user");
+  const [loading, setLoading] = useState(false);
 
   let doctor = false;
 
-  if (storedUser) {
-    const user = JSON.parse(storedUser);
-    doctor = user.type === "doctor";
-  }
-  
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      doctor = user.type === "doctor";
+    }
+  }, []);
+
   const [audioUrl, setAudioUrl] = useState(null);
   const [audioName, setAudioName] = useState(null);
   const [model, setModel] = useState("Wav2Vec2 + lm5");
@@ -25,11 +29,15 @@ const AudioRecorderComponent = ({ onTrascribe }) => {
   };
 
   const handleTranscribe = () => {
-    const formData = new FormData();
-    formData.append("audio", audioUrl);
-    formData.append("model", model);
-    formData.append("date", new Date().getDate().toString());
-    onTrascribe(audioUrl, model, new Date().getDate().toString());
+    setLoading(true);
+    setTimeout(() => {
+      const formData = new FormData();
+      formData.append("audio", audioUrl);
+      formData.append("model", model);
+      formData.append("date", new Date().getDate().toString());
+      onTrascribe(audioUrl, model, new Date().getDate().toString());
+      setLoading(false);
+    }, 2000);
   };
 
   return (
@@ -63,9 +71,10 @@ const AudioRecorderComponent = ({ onTrascribe }) => {
             <option value="Wav2Vec2 + lm5">Wav2Vec2 + lm5</option>
           </select>
         )}
-        <button disabled={model === "" || !audioUrl} onClick={handleTranscribe}>
-          Transcribe
+        <button disabled={model === "" || !audioUrl || loading} onClick={handleTranscribe}>
+          {loading ? "Loading..." : "Transcribe"}
         </button>
+        {loading && (<ReactLoading type="spinningBubbles" color="#001D3B" height={'3%'} width={'3%'} />)}
       </div>
     </main>
   );

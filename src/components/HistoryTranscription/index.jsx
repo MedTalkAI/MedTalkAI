@@ -3,14 +3,14 @@ import Style from "./HistoryTranscription.module.css";
 import { useState, useEffect } from "react";
 
 const HistoryTranscription = ({ transcription }) => {
-  const storedUser = localStorage.getItem("user");
-
   let doctor = false;
-
-  if (storedUser) {
-    const user = JSON.parse(storedUser);
-    doctor = user.type === "doctor";
-  }
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      doctor = user.type === "doctor";
+    }
+  }, []);
   const [expanded, setExpanded] = useState(false);
 
   const handleExpand = () => {
