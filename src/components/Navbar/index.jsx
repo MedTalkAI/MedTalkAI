@@ -22,7 +22,7 @@ const Navbar = () => {
       <div className="left-side">
         <Link href="/transcription">Transcription</Link>
         <Link href="/history">History</Link>
-        {!doctor && <Link href="">Models Statistcs</Link>}
+        {!doctor && <Link href="/statistics">Models Statistcs</Link>}
       </div>
       <div className="right-side">
         <Image src={insight} alt="insight logo" />
