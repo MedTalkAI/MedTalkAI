@@ -92,7 +92,7 @@ const ModelStatistics = ({ model }) => {
     <div>
       <div className={Style.head}>
         <h1 className={Style.title}>Model Statistics ({model})</h1>
-        <button onClick={handlePretrain}>Continued pretraining</button>
+        <button onClick={handlePretrain}>Fine-tuning</button>
       </div>
       <div style={{ overflowX: "auto" }}>
         {renderTable()}

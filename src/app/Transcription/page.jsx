@@ -15,21 +15,25 @@ const transcriptions = data.trancriptions;
 const Transcription = () => {
   let doctor = false;
 
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      const user = JSON.parse(storedUser);
-      doctor = user.type === "doctor";
-    }
+  const storedUser = localStorage.getItem("user");
+  if (storedUser) {
+    const user = JSON.parse(storedUser);
+    doctor = user.type === "doctor";
+  }
 
   const [modelTranscription, setModelTranscription] = useState(null);
-  const [model, setModel] = useState("Wav2Vec2 + lm5");
+  const [model, setModel] = useState("Wav2Vec 2.0 + lm5");
 
   const handleTrascribe = (url, model, date) => {
-      setModelTranscription(
-        "refere estado gripal há cerca de oito dias com cefaleia e obstrução nasal"
-      );
-      setModel(model);
-      console.log(url, model, date);
+    if (model == "HuBert") {
+      setModelTranscription("refére teixe para covide negativo");
+    } else if (model == "Wav2Vec 2.0 + lm5") {
+      setModelTranscription("refere teste para covid negativo");
+    } else if (model == "Wav2Vec 2.0") {
+      setModelTranscription("refere teste para covid negativo");
+    }
+    setModel(model);
+    console.log(url, model, date);
   };
 
   return (
@@ -52,10 +56,10 @@ const Transcription = () => {
               <div className={Style.metrics}>
                 <Metrics
                   transcription={modelTranscription}
-                  wer={"0,14"}
-                  bleu={"0,98"}
-                  cosine={"0,75"}
-                  kappa={"0,98"}
+                  wer={"0,00"}
+                  bleu={"1,00"}
+                  cosine={"1,00"}
+                  kappa={"-"}
                 />
               </div>
               {modelTranscription && (

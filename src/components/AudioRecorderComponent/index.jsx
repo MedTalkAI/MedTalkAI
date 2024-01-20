@@ -8,15 +8,15 @@ const AudioRecorderComponent = ({ onTrascribe }) => {
 
   let doctor = false;
 
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      const user = JSON.parse(storedUser);
-      doctor = user.type === "doctor";
-    }
+  const storedUser = localStorage.getItem("user");
+  if (storedUser) {
+    const user = JSON.parse(storedUser);
+    doctor = user.type === "doctor";
+  }
 
   const [audioUrl, setAudioUrl] = useState(null);
   const [audioName, setAudioName] = useState(null);
-  const [model, setModel] = useState("Wav2Vec2 + lm5");
+  const [model, setModel] = useState("Wav2Vec 2.0 + lm5");
 
   const addAudioElement = (blob) => {
     const url = URL.createObjectURL(blob);
@@ -24,6 +24,20 @@ const AudioRecorderComponent = ({ onTrascribe }) => {
     const name =
       "Audio recorded from browser [" + new Date().toLocaleString() + "]";
     setAudioName(name);
+
+    // Create a download link
+    const downloadLink = document.createElement("a");
+    downloadLink.href = url;
+    downloadLink.download = "audio.mp3"; // Set the desired file name with .mp3 extension
+
+    // Append the link to the DOM (optional)
+    document.body.appendChild(downloadLink);
+
+    // Trigger a click event on the link to start the download
+    downloadLink.click();
+
+    // Remove the link from the DOM (optional, but recommended)
+    document.body.removeChild(downloadLink);
   };
 
   const handleTranscribe = () => {
@@ -48,8 +62,7 @@ const AudioRecorderComponent = ({ onTrascribe }) => {
             echoCancellation: true,
           }}
           onNotAllowedOrFound={(err) => console.table(err)}
-          downloadOnSavePress={true}
-          downloadFileExtension="webm"
+          downloadOnSavePress={false}
           showVisualizer={true}
         />
 
@@ -63,16 +76,26 @@ const AudioRecorderComponent = ({ onTrascribe }) => {
             <option value="" disabled>
               Select a model
             </option>
-            <option value="Wav2Vec2">Wav2Vec2</option>
+            <option value="Wav2Vec 2.0">Wav2Vec 2.0</option>
             <option value="HuBert">HuBert</option>
             <option value="Whisper">Whisper</option>
-            <option value="Wav2Vec2 + lm5">Wav2Vec2 + lm5</option>
+            <option value="Wav2Vec 2.0 + lm5">Wav2Vec 2.0 + lm5</option>
           </select>
         )}
-        <button disabled={model === "" || !audioUrl || loading} onClick={handleTranscribe}>
+        <button
+          disabled={model === "" || !audioUrl || loading}
+          onClick={handleTranscribe}
+        >
           {loading ? "Loading..." : "Transcribe"}
         </button>
-        {loading && (<ReactLoading type="spinningBubbles" color="#001D3B" height={'3%'} width={'3%'} />)}
+        {loading && (
+          <ReactLoading
+            type="spinningBubbles"
+            color="#001D3B"
+            height={"3%"}
+            width={"3%"}
+          />
+        )}
       </div>
     </main>
   );

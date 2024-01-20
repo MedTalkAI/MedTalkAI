@@ -5,7 +5,7 @@
       "name": "John Doe",
       "email": "jonhdoe@insight.com",
       "username": "jonhdoe",
-      "password": "123456",
+      "password": "134340",
       "type": "admin"
     },
     {
@@ -21,7 +21,7 @@
       "name": "Alex Johnson",
       "email": "alexjohnson@insight.com",
       "username": "alexjohnson",
-      "password": "123456",
+      "password": "134340",
       "type": "doctor"
     }
   ],
@@ -84,7 +84,7 @@
       "cosine": "0,89",
       "bleu": "0,21",
       "date": "15/01/2024",
-      "model": "Wav2Vec2"
+      "model": "Wav2Vec 2.0"
     },
     {
       "id": "6",
@@ -96,7 +96,7 @@
       "cosine": "0,99",
       "bleu": "0,85",
       "date": "18/01/2024",
-      "model": "Wav2Vec2"
+      "model": "Wav2Vec 2.0"
     },
     {
       "id": "7",
@@ -108,7 +108,7 @@
       "cosine": "0,97",
       "bleu": "0,75",
       "date": "20/01/2024",
-      "model": "Wav2Vec2 + lm5"
+      "model": "Wav2Vec 2.0 + lm5"
     },
     {
       "id": "8",
@@ -120,7 +120,7 @@
       "cosine": "1,00",
       "bleu": "1,00",
       "date": "25/01/2024",
-      "model": "Wav2Vec2 + lm5"
+      "model": "Wav2Vec 2.0 + lm5"
     }
   ],
   "models": [
@@ -146,7 +146,7 @@
     },
     {
       "id": "2",
-      "name": "Wav2Vec2",
+      "name": "Wav2Vec 2.0",
       "wer": {
         "mean": "0,2351555556",
         "variance": "0,0341688373",
@@ -186,7 +186,7 @@
     },
     {
       "id": "4",
-      "name": "Wav2Vec2 + lm5",
+      "name": "Wav2Vec 2.0 + lm5",
       "wer": {
         "mean": "0,2107555556",
         "variance": "0,0773730873",

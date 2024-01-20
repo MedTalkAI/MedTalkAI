@@ -10,8 +10,8 @@ export default function Statistcs() {
         <Navbar />
       </header>
       <div className={Style.content}>
-        <ModelStatistics model="Wav2Vec2 + lm5" />
-        <ModelStatistics model="Wav2Vec2" />
+        <ModelStatistics model="Wav2Vec 2.0 + lm5" />
+        <ModelStatistics model="Wav2Vec 2.0" />
         <ModelStatistics model="Whisper" />
         <ModelStatistics model="HuBert" />
       </div>
