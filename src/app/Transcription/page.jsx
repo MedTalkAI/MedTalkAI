@@ -7,19 +7,31 @@ import Metrics from "@/components/Metrics";
 import data from "../../data/db.json";
 import ModelStatistics from "@/components/ModelStatistics";
 import HistoryTranscription from "@/components/HistoryTranscription";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AudioRecorderComponent from "@/components/AudioRecorderComponent";
 
 const transcriptions = data.trancriptions;
 
 const Transcription = () => {
+  let doctor = false;
+
+  const storedUser = localStorage.getItem("user");
+  if (storedUser) {
+    const user = JSON.parse(storedUser);
+    doctor = user.type === "doctor";
+  }
+
   const [modelTranscription, setModelTranscription] = useState(null);
-  const [model, setModel] = useState("Wav2Vec2 + lm5");
+  const [model, setModel] = useState("Wav2Vec 2.0 + lm5");
 
   const handleTrascribe = (url, model, date) => {
-    setModelTranscription(
-      "febre não há ferida e mialgia e dor nas articulações importante em joelhos e tornozelos."
-    );
+    if (model == "HuBert") {
+      setModelTranscription("refére teixe para covide negativo");
+    } else if (model == "Wav2Vec 2.0 + lm5") {
+      setModelTranscription("paciente haver sido encaminhada para a colposcopia porém não foi");
+    } else if (model == "Wav2Vec 2.0") {
+      setModelTranscription("refere teste para covid negativo");
+    }
     setModel(model);
     console.log(url, model, date);
   };
@@ -33,31 +45,30 @@ const Transcription = () => {
         <main>
           <h1 className={Style.title}>Analysis</h1>
           <div className={Style.controls}>
-            <AudioRecorderComponent
-              doctor={false}
-              onTrascribe={handleTrascribe}
-            />
+            <AudioRecorderComponent onTrascribe={handleTrascribe} />
           </div>
           <div className={Style.results}>
             <TranscriptionResult text={modelTranscription} isEditable={false} />
             <TranscriptionResult text={modelTranscription} isEditable={true} />
           </div>
-          <div className={Style.metricsContainer}>
-            <div className={Style.metrics}>
-              <Metrics
-                transcription={modelTranscription}
-                wer={"0,14"}
-                bleu={"0,98"}
-                cosine={"0,75"}
-                kappa={"0,98"}
-              />
-            </div>
-            {modelTranscription && (
-              <div className={Style.model}>
-                <ModelStatistics model={model} />
+          {!doctor && (
+            <div className={Style.metricsContainer}>
+              <div className={Style.metrics}>
+                <Metrics
+                  transcription={modelTranscription}
+                  wer={"0,10"}
+                  bleu={"0,97"}
+                  cosine={"0,78"}
+                  kappa={"-"}
+                />
               </div>
-            )}
-          </div>
+              {modelTranscription && (
+                <div className={Style.model}>
+                  <ModelStatistics model={model} />
+                </div>
+              )}
+            </div>
+          )}
         </main>
         <aside>
           <h1 className={Style.title}>History</h1>
@@ -72,13 +83,7 @@ const Transcription = () => {
               .map((transcription) => (
                 <HistoryTranscription
                   key={transcription.id}
-                  transcription={transcription.model_transcription}
-                  date={transcription.date}
-                  bleu={transcription.bleu}
-                  cosine={transcription.cosine}
-                  kappa={transcription.kappa}
-                  model={transcription.model}
-                  wer={transcription.wer}
+                  transcription={transcription}
                 />
               ))}
           </div>

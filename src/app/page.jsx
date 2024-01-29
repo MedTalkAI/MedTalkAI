@@ -44,9 +44,9 @@ export default function Home() {
     <main className={styles.container}>
       <div className={styles.description}>
         <p className={styles.subtitle}>Welcome to</p>
-        <h1 className={styles.title}>MedTalk AI</h1>
+        <h1 className={styles.title}>MedTalkAI</h1>
         <p className={styles.text}>
-          Introducing MedTalk AI, a tool designed to assist medical
+          Introducing MedTalkAI, a tool designed to assist medical
           documentation for healthcare professionals. This solution leverages
           speech-to-text technology, allowing medical staff to effortlessly
           transcribe crucial patient information with accuracy and efficiency.

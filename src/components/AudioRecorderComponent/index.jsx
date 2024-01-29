@@ -1,11 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AudioRecorder } from "react-audio-voice-recorder";
+import ReactLoading from "react-loading";
 import styles from "./AudioRecorderComponent.module.css";
 
-const AudioRecorderComponent = ({ onTrascribe, doctor }) => {
+const AudioRecorderComponent = ({ onTrascribe }) => {
+  const [loading, setLoading] = useState(false);
+
+  let doctor = false;
+
+  const storedUser = localStorage.getItem("user");
+  if (storedUser) {
+    const user = JSON.parse(storedUser);
+    doctor = user.type === "doctor";
+  }
+
   const [audioUrl, setAudioUrl] = useState(null);
   const [audioName, setAudioName] = useState(null);
-  const [model, setModel] = useState("Wav2Vec2 + lm5");
+  const [model, setModel] = useState("Wav2Vec 2.0 + lm5");
 
   const addAudioElement = (blob) => {
     const url = URL.createObjectURL(blob);
@@ -13,14 +24,32 @@ const AudioRecorderComponent = ({ onTrascribe, doctor }) => {
     const name =
       "Audio recorded from browser [" + new Date().toLocaleString() + "]";
     setAudioName(name);
+
+    // Create a download link
+    const downloadLink = document.createElement("a");
+    downloadLink.href = url;
+    downloadLink.download = "audio.mp3"; // Set the desired file name with .mp3 extension
+
+    // Append the link to the DOM (optional)
+    document.body.appendChild(downloadLink);
+
+    // Trigger a click event on the link to start the download
+    downloadLink.click();
+
+    // Remove the link from the DOM (optional, but recommended)
+    document.body.removeChild(downloadLink);
   };
 
   const handleTranscribe = () => {
-    const formData = new FormData();
-    formData.append("audio", audioUrl);
-    formData.append("model", model);
-    formData.append("date", new Date().getDate().toString());
-    onTrascribe(audioUrl, model, new Date().getDate().toString());
+    setLoading(true);
+    setTimeout(() => {
+      const formData = new FormData();
+      formData.append("audio", audioUrl);
+      formData.append("model", model);
+      formData.append("date", new Date().getDate().toString());
+      onTrascribe(audioUrl, model, new Date().getDate().toString());
+      setLoading(false);
+    }, 2000);
   };
 
   return (
@@ -33,8 +62,7 @@ const AudioRecorderComponent = ({ onTrascribe, doctor }) => {
             echoCancellation: true,
           }}
           onNotAllowedOrFound={(err) => console.table(err)}
-          downloadOnSavePress={true}
-          downloadFileExtension="webm"
+          downloadOnSavePress={false}
           showVisualizer={true}
         />
 
@@ -48,15 +76,26 @@ const AudioRecorderComponent = ({ onTrascribe, doctor }) => {
             <option value="" disabled>
               Select a model
             </option>
-            <option value="Wav2Vec2">Wav2Vec2</option>
+            <option value="Wav2Vec 2.0">Wav2Vec 2.0</option>
             <option value="HuBert">HuBert</option>
             <option value="Whisper">Whisper</option>
-            <option value="Wav2Vec2 + lm5">Wav2Vec2 + lm5</option>
+            <option value="Wav2Vec 2.0 + lm5">Wav2Vec 2.0 + lm5</option>
           </select>
         )}
-        <button disabled={model === "" || !audioUrl} onClick={handleTranscribe}>
-          Transcribe
+        <button
+          disabled={model === "" || !audioUrl || loading}
+          onClick={handleTranscribe}
+        >
+          {loading ? "Loading..." : "Transcribe"}
         </button>
+        {loading && (
+          <ReactLoading
+            type="spinningBubbles"
+            color="#001D3B"
+            height={"3%"}
+            width={"3%"}
+          />
+        )}
       </div>
     </main>
   );
