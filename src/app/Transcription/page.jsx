@@ -22,12 +22,21 @@ const Transcription = () => {
   }
 
   const [modelTranscription, setModelTranscription] = useState(null);
+  const [correctedTranscription, setCorrectedTranscription] = useState(null);
   const [model, setModel] = useState("Wav2Vec 2.0 + lm5");
+
+  const [metrics, setMetrics] = useState(null);
 
   const handleTrascribe = (url, model, date, result) => {
     setModelTranscription(result);
     setModel(model);
     console.log(url, model, date);
+  };
+
+  const handleCorrection = (correctedText, resultMetrics) => {
+    setCorrectedTranscription(correctedText);
+    setMetrics(resultMetrics);
+    console.log(metrics)
   };
 
   return (
@@ -43,16 +52,20 @@ const Transcription = () => {
           </div>
           <div className={Style.results}>
             <TranscriptionResult text={modelTranscription} isEditable={false} />
-            <TranscriptionResult text={modelTranscription} isEditable={true} />
+            <TranscriptionResult
+              text={modelTranscription}
+              isEditable={true}
+              onSave={handleCorrection}
+            />
           </div>
           {!doctor && (
             <div className={Style.metricsContainer}>
               <div className={Style.metrics}>
                 <Metrics
                   transcription={modelTranscription}
-                  wer={"0,10"}
-                  bleu={"0,97"}
-                  cosine={"0,78"}
+                  wer={metrics?.metrics.wer}
+                  bleu={metrics?.metrics.bleu}
+                  cosine={metrics?.metrics.cosine_similarity}
                   kappa={"-"}
                 />
               </div>
