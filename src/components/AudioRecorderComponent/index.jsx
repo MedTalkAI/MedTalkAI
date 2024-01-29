@@ -19,37 +19,66 @@ const AudioRecorderComponent = ({ onTrascribe }) => {
   const [model, setModel] = useState("Wav2Vec 2.0 + lm5");
 
   const addAudioElement = (blob) => {
+    console.log(blob);
     const url = URL.createObjectURL(blob);
     setAudioUrl(url);
     const name =
       "Audio recorded from browser [" + new Date().toLocaleString() + "]";
     setAudioName(name);
-
-    // Create a download link
-    const downloadLink = document.createElement("a");
-    downloadLink.href = url;
-    downloadLink.download = "audio.mp3"; // Set the desired file name with .mp3 extension
-
-    // Append the link to the DOM (optional)
-    document.body.appendChild(downloadLink);
-
-    // Trigger a click event on the link to start the download
-    downloadLink.click();
-
-    // Remove the link from the DOM (optional, but recommended)
-    document.body.removeChild(downloadLink);
   };
 
-  const handleTranscribe = () => {
+  // Function to fetch audio from URL and convert it to a blob
+  const fetchAndConvertAudio = async (url) => {
+    const response = await fetch(url);
+    const audioBlob = await response.blob();
+    return audioBlob;
+  };
+
+  // Function to convert blob to File object
+  const blobToFile = (blob, fileName) => {
+    const file = new File([blob], fileName, { type: blob.type });
+    return file;
+  };
+
+  // Function to handle transcription
+  const handleTranscribe = async () => {
     setLoading(true);
-    setTimeout(() => {
+
+    try {
+      // Fetch and convert audio
+      const audioBlob = await fetchAndConvertAudio(audioUrl);
+
+      // Convert blob to File object
+      const audioFile = blobToFile(audioBlob, "audio.wav"); // You can specify the desired filename and extension here
+
+      // Create FormData
       const formData = new FormData();
-      formData.append("audio", audioUrl);
+      formData.append("audio", audioFile);
       formData.append("model", model);
       formData.append("date", new Date().getDate().toString());
-      onTrascribe(audioUrl, model, new Date().getDate().toString());
-      setLoading(false);
-    }, 2000);
+
+      // Submit FormData via fetch
+      const response = await fetch("http://localhost:5000/transcription", {
+        method: "POST",
+        body: formData,
+      });
+
+      // Handle response as needed
+      const data = await response.json();
+      console.log(data); // Log or handle the response data
+
+      // Handle transcription
+      onTrascribe(
+        audioUrl,
+        model,
+        new Date().getDate().toString(),
+        model != "Whisper" ? data.transcription.text : "whisper"
+      );
+    } catch (error) {
+      console.error("Error:", error);
+    }
+
+    setLoading(false);
   };
 
   return (
@@ -80,6 +109,9 @@ const AudioRecorderComponent = ({ onTrascribe }) => {
             <option value="HuBert">HuBert</option>
             <option value="Whisper">Whisper</option>
             <option value="Wav2Vec 2.0 + lm5">Wav2Vec 2.0 + lm5</option>
+            <option value="Wav2Vec 2.0 Fine-tuned">
+              Wav2Vec 2.0 Fine-tuned
+            </option>
           </select>
         )}
         <button

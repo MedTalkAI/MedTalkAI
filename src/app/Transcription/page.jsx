@@ -24,14 +24,8 @@ const Transcription = () => {
   const [modelTranscription, setModelTranscription] = useState(null);
   const [model, setModel] = useState("Wav2Vec 2.0 + lm5");
 
-  const handleTrascribe = (url, model, date) => {
-    if (model == "HuBert") {
-      setModelTranscription("refére teixe para covide negativo");
-    } else if (model == "Wav2Vec 2.0 + lm5") {
-      setModelTranscription("paciente haver sido encaminhada para a colposcopia porém não foi");
-    } else if (model == "Wav2Vec 2.0") {
-      setModelTranscription("refere teste para covid negativo");
-    }
+  const handleTrascribe = (url, model, date, result) => {
+    setModelTranscription(result);
     setModel(model);
     console.log(url, model, date);
   };
