@@ -28,7 +28,7 @@ const Transcription = () => {
     if (model == "HuBert") {
       setModelTranscription("refére teixe para covide negativo");
     } else if (model == "Wav2Vec 2.0 + lm5") {
-      setModelTranscription("refere teste para covid negativo");
+      setModelTranscription("paciente haver sido encaminhada para a colposcopia porém não foi");
     } else if (model == "Wav2Vec 2.0") {
       setModelTranscription("refere teste para covid negativo");
     }
@@ -56,9 +56,9 @@ const Transcription = () => {
               <div className={Style.metrics}>
                 <Metrics
                   transcription={modelTranscription}
-                  wer={"0,00"}
-                  bleu={"1,00"}
-                  cosine={"1,00"}
+                  wer={"0,10"}
+                  bleu={"0,97"}
+                  cosine={"0,78"}
                   kappa={"-"}
                 />
               </div>
