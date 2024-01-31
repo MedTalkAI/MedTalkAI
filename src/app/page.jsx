@@ -31,6 +31,7 @@ export default function Home() {
         JSON.stringify({
           name: foundUser.name,
           email: foundUser.email,
+          username: foundUser.username,
           type: foundUser.type,
         })
       );

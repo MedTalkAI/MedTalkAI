@@ -9,16 +9,19 @@ import ModelStatistics from "@/components/ModelStatistics";
 import HistoryTranscription from "@/components/HistoryTranscription";
 import { useState, useEffect } from "react";
 import AudioRecorderComponent from "@/components/AudioRecorderComponent";
+import { encode } from 'urlencode';
 
 const transcriptions = data.trancriptions;
 
 const Transcription = () => {
   let doctor = false;
+  let username = "";
 
   const storedUser = localStorage.getItem("user");
   if (storedUser) {
     const user = JSON.parse(storedUser);
     doctor = user.type === "doctor";
+    username = user.username;
   }
 
   const [modelTranscription, setModelTranscription] = useState(null);
@@ -27,16 +30,42 @@ const Transcription = () => {
 
   const [metrics, setMetrics] = useState(null);
 
-  const handleTrascribe = (url, model, date, result) => {
+  const handleTrascribe = (url, model, result) => {
     setModelTranscription(result);
     setModel(model);
-    console.log(url, model, date);
+    console.log(url, model, modelTranscription);
   };
 
-  const handleCorrection = (correctedText, resultMetrics) => {
-    setCorrectedTranscription(correctedText);
-    setMetrics(resultMetrics);
-    console.log(metrics)
+  const handleCorrection = async (correctedText, resultMetrics) => {
+    try {
+      setCorrectedTranscription(correctedText);
+      setMetrics(resultMetrics);
+      console.log(correctedText, resultMetrics);
+
+      let name = username + " " + new Date().toLocaleString();
+      let date = new Date().toLocaleString();
+
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("date", date);
+      formData.append("model_transcription", modelTranscription);
+      formData.append("corrected_transcription", correctedText);
+      formData.append("wer", metrics?.metrics.wer);
+      formData.append("bleu", metrics?.metrics.bleu);
+      formData.append("cosine", metrics?.metrics.cosine_similarity);
+      formData.append("model", model);
+      formData.append("user", username);
+
+      await fetch("http://localhost:5000/transcription/save", {
+        method: "POST",
+        body: formData,
+      });
+      await fetch("http://localhost:5000/metrics/model/" + encode(model), {
+        method: "POST",
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

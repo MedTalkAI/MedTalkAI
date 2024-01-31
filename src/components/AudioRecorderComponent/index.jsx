@@ -71,8 +71,7 @@ const AudioRecorderComponent = ({ onTrascribe }) => {
       onTrascribe(
         audioUrl,
         model,
-        new Date().getDate().toString(),
-        model != "Whisper" ? data.transcription.text : "whisper"
+        data.transcription
       );
     } catch (error) {
       console.error("Error:", error);
