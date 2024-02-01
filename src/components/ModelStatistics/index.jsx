@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import Style from "./ModelStatistics.module.css";
 import { useRouter } from "next/navigation";
-import { encode } from 'urlencode';
 
 const ModelStatistics = ({ model }) => {
   const router = useRouter();
@@ -12,7 +11,7 @@ const ModelStatistics = ({ model }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/metrics/model/" + encode(model));
+        const response = await fetch("http://localhost:5000/metrics/model/" + encodeURIComponent(model, 'utf-8'));
         const data = await response.json();
         setStatistics(data);
       } catch (error) {

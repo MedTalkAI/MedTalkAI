@@ -9,7 +9,6 @@ import ModelStatistics from "@/components/ModelStatistics";
 import HistoryTranscription from "@/components/HistoryTranscription";
 import { useState, useEffect } from "react";
 import AudioRecorderComponent from "@/components/AudioRecorderComponent";
-import { encode } from 'urlencode';
 
 const transcriptions = data.trancriptions;
 
@@ -33,7 +32,8 @@ const Transcription = () => {
   const handleTrascribe = (url, model, result) => {
     setModelTranscription(result);
     setModel(model);
-    console.log(url, model, modelTranscription);
+    console.log(encodeURIComponent(model, "utf-8"));
+    // console.log(url, model, modelTranscription);
   };
 
   const handleCorrection = async (correctedText, resultMetrics) => {
@@ -50,9 +50,12 @@ const Transcription = () => {
       formData.append("date", date);
       formData.append("model_transcription", modelTranscription);
       formData.append("corrected_transcription", correctedText);
-      formData.append("wer", metrics?.metrics.wer);
-      formData.append("bleu", metrics?.metrics.bleu);
-      formData.append("cosine", metrics?.metrics.cosine_similarity);
+      formData.append("wer", Number(metrics?.metrics.wer.toFixed(2)));
+      formData.append("bleu", Number(metrics?.metrics.bleu.toFixed(2)));
+      formData.append(
+        "cosine",
+        Number(metrics?.metrics.cosine_similarity.toFixed(2))
+      );
       formData.append("model", model);
       formData.append("user", username);
 
@@ -60,9 +63,13 @@ const Transcription = () => {
         method: "POST",
         body: formData,
       });
-      await fetch("http://localhost:5000/metrics/model/" + encode(model), {
-        method: "POST",
-      });
+      await fetch(
+        "http://localhost:5000/metrics/model/" +
+          encodeURIComponent(model, "utf-8"),
+        {
+          method: "POST",
+        }
+      );
     } catch (error) {
       console.error(error);
     }
@@ -98,7 +105,7 @@ const Transcription = () => {
                   kappa={"-"}
                 />
               </div>
-              {modelTranscription && (
+              {correctedTranscription && (
                 <div className={Style.model}>
                   <ModelStatistics model={model} />
                 </div>
