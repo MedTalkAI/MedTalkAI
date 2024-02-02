@@ -14,26 +14,65 @@ const transcriptions = data.trancriptions;
 
 const Transcription = () => {
   let doctor = false;
+  let username = "";
 
   const storedUser = localStorage.getItem("user");
   if (storedUser) {
     const user = JSON.parse(storedUser);
     doctor = user.type === "doctor";
+    username = user.username;
   }
 
   const [modelTranscription, setModelTranscription] = useState(null);
+  const [correctedTranscription, setCorrectedTranscription] = useState(null);
   const [model, setModel] = useState("Wav2Vec 2.0 + lm5");
 
-  const handleTrascribe = (url, model, date) => {
-    if (model == "HuBert") {
-      setModelTranscription("refére teixe para covide negativo");
-    } else if (model == "Wav2Vec 2.0 + lm5") {
-      setModelTranscription("paciente haver sido encaminhada para a colposcopia porém não foi");
-    } else if (model == "Wav2Vec 2.0") {
-      setModelTranscription("refere teste para covid negativo");
-    }
+  const [metrics, setMetrics] = useState(null);
+
+  const handleTrascribe = (url, model, result) => {
+    setModelTranscription(result);
     setModel(model);
-    console.log(url, model, date);
+    console.log(encodeURIComponent(model, "utf-8"));
+    // console.log(url, model, modelTranscription);
+  };
+
+  const handleCorrection = async (correctedText, resultMetrics) => {
+    try {
+      setCorrectedTranscription(correctedText);
+      setMetrics(resultMetrics);
+      console.log(correctedText, resultMetrics);
+
+      let name = username + " " + new Date().toLocaleString();
+      let date = new Date().toLocaleString();
+
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("date", date);
+      formData.append("model_transcription", modelTranscription);
+      formData.append("corrected_transcription", correctedText);
+      formData.append("wer", Number(metrics?.metrics.wer.toFixed(2)));
+      formData.append("bleu", Number(metrics?.metrics.bleu.toFixed(2)));
+      formData.append(
+        "cosine",
+        Number(metrics?.metrics.cosine_similarity.toFixed(2))
+      );
+      formData.append("model", model);
+      formData.append("user", username);
+
+      await fetch("http://localhost:5000/transcription/save", {
+        method: "POST",
+        body: formData,
+      });
+      await fetch(
+        "http://localhost:5000/metrics/model/" +
+          encodeURIComponent(model, "utf-8"),
+        {
+          method: "POST",
+        }
+      );
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -49,20 +88,24 @@ const Transcription = () => {
           </div>
           <div className={Style.results}>
             <TranscriptionResult text={modelTranscription} isEditable={false} />
-            <TranscriptionResult text={modelTranscription} isEditable={true} />
+            <TranscriptionResult
+              text={modelTranscription}
+              isEditable={true}
+              onSave={handleCorrection}
+            />
           </div>
           {!doctor && (
             <div className={Style.metricsContainer}>
               <div className={Style.metrics}>
                 <Metrics
                   transcription={modelTranscription}
-                  wer={"0,10"}
-                  bleu={"0,97"}
-                  cosine={"0,78"}
+                  wer={metrics?.metrics.wer}
+                  bleu={metrics?.metrics.bleu}
+                  cosine={metrics?.metrics.cosine_similarity}
                   kappa={"-"}
                 />
               </div>
-              {modelTranscription && (
+              {correctedTranscription && (
                 <div className={Style.model}>
                   <ModelStatistics model={model} />
                 </div>

@@ -11,11 +11,9 @@ const ModelStatistics = ({ model }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:4000/models");
+        const response = await fetch("http://localhost:5000/metrics/model/" + encodeURIComponent(model, 'utf-8'));
         const data = await response.json();
-        // Assuming the data array contains multiple models and you want to find the one with the matching name
-        const selectedModel = data.find((item) => item.name === model);
-        setStatistics(selectedModel);
+        setStatistics(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
