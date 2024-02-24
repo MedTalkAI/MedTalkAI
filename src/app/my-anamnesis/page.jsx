@@ -100,22 +100,6 @@ const MyAnamnesis = () => {
   }, []);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setOpenDropdown(false);
-      }
-      if (!event.target.closest(`.${Style.anamnese}`)) {
-        setSelectedTranscription(null);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  useEffect(() => {
     if (selectedTranscription) {
       setEditableText(selectedTranscription.latest_correction);
       textareaRef.current.focus();
@@ -266,14 +250,14 @@ const MyAnamnesis = () => {
           },
         }}
       >
-        <h2>Confirmação de Atualização</h2>
-        <p>Tem certeza que deseja atualizar a correção?</p>
+        <h2>Update Confirmation</h2>
+        <p>Are you sure you want to update the fix?</p>
         <div style={{ display: "flex", gap: "10px" }}>
           <button className={Style.buttonOk} onClick={handleConfirmUpdate}>
-            Sim
+            Yes
           </button>
           <button className={Style.buttonCancel} onClick={handleCancelUpdate}>
-            Não
+            No
           </button>
         </div>
       </Modal>
