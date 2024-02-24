@@ -3,7 +3,12 @@
 import Style from "./TranscriptionResult.module.css";
 import { useState, useEffect } from "react";
 
-const TranscriptionResult = ({ text, isEditable, onSave }) => {
+const TranscriptionResult = ({
+  text,
+  isEditable,
+  onSave,
+  transcription_id,
+}) => {
   const [editableText, setEditableText] = useState(text);
 
   const handleTextChange = (e) => {
@@ -17,15 +22,19 @@ const TranscriptionResult = ({ text, isEditable, onSave }) => {
       let correct_transcription = editableText;
 
       const formData = new FormData();
-      formData.append("model_transcription", model_transcription);
-      formData.append("correct_transcription", correct_transcription);
+      formData.append("correction", correct_transcription);
 
       // Submit FormData via fetch
+      const token = localStorage.getItem("access_token");
+
       const response = await fetch(
-        "http://localhost:5000/metrics/transcription",
+        `http://localhost:5000/corrections/${transcription_id}`,
         {
           method: "POST",
           body: formData,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
@@ -63,7 +72,14 @@ const TranscriptionResult = ({ text, isEditable, onSave }) => {
         readOnly={!isEditable || editableText === null}
         cols="32"
         rows="10"
-        style={{ resize: text ? "vertical" : "none" }}
+        style={{
+          resize: text ? "vertical" : "none",
+          textAlign: !editableText ? "center" : "left",
+          display: !editableText ? "flex" : "block",
+          justifyContent: !editableText ? "center" : "normal",
+          alignItems: !editableText ? "center" : "normal",
+          position: "relative",
+        }}
       />
       <div
         style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}

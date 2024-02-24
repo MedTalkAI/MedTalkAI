@@ -4,37 +4,41 @@ import Navbar from "@/components/Navbar";
 import Style from "./Transcription.module.css";
 import TranscriptionResult from "@/components/TranscriptionResult";
 import Metrics from "@/components/Metrics";
-import data from "../../data/db.json";
 import ModelStatistics from "@/components/ModelStatistics";
-import HistoryTranscription from "@/components/HistoryTranscription";
 import { useState, useEffect } from "react";
 import AudioRecorderComponent from "@/components/AudioRecorderComponent";
 
-const transcriptions = data.trancriptions;
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Transcription = () => {
   let doctor = false;
   let username = "";
 
-  const storedUser = localStorage.getItem("user");
-  if (storedUser) {
-    const user = JSON.parse(storedUser);
-    doctor = user.type === "doctor";
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (user) {
+    doctor = user.type == 0;
     username = user.username;
+  }
+
+  function toastedErrror(message) {
+    toast.error(message);
   }
 
   const [modelTranscription, setModelTranscription] = useState(null);
   const [correctedTranscription, setCorrectedTranscription] = useState(null);
   const [model, setModel] = useState("Wav2Vec 2.0 + lm5");
+  const [transcription_id, setTranscription_id] = useState(null);
 
   const [metrics, setMetrics] = useState(null);
 
-  const handleTrascribe = (url, model, result) => {
+  const handleTrascribe = (model, result, id) => {
     setModelTranscription(result);
     setModel(model);
+    setTranscription_id(id);
     console.log(encodeURIComponent(model, "utf-8"));
-    // console.log(url, model, modelTranscription);
   };
+
 
   const handleCorrection = async (correctedText, resultMetrics) => {
     try {
@@ -70,6 +74,10 @@ const Transcription = () => {
           method: "POST",
         }
       );
+
+      toast.success("Anamnesis saved successfully!");
+      setCorrectedTranscription(null);
+      setModelTranscription(null);
     } catch (error) {
       console.error(error);
     }
@@ -77,14 +85,16 @@ const Transcription = () => {
 
   return (
     <div className={Style.transcription}>
-      <header>
-        <Navbar />
-      </header>
+      <Navbar path="/transcription" />
       <div className={Style.content}>
+        <ToastContainer />
         <main>
-          <h1 className={Style.title}>Analysis</h1>
+          <h1 className={Style.title}>Transcription</h1>
           <div className={Style.controls}>
-            <AudioRecorderComponent onTrascribe={handleTrascribe} />
+            <AudioRecorderComponent
+              onTrascribe={handleTrascribe}
+              toastedErrror={toastedErrror}
+            />
           </div>
           <div className={Style.results}>
             <TranscriptionResult text={modelTranscription} isEditable={false} />
@@ -92,9 +102,10 @@ const Transcription = () => {
               text={modelTranscription}
               isEditable={true}
               onSave={handleCorrection}
+              transcription_id={transcription_id}
             />
           </div>
-          {!doctor && (
+          {!doctor == true && (
             <div className={Style.metricsContainer}>
               <div className={Style.metrics}>
                 <Metrics
@@ -113,24 +124,6 @@ const Transcription = () => {
             </div>
           )}
         </main>
-        <aside>
-          <h1 className={Style.title}>History</h1>
-          <div className={Style.historyTranscriptions}>
-            {transcriptions
-              .slice()
-              .sort((a, b) => {
-                const dateA = new Date(a.date.split("/").reverse().join("-"));
-                const dateB = new Date(b.date.split("/").reverse().join("-"));
-                return dateB - dateA;
-              })
-              .map((transcription) => (
-                <HistoryTranscription
-                  key={transcription.id}
-                  transcription={transcription}
-                />
-              ))}
-          </div>
-        </aside>
       </div>
     </div>
   );

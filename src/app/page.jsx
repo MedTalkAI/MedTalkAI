@@ -1,12 +1,14 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import styles from "./home.module.css";
 import hapvida from "../assets/hapvida.png";
 import insight from "../assets/insight.webp";
-import data from "../data/db.json";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
   const router = useRouter();
@@ -19,38 +21,49 @@ export default function Home() {
     e.preventDefault();
     setIsLoading(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const formData = new FormData();
+    formData.append("username", username);
+    formData.append("password", password);
 
-    const user = { username, password };
-    const foundUser = data.users.find(
-      (u) => u.username === user.username && u.password === user.password
-    );
-    if (foundUser) {
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          name: foundUser.name,
-          email: foundUser.email,
-          username: foundUser.username,
-          type: foundUser.type,
-        })
-      );
-      router.push("/transcription");
-    } else {
-      // Login error
+    try {
+      const response = await fetch("http://127.0.0.1:5000/auth/login", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem("access_token", data.access_token);
+        const user = data.user;
+        localStorage.setItem("user", JSON.stringify(user));
+        if (user.type == 0) {
+          router.push("/transcription");
+        } else if (user.type == 1) {
+          // router.push("/dashboard");
+        } else if (user.type == 2) {
+          // router.push("/record-anamnesis");
+        }
+      } else {
+        toast.error("Invalid credentials! Please try again.");
+      }
+    } catch (error) {
+      toast.error("unespected error: " + error.message);
     }
+
     setIsLoading(false);
   };
+
   return (
     <main className={styles.container}>
+      <ToastContainer />
       <div className={styles.description}>
         <p className={styles.subtitle}>Welcome to</p>
         <h1 className={styles.title}>MedTalkAI</h1>
         <p className={styles.text}>
-          Introducing MedTalkAI, a tool designed to assist medical
-          documentation for healthcare professionals. This solution leverages
-          speech-to-text technology, allowing medical staff to effortlessly
-          transcribe crucial patient information with accuracy and efficiency.
+          Introducing MedTalkAI, a tool designed to assist medical documentation
+          for healthcare professionals. This solution leverages speech-to-text
+          technology, allowing medical staff to effortlessly transcribe crucial
+          patient information with accuracy and efficiency.
         </p>
         <div className={styles.logos}>
           <Image src={hapvida} alt="hapvida logo" width={150} />

@@ -71,6 +71,10 @@
   color: #ffffff;
 }
 
+.transcriptionResult textarea{
+  width: -webkit-fill-available;
+}
+
 @media screen and (max-width: 750px) {
   .transcriptionResult {
     width: 100%;

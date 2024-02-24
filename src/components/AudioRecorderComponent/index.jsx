@@ -3,15 +3,14 @@ import { AudioRecorder } from "react-audio-voice-recorder";
 import ReactLoading from "react-loading";
 import styles from "./AudioRecorderComponent.module.css";
 
-const AudioRecorderComponent = ({ onTrascribe }) => {
+const AudioRecorderComponent = ({ onTrascribe, toastedErrror }) => {
   const [loading, setLoading] = useState(false);
 
   let doctor = false;
 
-  const storedUser = localStorage.getItem("user");
-  if (storedUser) {
-    const user = JSON.parse(storedUser);
-    doctor = user.type === "doctor";
+  const user_type = localStorage.getItem("user_type");
+  if (user_type) {
+    doctor = user_type === "doctor";
   }
 
   const [audioUrl, setAudioUrl] = useState(null);
@@ -54,13 +53,16 @@ const AudioRecorderComponent = ({ onTrascribe }) => {
       // Create FormData
       const formData = new FormData();
       formData.append("audio", audioFile);
-      formData.append("model", model);
+      formData.append("model_name", model);
       formData.append("date", new Date().getDate().toString());
 
       // Submit FormData via fetch
-      const response = await fetch("http://localhost:5000/transcription", {
+      const response = await fetch("http://localhost:5000/transcriptions", {
         method: "POST",
         body: formData,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
       });
 
       // Handle response as needed
@@ -68,13 +70,9 @@ const AudioRecorderComponent = ({ onTrascribe }) => {
       console.log(data); // Log or handle the response data
 
       // Handle transcription
-      onTrascribe(
-        audioUrl,
-        model,
-        data.transcription
-      );
+      onTrascribe(model, data.transcription, data.id);
     } catch (error) {
-      console.error("Error:", error);
+      toastedErrror("Error transcribing audio: " + error.message);
     }
 
     setLoading(false);
