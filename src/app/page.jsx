@@ -33,9 +33,11 @@ export default function Home() {
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem("access_token", data.access_token);
+        if (typeof window !== "undefined" && window.localStorage)
+          localStorage.setItem("access_token", data.access_token);
         const user = data.user;
-        localStorage.setItem("user", JSON.stringify(user));
+        if (typeof window !== "undefined" && window.localStorage)
+          localStorage.setItem("user", JSON.stringify(user));
         if (user.type == 0) {
           router.push("/transcription");
         } else if (user.type == 1) {

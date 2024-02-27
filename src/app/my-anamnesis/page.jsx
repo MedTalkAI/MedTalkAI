@@ -45,7 +45,11 @@ const MyAnamnesis = () => {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            Authorization: `Bearer ${
+              typeof window !== "undefined" && window.localStorage
+                ? localStorage.getItem("access_token")
+                : ""
+            }`,
           },
           body: formData,
         }
@@ -69,7 +73,11 @@ const MyAnamnesis = () => {
           {
             method: "GET",
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+              Authorization: `Bearer ${
+                typeof window !== "undefined" && window.localStorage
+                  ? localStorage.getItem("access_token")
+                  : ""
+              }`,
             },
           }
         );

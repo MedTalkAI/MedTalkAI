@@ -5,12 +5,15 @@ import insight from "../../assets/insight_mini.png";
 import Image from "next/image";
 import Link from "next/link";
 
-const Navbar = ({path}) => {
+const Navbar = ({ path }) => {
   let isDoctor = false;
   let isDataScientist = false;
   let isIntern = false;
 
-  const user_type = localStorage.getItem("user_type");
+  const user_type =
+    typeof window !== "undefined" && window.localStorage
+      ? localStorage.getItem("user_type")
+      : null;
   if (user_type) {
     isDoctor = user_type === "doctor";
     isDataScientist = user_type === "data_scientist";
@@ -26,22 +29,52 @@ const Navbar = ({path}) => {
       <div className="right-side">
         {isDoctor && (
           <>
-            <Link href="/transcription" className={path === "/transcription" ? "selected" : ""}>Transcription</Link>
-            <Link href="/my-anamnesis" className={path === "/my-anamnesis" ? "selected" : ""}>My Anamnesis</Link>
+            <Link
+              href="/transcription"
+              className={path === "/transcription" ? "selected" : ""}
+            >
+              Transcription
+            </Link>
+            <Link
+              href="/my-anamnesis"
+              className={path === "/my-anamnesis" ? "selected" : ""}
+            >
+              My Anamnesis
+            </Link>
           </>
         )}
         {isDataScientist && (
           <>
-            <Link href="/model-dashboard" className={path === "/model-dashboard" ? "selected" : ""}>Model Dashboard</Link>
-            <Link href="/anamnesis" className={path === "/anamnesis" ? "selected" : ""}>Anamnesis</Link>
+            <Link
+              href="/model-dashboard"
+              className={path === "/model-dashboard" ? "selected" : ""}
+            >
+              Model Dashboard
+            </Link>
+            <Link
+              href="/anamnesis"
+              className={path === "/anamnesis" ? "selected" : ""}
+            >
+              Anamnesis
+            </Link>
           </>
         )}
         {isIntern && (
           <>
-            <Link href="/record-anamnesis" className={path === "/record-anamnesis" ? "selected" : ""}>Record Anamnesis</Link>
+            <Link
+              href="/record-anamnesis"
+              className={path === "/record-anamnesis" ? "selected" : ""}
+            >
+              Record Anamnesis
+            </Link>
           </>
         )}
-        <Link href="/my-profile" className={path === "/my-profile" ? "selected" : ""}>My Profile</Link>
+        <Link
+          href="/my-profile"
+          className={path === "/my-profile" ? "selected" : ""}
+        >
+          My Profile
+        </Link>
       </div>
     </nav>
   );

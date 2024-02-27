@@ -25,7 +25,10 @@ const TranscriptionResult = ({
       formData.append("correction", correct_transcription);
 
       // Submit FormData via fetch
-      const token = localStorage.getItem("access_token");
+      const token =
+        typeof window !== "undefined" && window.localStorage
+          ? localStorage.getItem("access_token")
+          : null;
 
       const response = await fetch(
         `http://localhost:5000/corrections/${transcription_id}`,

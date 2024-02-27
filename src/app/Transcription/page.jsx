@@ -14,8 +14,10 @@ import "react-toastify/dist/ReactToastify.css";
 const Transcription = () => {
   let doctor = false;
   let username = "";
-
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user =
+    typeof window !== "undefined" && window.localStorage
+      ? JSON.parse(localStorage.getItem("user"))
+      : "";
   if (user) {
     doctor = user.type == 0;
     username = user.username;
@@ -38,7 +40,6 @@ const Transcription = () => {
     setTranscription_id(id);
     console.log(encodeURIComponent(model, "utf-8"));
   };
-
 
   const handleCorrection = async (correctedText, resultMetrics) => {
     try {

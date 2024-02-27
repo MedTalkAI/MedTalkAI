@@ -32,7 +32,11 @@ const MyProfile = () => {
     const response = await fetch("http://127.0.0.1:5000/auth/update", {
       method: "PUT",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        Authorization: `Bearer ${
+          typeof window !== "undefined" && window.localStorage
+            ? localStorage.getItem("access_token")
+            : ""
+        }`,
       },
       body: formData,
     });
@@ -51,14 +55,21 @@ const MyProfile = () => {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        Authorization: `Bearer ${
+          typeof window !== "undefined" && window.localStorage
+            ? localStorage.getItem("access_token")
+            : ""
+        }`,
       },
       body: formData,
     });
 
     if (response.status === 204) {
       toast.success("Account deleted successfully!");
-      localStorage.removeItem("user");
-      localStorage.removeItem("access_token");
+      if (typeof window !== "undefined" && window.localStorage) {
+        localStorage.removeItem("user");
+        localStorage.removeItem("access_token");
+      }
       router.push("/");
     }
   };
@@ -76,8 +87,10 @@ const MyProfile = () => {
   };
 
   useEffect(() => {
-    const storagedUser = JSON.parse(localStorage.getItem("user"));
-    setUser(storagedUser);
+    if (typeof window !== "undefined" && window.localStorage) {
+      const storagedUser = JSON.parse(localStorage.getItem("user"));
+      setUser(storagedUser);
+    }
   }, []);
 
   return (
@@ -106,55 +119,55 @@ const MyProfile = () => {
               </button>
             </div>
             <form>
-                <div className={Style.input}>
-                    <label htmlFor="name">Your Name</label>
-                    <input
-                        type="text"
-                        id="name"
-                        className="name"
-                        value={user.name}
-                        onChange={(e) => {
-                            setUser({ ...user, name: e.target.value });
-                        }}
-                        ref={nameRef}
-                    />
-                </div>
-                <div className={Style.input}>
-                    <label htmlFor="email">Your Email</label>
-                    <input
-                        type="email"
-                        id="email"
-                        className="email"
-                        value={user.email}
-                        onChange={(e) => {
-                            setUser({ ...user, email: e.target.value });
-                        }}
-                        ref={emailRef}
-                    />
-                </div>
-                <div className={Style.input}>
-                    <label htmlFor="username">Your Username</label>
-                    <input
-                        type="text"
-                        id="username"
-                        className="username"
-                        value={user.username}
-                        onChange={(e) => {
-                            setUser({ ...user, username: e.target.value });
-                        }}
-                        ref={usernameRef}
-                    />
-                </div>
-                <div className={Style.input}>
-                    <label htmlFor="password">Redefine Your Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        className="password"
-                        placeholder="**************"
-                        ref={passwordRef}
-                    />
-                </div>
+              <div className={Style.input}>
+                <label htmlFor="name">Your Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  className="name"
+                  value={user.name}
+                  onChange={(e) => {
+                    setUser({ ...user, name: e.target.value });
+                  }}
+                  ref={nameRef}
+                />
+              </div>
+              <div className={Style.input}>
+                <label htmlFor="email">Your Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  className="email"
+                  value={user.email}
+                  onChange={(e) => {
+                    setUser({ ...user, email: e.target.value });
+                  }}
+                  ref={emailRef}
+                />
+              </div>
+              <div className={Style.input}>
+                <label htmlFor="username">Your Username</label>
+                <input
+                  type="text"
+                  id="username"
+                  className="username"
+                  value={user.username}
+                  onChange={(e) => {
+                    setUser({ ...user, username: e.target.value });
+                  }}
+                  ref={usernameRef}
+                />
+              </div>
+              <div className={Style.input}>
+                <label htmlFor="password">Redefine Your Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  className="password"
+                  placeholder="**************"
+                  ref={passwordRef}
+                />
+              </div>
               <div style={{ display: "flex", justifyContent: "end" }}>
                 <button
                   className={Style.button}

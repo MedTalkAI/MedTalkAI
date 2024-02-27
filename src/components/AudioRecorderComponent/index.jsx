@@ -8,7 +8,10 @@ const AudioRecorderComponent = ({ onTrascribe, toastedErrror }) => {
 
   let doctor = false;
 
-  const user_type = localStorage.getItem("user_type");
+  const user_type =
+    typeof window !== "undefined" && window.localStorage
+      ? localStorage.getItem("user_type")
+      : "";
   if (user_type) {
     doctor = user_type === "doctor";
   }
@@ -61,7 +64,11 @@ const AudioRecorderComponent = ({ onTrascribe, toastedErrror }) => {
         method: "POST",
         body: formData,
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          Authorization: `Bearer ${
+            typeof window !== "undefined" && window.localStorage
+              ? localStorage.getItem("access_token")
+              : ""
+          }`,
         },
       });
 
