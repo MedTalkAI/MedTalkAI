@@ -6,6 +6,7 @@ import Image from "next/image";
 import styles from "./home.module.css";
 import hapvida from "../assets/hapvida.png";
 import insight from "../assets/insight.webp";
+import { jwtDecode } from "jwt-decode";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -35,10 +36,15 @@ export default function Home() {
         const data = await response.json();
         if (typeof window !== "undefined" && window.localStorage)
           localStorage.setItem("access_token", data.access_token);
-        const user = data.user;
+        console.log(data);
+
+        const user = jwtDecode(data.access_token).sub;
+
         if (typeof window !== "undefined" && window.localStorage)
           localStorage.setItem("user", JSON.stringify(user));
         if (user.type == 0) {
+          if (typeof window !== "undefined" && window.localStorage)
+            localStorage.setItem("user_type", "doctor");
           router.push("/transcription");
         } else if (user.type == 1) {
           // router.push("/dashboard");

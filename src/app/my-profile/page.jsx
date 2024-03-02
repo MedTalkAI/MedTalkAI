@@ -54,7 +54,6 @@ const MyProfile = () => {
     const response = await fetch("http://127.0.0.1:5000/auth/delete", {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         Authorization: `Bearer ${
           typeof window !== "undefined" && window.localStorage
             ? localStorage.getItem("access_token")
@@ -69,6 +68,7 @@ const MyProfile = () => {
       if (typeof window !== "undefined" && window.localStorage) {
         localStorage.removeItem("user");
         localStorage.removeItem("access_token");
+        localStorage.removeItem("user_type");
       }
       router.push("/");
     }
@@ -86,10 +86,35 @@ const MyProfile = () => {
     setIsModalOpen(false);
   };
 
+  const handleLogout = () => {
+    if (typeof window !== "undefined" && window.localStorage) {
+      localStorage.removeItem("user");
+      localStorage.removeItem("access_token");
+    }
+    router.push("/");
+  };
+
   useEffect(() => {
     if (typeof window !== "undefined" && window.localStorage) {
       const storagedUser = JSON.parse(localStorage.getItem("user"));
       setUser(storagedUser);
+      console.log(storagedUser.username);
+      fetch("http://127.0.0.1:5000/user", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${
+            typeof window !== "undefined" && window.localStorage
+              ? localStorage.getItem("access_token")
+              : ""
+          }`,
+        },
+      }).then((response) => {
+        if (response.ok) {
+          response.json().then((data) => {
+            setUser(data);
+          });
+        }
+      });
     }
   }, []);
 
@@ -99,7 +124,6 @@ const MyProfile = () => {
       <div className={Style.content}>
         <ToastContainer />
         <main>
-          <h1 className={Style.title}>My Profile</h1>
           <div className={Style.profile}>
             <div className={Style.info}>
               <div>
@@ -181,6 +205,9 @@ const MyProfile = () => {
                 </button>
               </div>
             </form>
+          </div>
+          <div className={Style.Logout}>
+            <button onClick={handleLogout}>Logout</button>
           </div>
         </main>
       </div>
