@@ -19,6 +19,8 @@ const MyAnamnesis = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [audioSrc, setAudioSrc] = useState("");
+
   const handleUpdateConfirmation = () => {
     setIsModalOpen(true);
   };
@@ -109,8 +111,35 @@ const MyAnamnesis = () => {
 
   useEffect(() => {
     if (selectedTranscription) {
+      console.log(selectedTranscription);
       setEditableText(selectedTranscription.latest_correction);
       textareaRef.current.focus();
+
+      fetch(
+        `http://127.0.0.1:5000/transcriptions/audio/${selectedTranscription.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${
+              typeof window !== "undefined" && window.localStorage
+                ? localStorage.getItem("access_token")
+                : ""
+            }`,
+          },
+        }
+      )
+        .then((response) => {
+          if (response.ok) {
+            return response.blob();
+          }
+          throw new Error("Network response was not ok.");
+        })
+        .then((blob) => {
+          const audioURL = URL.createObjectURL(blob);
+          setAudioSrc(audioURL);
+        })
+        .catch((error) => {
+          console.error("There was a problem with the fetch operation:", error);
+        });
     }
   }, [selectedTranscription]);
 
@@ -132,7 +161,7 @@ const MyAnamnesis = () => {
                     gap: "10px",
                   }}
                 >
-                  <ReactAudioPlayer src="path/to/audio/file.mp3" controls />
+                  <ReactAudioPlayer src={audioSrc} controls />
                   <button
                     className={Style.updateButton}
                     onClick={handleUpdateConfirmation}

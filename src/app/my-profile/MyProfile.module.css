@@ -9,6 +9,10 @@
 .content main {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    vertical-align: middle;
+    justify-content: center;
+    align-content: center;
 }
 
 .content .title {
@@ -25,6 +29,7 @@
     display: flex;
     width: 700px;
     margin: auto;
+    margin-top: 20px;
     padding: 51px 43px;
     flex-direction: row;
     align-items: stretch;
@@ -125,7 +130,7 @@
     line-height: normal;
 }
 
-.buttonCancel{
+.buttonCancel {
     margin-top: 7px;
     display: flex;
     width: 100px;
@@ -147,7 +152,7 @@
     border: none;
 }
 
-.buttonOk{
+.buttonOk {
     margin-top: 7px;
     display: flex;
     width: 100px;
@@ -168,4 +173,19 @@
     line-height: normal;
     border: none;
 
+}
+
+.Logout button {
+    margin-top: 20px;
+    width: 165px;
+    padding: 15px 47px 15px 47px;
+    border-radius: 15px;
+    background: #3B769D;
+    color: #FFF;
+    font-family: 'Inter';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    border: none;
 }
