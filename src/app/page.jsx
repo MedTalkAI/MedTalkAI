@@ -36,7 +36,6 @@ export default function Home() {
         const data = await response.json();
         if (typeof window !== "undefined" && window.localStorage)
           localStorage.setItem("access_token", data.access_token);
-        console.log(data);
 
         const user = jwtDecode(data.access_token).sub;
 
@@ -47,7 +46,9 @@ export default function Home() {
             localStorage.setItem("user_type", "doctor");
           router.push("/transcription");
         } else if (user.type == 1) {
-          // router.push("/dashboard");
+          if (typeof window !== "undefined" && window.localStorage)
+            localStorage.setItem("user_type", "data_scientist");
+          router.push("/dashboard");
         } else if (user.type == 2) {
           // router.push("/record-anamnesis");
         }

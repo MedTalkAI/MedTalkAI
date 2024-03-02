@@ -47,7 +47,7 @@ const Navbar = ({ path }) => {
           <>
             <Link
               href="/model-dashboard"
-              className={path === "/model-dashboard" ? "selected" : ""}
+              className={path === "/dashboard" ? "selected" : ""}
             >
               Model Dashboard
             </Link>
