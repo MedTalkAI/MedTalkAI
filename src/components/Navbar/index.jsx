@@ -46,7 +46,7 @@ const Navbar = ({ path }) => {
         {isDataScientist && (
           <>
             <Link
-              href="/model-dashboard"
+              href="/dashboard"
               className={path === "/dashboard" ? "selected" : ""}
             >
               Model Dashboard

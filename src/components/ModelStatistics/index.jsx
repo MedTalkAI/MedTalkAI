@@ -11,7 +11,10 @@ const ModelStatistics = ({ model }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/metrics/model/" + encodeURIComponent(model, 'utf-8'));
+        const response = await fetch(
+          "http://localhost:5000/metrics/model/" +
+            encodeURIComponent(model, "utf-8")
+        );
         const data = await response.json();
         setStatistics(data);
       } catch (error) {
@@ -92,9 +95,7 @@ const ModelStatistics = ({ model }) => {
         <h1 className={Style.title}>Model Statistics ({model})</h1>
         <button onClick={handlePretrain}>Fine-tuning</button>
       </div>
-      <div style={{ overflowX: "auto" }}>
-        {renderTable()}
-      </div>
+      <div style={{ overflowX: "auto" }}>{renderTable()}</div>
     </div>
   );
 };

@@ -85,7 +85,8 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    console.log(models);
+    console.log("models");
+    console.log(JSON.stringify(models));
   }, [models]);
 
   return (
