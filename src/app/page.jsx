@@ -49,7 +49,9 @@ export default function Home() {
         } else if (user.type == 1) {
           // router.push("/dashboard");
         } else if (user.type == 2) {
-          // router.push("/record-anamnesis");
+          if (typeof window !== "undefined" && window.localStorage)
+            localStorage.setItem("user_type", "intern");
+          router.push("/recording-anamnesis");
         }
       } else {
         toast.error("Invalid credentials! Please try again.");

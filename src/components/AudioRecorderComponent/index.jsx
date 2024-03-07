@@ -7,6 +7,7 @@ const AudioRecorderComponent = ({ onTrascribe, toastedErrror }) => {
   const [loading, setLoading] = useState(false);
 
   let doctor = false;
+  let intern = false;
 
   const user_type =
     typeof window !== "undefined" && window.localStorage
@@ -14,6 +15,7 @@ const AudioRecorderComponent = ({ onTrascribe, toastedErrror }) => {
       : "";
   if (user_type) {
     doctor = user_type === "doctor";
+    intern = user_type === "intern";
   }
 
   const [audioUrl, setAudioUrl] = useState(null);
@@ -104,7 +106,7 @@ const AudioRecorderComponent = ({ onTrascribe, toastedErrror }) => {
             <audio controls src={audioUrl} />
           </div>
         )}
-        {!doctor && (
+        {!doctor && !intern &&(
           <select onChange={(e) => setModel(e.target.value)} value={model}>
             <option value="" disabled>
               Select a model
@@ -117,12 +119,12 @@ const AudioRecorderComponent = ({ onTrascribe, toastedErrror }) => {
               Wav2Vec 2.0 Fine-tuned
             </option>
           </select>
-        )}
+        )} 
         <button
           disabled={model === "" || !audioUrl || loading}
           onClick={handleTranscribe}
         >
-          {loading ? "Loading..." : "Transcribe"}
+          {loading ? "Loading..." : intern ? "Save" : "Transcribe" }
         </button>
         {loading && (
           <ReactLoading
