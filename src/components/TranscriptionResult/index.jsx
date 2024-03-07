@@ -10,6 +10,7 @@ const TranscriptionResult = ({
   transcription_id,
 }) => {
   const [editableText, setEditableText] = useState(text);
+  const [isDataSicentist, setIsDataSicentist] = useState(false);
 
   const handleTextChange = (e) => {
     setEditableText(e.target.value);
@@ -53,6 +54,14 @@ const TranscriptionResult = ({
   useEffect(() => {
     setEditableText(text);
   }, [text]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.localStorage) {
+      const type = JSON.parse(localStorage.getItem("user")).type;
+      setIsDataSicentist(type == 1);
+    }
+  }, []);
+
   return (
     <div className={Style.transcriptionResult}>
       {/**
@@ -72,7 +81,7 @@ const TranscriptionResult = ({
         name=""
         value={editableText || "No transcription performed"}
         onChange={handleTextChange}
-        readOnly={!isEditable || editableText === null}
+        readOnly={isDataSicentist || (isEditable && editableText === null)}
         cols="32"
         rows="10"
         style={{
@@ -87,7 +96,7 @@ const TranscriptionResult = ({
       <div
         style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}
       >
-        {isEditable && text && (
+        {isDataSicentist == false && isEditable && text && (
           <button className={Style.btnSaveEdits} onClick={handleSaveEdits}>
             Save Corrections
           </button>

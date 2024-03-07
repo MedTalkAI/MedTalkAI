@@ -51,7 +51,24 @@
   align-items: center;
 }
 
-.head button {
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.bottom span {
+  color: #000;
+  font-family: Raleway;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.25px;
+
+}
+
+.bottom button {
   display: flex;
   padding: 5px 15px;
   justify-content: center;
@@ -59,7 +76,7 @@
   gap: 10px;
   border-radius: 10px;
   background: #9b7133;
-  height:fit-content;
+  height: fit-content;
 
   color: #fff;
   text-align: center;

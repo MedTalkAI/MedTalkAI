@@ -1,0 +1,131 @@
+.content {
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-bottom: 70px;
+    gap: 2%;
+}
+
+.content main {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.groupSelect {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.groupSelect select {
+    width: fit-content;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    border: 1px solid #9B9B9B;
+    background: #FFF;
+    color: #3B769D;
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: -0.25px;
+    border: #3B769D 1px solid;
+}
+
+.sides {
+    display: flex;
+    justify-content: space-between;
+}
+
+.content .title {
+    color: #000;
+    font-family: 'Inter';
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: -0.25px;
+}
+
+.updateButton {
+    margin-top: 7px;
+    display: flex;
+    width: fit-content;
+    height: 40px;
+    padding: 5px 15px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: #3B9B33;
+    color: #FFF;
+    text-align: center;
+    font-family: 'Raleway';
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    border: none;
+}
+
+.buttonCancel {
+    margin-top: 7px;
+    display: flex;
+    width: 100px;
+    height: 40px;
+    padding: 5px 15px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: #FF3B3B;
+    color: #FFF;
+    text-align: center;
+    font-family: 'Raleway';
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    border: none;
+}
+
+.buttonOk {
+    margin-top: 7px;
+    display: flex;
+    width: 100px;
+    height: 40px;
+    padding: 5px 15px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: #3B9B33;
+    color: #FFF;
+    text-align: center;
+    font-family: 'Raleway';
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    border: none;
+
+}
+
+.modelStatistics {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: minmax(auto, max-content);
+    gap: 120px;
+    /* Adicione o espaçamento desejado */
+}
