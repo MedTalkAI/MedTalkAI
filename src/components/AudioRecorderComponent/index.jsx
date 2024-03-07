@@ -3,10 +3,15 @@ import { AudioRecorder } from "react-audio-voice-recorder";
 import ReactLoading from "react-loading";
 import styles from "./AudioRecorderComponent.module.css";
 
-const AudioRecorderComponent = ({ onTrascribe, toastedErrror }) => {
+const AudioRecorderComponent = ({
+  anamnese_id,
+  onTrascribe,
+  toastedErrror,
+}) => {
   const [loading, setLoading] = useState(false);
 
   let doctor = false;
+  let intern = false;
 
   const user_type =
     typeof window !== "undefined" && window.localStorage
@@ -14,6 +19,7 @@ const AudioRecorderComponent = ({ onTrascribe, toastedErrror }) => {
       : "";
   if (user_type) {
     doctor = user_type === "doctor";
+    intern = user_type === "intern";
   }
 
   const [audioUrl, setAudioUrl] = useState(null);
@@ -58,6 +64,9 @@ const AudioRecorderComponent = ({ onTrascribe, toastedErrror }) => {
       formData.append("audio", audioFile);
       formData.append("model_name", model);
       formData.append("date", new Date().getDate().toString());
+      if (intern) {
+        formData.append("anamnese_id", anamnese_id);
+      }
 
       // Submit FormData via fetch
       const response = await fetch("http://localhost:5000/transcriptions", {
@@ -104,7 +113,7 @@ const AudioRecorderComponent = ({ onTrascribe, toastedErrror }) => {
             <audio controls src={audioUrl} />
           </div>
         )}
-        {!doctor && (
+        {!doctor && !intern && (
           <select onChange={(e) => setModel(e.target.value)} value={model}>
             <option value="" disabled>
               Select a model
@@ -122,7 +131,7 @@ const AudioRecorderComponent = ({ onTrascribe, toastedErrror }) => {
           disabled={model === "" || !audioUrl || loading}
           onClick={handleTranscribe}
         >
-          {loading ? "Loading..." : "Transcribe"}
+          {loading ? "Loading..." : intern ? "Save" : "Transcribe"}
         </button>
         {loading && (
           <ReactLoading
