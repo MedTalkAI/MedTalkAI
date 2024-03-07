@@ -1,0 +1,71 @@
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+main{
+    background: white;
+}
+
+.container {
+    margin-top: 30px;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-bottom: 70px;
+}
+
+.content main {
+    display: flex;
+    flex-direction: column;
+}
+
+.anamnesisGroup {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(315px, 1fr));
+    grid-gap: 20px;
+    padding-right: 10px;
+    padding-left: 10px;
+    margin-top: 32px;
+}
+
+.title{
+    color: #000;
+    font-family: Inter;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-top: 50px;
+    margin-bottom: 21px;
+    letter-spacing: -0.25px;
+    margin-left: 10px;
+}
+
+.sub-title{
+    margin-left: 10px;
+    margin-top: 21px;
+    margin-bottom: 21px;
+    color: #000;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -0.25px;
+}
+
+
+.anamnese {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: auto;
+    padding: 10px;
+    border-radius: 10px;
+    background: #FFF;
+    /* Sombra */
+    box-shadow: 0px 0px 5px 3px rgba(151, 151, 151, 0.25);
+}
+.selected {
+    border-radius: 10px;
+    border: 1px solid #3B769D;
+    background: #F3F8FF;
+    box-shadow: 0px 0px 5px 3px rgba(151, 151, 151, 0.25);
+  }
