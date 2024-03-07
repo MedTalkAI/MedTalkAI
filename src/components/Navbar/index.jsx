@@ -1,24 +1,16 @@
-"use client";
-
-import "./Navbar.css";
-import insight from "../../assets/insight_mini.png";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import insight from "../../assets/insight_mini.png";
+import "./Navbar.css";
 
 const Navbar = ({ path }) => {
-  let isDoctor = false;
-  let isDataScientist = false;
-  let isIntern = false;
+  const [userType, setUserType] = useState(null);
 
-  const user_type =
-    typeof window !== "undefined" && window.localStorage
-      ? localStorage.getItem("user_type")
-      : null;
-  if (user_type) {
-    isDoctor = user_type === "doctor";
-    isDataScientist = user_type === "data_scientist";
-    isIntern = user_type === "health_intern";
-  }
+  useEffect(() => {
+    const userTypeFromStorage = localStorage.getItem("user_type");
+    setUserType(userTypeFromStorage);
+  }, []);
 
   return (
     <nav className="navbar">
@@ -27,53 +19,48 @@ const Navbar = ({ path }) => {
         <h1>MedTalkAI</h1>
       </div>
       <div className="right-side">
-        {isDoctor && (
+        {userType === "doctor" && (
           <>
             <Link
               href="/transcription"
               className={path === "/transcription" ? "selected" : ""}
             >
-              Transcription
+              <span>Transcription</span>
             </Link>
-            <Link
-              href="/my-anamnesis"
-              className={path === "/my-anamnesis" ? "selected" : ""}
-            >
-              My Anamnesis
+            <Link href="/my-anamnesis">
+              <span className={path === "/my-anamnesis" ? "selected" : ""}>
+                My Anamnesis
+              </span>
             </Link>
           </>
         )}
-        {isDataScientist && (
+        {userType === "data_scientist" && (
           <>
-            <Link
-              href="/dashboard"
-              className={path === "/dashboard" ? "selected" : ""}
-            >
-              Model Dashboard
+            <Link href="/dashboard">
+              <span className={path === "/dashboard" ? "selected" : ""}>
+                Model Dashboard
+              </span>
             </Link>
-            <Link
-              href="/anamnesis"
-              className={path === "/anamnesis" ? "selected" : ""}
-            >
-              Anamnesis
+            <Link href="/anamnesis">
+              <span className={path === "/anamnesis" ? "selected" : ""}>
+                Anamnesis
+              </span>
             </Link>
           </>
         )}
-        {isIntern && (
+        {userType === "health_intern" && (
           <>
-            <Link
-              href="/record-anamnesis"
-              className={path === "/record-anamnesis" ? "selected" : ""}
-            >
-              Record Anamnesis
+            <Link href="/record-anamnesis">
+              <span className={path === "/record-anamnesis" ? "selected" : ""}>
+                Record Anamnesis
+              </span>
             </Link>
           </>
         )}
-        <Link
-          href="/my-profile"
-          className={path === "/my-profile" ? "selected" : ""}
-        >
-          My Profile
+        <Link href="/my-profile">
+          <span className={path === "/my-profile" ? "selected" : ""}>
+            My Profile
+          </span>
         </Link>
       </div>
     </nav>
