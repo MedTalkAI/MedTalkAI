@@ -121,9 +121,9 @@ const Dashboard = () => {
           </div>
           <div className={Style.models}>
             <div className={Style.modelStatistics}>
-              {/* {models.map((model) => (
-                <ModelStatistics key={model.id} model={model} />
-              ))} */}
+              {models.map((model) => (
+                <ModelStatistics key={model.id} statistics={model} />
+              ))}
             </div>
           </div>
         </main>

@@ -121,3 +121,11 @@
     border: none;
 
 }
+
+.modelStatistics {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: minmax(auto, max-content);
+    gap: 120px;
+    /* Adicione o espaçamento desejado */
+}

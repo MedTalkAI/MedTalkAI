@@ -1,32 +1,12 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Style from "./ModelStatistics.module.css";
 import { useRouter } from "next/navigation";
 
-const ModelStatistics = ({ model }) => {
+const ModelStatistics = ({ statistics }) => {
   const router = useRouter();
-  const [statistics, setStatistics] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:5000/metrics/model/" +
-            encodeURIComponent(model, "utf-8")
-        );
-        const data = await response.json();
-        setStatistics(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, [model]);
 
   const handlePretrain = () => {
-    router.push(`/pretrain/${model}`);
+    router.push(`/pretrain/${statistics.name}`);
   };
 
   const renderTable = () => {
@@ -40,25 +20,25 @@ const ModelStatistics = ({ model }) => {
       {
         metric: "WER",
         values: [
-          statistics.wer.mean,
-          statistics.wer.variance,
-          statistics.wer.std_deviation,
+          statistics?.wer?.mean || "N/A",
+          statistics?.wer?.variance || "N/A",
+          statistics?.wer?.std_deviation || "N/A",
         ],
       },
       {
         metric: "BLEU",
         values: [
-          statistics.bleu.mean,
-          statistics.bleu.variance,
-          statistics.bleu.std_deviation,
+          statistics?.bleu?.mean || "N/A",
+          statistics?.bleu?.variance || "N/A",
+          statistics?.bleu?.std_deviation || "N/A",
         ],
       },
       {
         metric: "COSINE SIMILARITY",
         values: [
-          statistics.cosine.mean,
-          statistics.cosine.variance,
-          statistics.cosine.std_deviation,
+          statistics?.cosine?.mean || "N/A",
+          statistics?.cosine?.variance || "N/A",
+          statistics?.cosine?.std_deviation || "N/A",
         ],
       },
     ];
@@ -80,7 +60,9 @@ const ModelStatistics = ({ model }) => {
             <tr key={index}>
               <th className={Style.metric}>{row.metric}</th>
               {row.values.map((value, idx) => (
-                <td key={idx}>{value}</td>
+                <td key={idx}>
+                  {typeof value === "number" ? value.toFixed(3) : value}
+                </td>
               ))}
             </tr>
           ))}
@@ -92,10 +74,14 @@ const ModelStatistics = ({ model }) => {
   return (
     <div>
       <div className={Style.head}>
-        <h1 className={Style.title}>Model Statistics ({model})</h1>
+        <h1 className={Style.title}>Model Statistics ({statistics.name})</h1>
+      </div>
+
+      <div style={{ overflowX: "auto" }}>{renderTable()}</div>
+      <div className={Style.bottom}>
+        <span>Transcriptions quantity: {statistics?.transcriptions_amt}</span>
         <button onClick={handlePretrain}>Fine-tuning</button>
       </div>
-      <div style={{ overflowX: "auto" }}>{renderTable()}</div>
     </div>
   );
 };
