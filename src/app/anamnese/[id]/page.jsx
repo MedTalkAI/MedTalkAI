@@ -22,7 +22,7 @@ const Anamnese = () => {
     const fetchTranscription = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/transcriptions/${id}?correction=true`,
+          `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/${id}?correction=true`,
           {
             method: "GET",
             headers: {
@@ -61,7 +61,7 @@ const Anamnese = () => {
 
     fetchTranscription();
 
-    fetch(`http://127.0.0.1:5000/transcriptions/audio/${id}`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/transcriptions/audio/${id}`, {
       headers: {
         Authorization: `Bearer ${
           typeof window !== "undefined" && window.localStorage

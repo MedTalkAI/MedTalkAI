@@ -43,7 +43,7 @@ const MyAnamnesis = () => {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:5000/corrections/${selectedTranscription.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/corrections/${selectedTranscription.id}`,
         {
           method: "POST",
           headers: {
@@ -71,7 +71,7 @@ const MyAnamnesis = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://127.0.0.1:5000/transcriptions/user",
+          `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/user`,
           {
             method: "GET",
             headers: {
@@ -116,7 +116,7 @@ const MyAnamnesis = () => {
       textareaRef.current.focus();
 
       fetch(
-        `http://127.0.0.1:5000/transcriptions/audio/${selectedTranscription.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/audio/${selectedTranscription.id}`,
         {
           headers: {
             Authorization: `Bearer ${

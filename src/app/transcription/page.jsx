@@ -64,13 +64,18 @@ const Transcription = () => {
       formData.append("model", model);
       formData.append("user", username);
 
-      await fetch("http://localhost:5000/corrections/" + transcription_id, {
-        method: "POST",
-        body: formData,
-      });
       await fetch(
-        "http://localhost:5000/metrics/model/" +
-          encodeURIComponent(model, "utf-8"),
+        `${process.env.NEXT_PUBLIC_API_URL}/corrections/${transcription_id}`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/metrics/model/${encodeURIComponent(
+          model,
+          "utf-8"
+        )}`,
         {
           method: "POST",
         }

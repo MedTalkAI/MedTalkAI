@@ -20,7 +20,7 @@ const Dashboard = () => {
       return;
     }
 
-    fetch(`http://localhost:5000/models/${defaultModel.id}`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/models/${defaultModel.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -60,7 +60,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    fetch("http://localhost:5000/models", {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/models`, {
       headers: {
         Authorization: `Bearer ${
           typeof window !== "undefined" && window.localStorage

@@ -29,17 +29,20 @@ const MyProfile = () => {
     formData.append("username", usernameRef.current.value);
     formData.append("password", passwordRef.current.value);
 
-    const response = await fetch("http://127.0.0.1:5000/auth/update", {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${
-          typeof window !== "undefined" && window.localStorage
-            ? localStorage.getItem("access_token")
-            : ""
-        }`,
-      },
-      body: formData,
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/update`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${
+            typeof window !== "undefined" && window.localStorage
+              ? localStorage.getItem("access_token")
+              : ""
+          }`,
+        },
+        body: formData,
+      }
+    );
 
     if (response.status === 201) {
       toast.success("Profile updated successfully!");
@@ -51,17 +54,20 @@ const MyProfile = () => {
     const formData = new FormData();
     formData.append("username", user.username);
 
-    const response = await fetch("http://127.0.0.1:5000/auth/delete", {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${
-          typeof window !== "undefined" && window.localStorage
-            ? localStorage.getItem("access_token")
-            : ""
-        }`,
-      },
-      body: formData,
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/delete`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${
+            typeof window !== "undefined" && window.localStorage
+              ? localStorage.getItem("access_token")
+              : ""
+          }`,
+        },
+        body: formData,
+      }
+    );
 
     if (response.status === 204) {
       toast.success("Account deleted successfully!");
@@ -99,7 +105,7 @@ const MyProfile = () => {
       const storagedUser = JSON.parse(localStorage.getItem("user"));
       setUser(storagedUser);
       console.log(storagedUser.username);
-      fetch("http://127.0.0.1:5000/user", {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/user`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${

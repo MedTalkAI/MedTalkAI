@@ -27,10 +27,13 @@ export default function Home() {
     formData.append("password", password);
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/auth/login", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();

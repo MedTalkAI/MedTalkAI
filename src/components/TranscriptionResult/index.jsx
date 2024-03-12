@@ -32,7 +32,7 @@ const TranscriptionResult = ({
           : null;
 
       const response = await fetch(
-        `http://localhost:5000/corrections/${transcription_id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/corrections/${transcription_id}`,
         {
           method: "POST",
           body: formData,
