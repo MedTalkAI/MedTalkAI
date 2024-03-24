@@ -144,7 +144,8 @@
     outline: none;
 }
 
-.updateButton {
+/* Estilo base para os botões */
+.updateButton, .deleteButton {
     margin-top: 7px;
     display: flex;
     width: fit-content;
@@ -155,7 +156,7 @@
     gap: 10px;
     flex-shrink: 0;
     border-radius: 10px;
-    background: #3B9B33;
+    background: #3B9B33; /* Cor de fundo padrão */
     color: #FFF;
     text-align: center;
     font-family: 'Raleway';
@@ -164,6 +165,11 @@
     font-weight: 600;
     line-height: normal;
     border: none;
+}
+
+/* Estilo específico para o botão de exclusão */
+.deleteButton {
+    background: #CC224B; /* Cor de fundo diferente para o botão de exclusão */
 }
 
 .buttonCancel{

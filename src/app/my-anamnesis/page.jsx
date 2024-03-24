@@ -21,6 +21,47 @@ const MyAnamnesis = () => {
 
   const [audioSrc, setAudioSrc] = useState("");
 
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const handleDeleteConfirmation = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/${selectedTranscription.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${
+              typeof window !== "undefined" && window.localStorage
+                ? localStorage.getItem("access_token")
+                : ""
+            }`,
+          },
+        }
+      );
+      if (response.ok) {
+        // Exclua a transcrição do estado
+        const updatedTranscriptions = transcriptions.filter(transcription => transcription.id !== selectedTranscription.id);
+        setTranscriptions(updatedTranscriptions);
+        setSelectedTranscription(null);
+        toast.success("Transcription deleted successfully");
+      } else {
+        throw new Error("Failed to delete transcription");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to delete transcription");
+    }
+    setIsDeleteModalOpen(false);
+  };
+
+  const handleCancelDelete = () => {
+    setIsDeleteModalOpen(false);
+  };
+
   const handleUpdateConfirmation = () => {
     setIsModalOpen(true);
   };
@@ -43,7 +84,7 @@ const MyAnamnesis = () => {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:5000/corrections/${selectedTranscription.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/corrections/${selectedTranscription.id}`,
         {
           method: "POST",
           headers: {
@@ -71,7 +112,7 @@ const MyAnamnesis = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://127.0.0.1:5000/transcriptions/user",
+          `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/user`,
           {
             method: "GET",
             headers: {
@@ -116,7 +157,7 @@ const MyAnamnesis = () => {
       textareaRef.current.focus();
 
       fetch(
-        `http://127.0.0.1:5000/transcriptions/audio/${selectedTranscription.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/audio/${selectedTranscription.id}`,
         {
           headers: {
             Authorization: `Bearer ${
@@ -167,6 +208,12 @@ const MyAnamnesis = () => {
                     onClick={handleUpdateConfirmation}
                   >
                     Update Correction
+                  </button>
+                  <button
+                    className={Style.deleteButton}
+                    onClick={handleDeleteConfirmation}
+                  >
+                    Delete Anamnese
                   </button>
                 </div>
               ) : (
@@ -294,6 +341,40 @@ const MyAnamnesis = () => {
             Yes
           </button>
           <button className={Style.buttonCancel} onClick={handleCancelUpdate}>
+            No
+          </button>
+        </div>
+      </Modal>
+      
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onRequestClose={handleCancelDelete}
+        contentLabel="Delete Confirmation"
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          },
+          content: {
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "400px",
+            height: "200px",
+            margin: "auto",
+            borderRadius: "4px",
+            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.3)",
+            backgroundColor: "#fff",
+          },
+        }}
+      >
+        <h2>Delete Confirmation</h2>
+        <p>Are you sure you want to delete the transcription?</p>
+        <div style={{ display: "flex", gap: "10px" }}>
+          <button className={Style.buttonOk} onClick={handleConfirmDelete}>
+            Yes
+          </button>
+          <button className={Style.buttonCancel} onClick={handleCancelDelete}>
             No
           </button>
         </div>
