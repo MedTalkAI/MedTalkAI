@@ -121,7 +121,9 @@ const Dashboard = () => {
       console.error('Erro:', error);
     });
 }
-
+const handleBenchmark = () => {
+  //implementar 
+};
 
 
 
@@ -133,26 +135,31 @@ const Dashboard = () => {
         <main>
           <div className={Style.sides}>
             <h1 className={Style.title}>Model Dashboard</h1>
-            <div className={Style.groupSelect}>
-              <h2>Default Model</h2>
-              {models.length > 0 && (
-                <select
-                  onChange={(e) => {
-                    const selectedModel = models.find(
-                      (model) => model.id == e.target.value
-                    );
-                    setDefaultModel(selectedModel);
-                    setIsModalOpen(true);
-                  }}
-                  value={defaultModel ? defaultModel.id : ""}
-                >
-                  {models.map((model) => (
-                    <option key={model.id} value={model.id}>
-                      {model.name}
-                    </option>
-                  ))}
-                </select>
-              )}
+            <div className={Style.benchmarkAndGroupSelect}>
+              <button onClick={()=>handleBenchmark()} className={Style.exportarBenchmark}>
+                Benchmark
+              </button>
+              <div className={Style.groupSelect}>
+                <h2>Default Model</h2>
+                {models.length > 0 && (
+                  <select
+                    onChange={(e) => {
+                      const selectedModel = models.find(
+                        (model) => model.id == e.target.value
+                      );
+                      setDefaultModel(selectedModel);
+                      setIsModalOpen(true);
+                    }}
+                    value={defaultModel ? defaultModel.id : ""}
+                  >
+                    {models.map((model) => (
+                      <option key={model.id} value={model.id}>
+                        {model.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
             </div>
           </div>
           <div className={Style.models}>

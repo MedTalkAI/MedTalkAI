@@ -101,6 +101,12 @@
   border: 1px solid #1c5880;
   background: #01429c;
   color: #FFF;
-  font-family: 'Inter';
-  font-size: 15px;
+  text-align: center;
+  font-family: Raleway;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  border: 0;
+  cursor: pointer;
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import Style from "./ModelStatistics.module.css";
 import { useRouter } from "next/navigation";
-import { TbTableExport } from "react-icons/tb";
+import { MdDownload } from "react-icons/md";
 
 const ModelStatistics = ({ statistics, onCsvDownloader }) => {
   const router = useRouter();
@@ -85,8 +85,7 @@ const ModelStatistics = ({ statistics, onCsvDownloader }) => {
         <span>Transcriptions quantity: {statistics?.transcriptions_amt}</span>
         <button onClick={handlePretrain}>Fine-tuning</button>
         <button onClick={()=>onCsvDownloader(statistics.id)} className={Style.exportarBenchmark}>
-          <p>Benchmark</p>
-          <TbTableExport />
+          <MdDownload />
         </button>
       </div>
     </div>
