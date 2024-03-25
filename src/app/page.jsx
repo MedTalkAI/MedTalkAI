@@ -1,12 +1,15 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import styles from "./home.module.css";
 import hapvida from "../assets/hapvida.png";
 import insight from "../assets/insight.webp";
-import data from "../data/db.json";
+import { jwtDecode } from "jwt-decode";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
   const router = useRouter();
@@ -19,37 +22,62 @@ export default function Home() {
     e.preventDefault();
     setIsLoading(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const formData = new FormData();
+    formData.append("username", username);
+    formData.append("password", password);
 
-    const user = { username, password };
-    const foundUser = data.users.find(
-      (u) => u.username === user.username && u.password === user.password
-    );
-    if (foundUser) {
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          name: foundUser.name,
-          email: foundUser.email,
-          type: foundUser.type,
-        })
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+        {
+          method: "POST",
+          body: formData,
+        }
       );
-      router.push("/Transcription");
-    } else {
-      // Login error
+
+      if (response.ok) {
+        const data = await response.json();
+        if (typeof window !== "undefined" && window.localStorage)
+          localStorage.setItem("access_token", data.access_token);
+
+        const user = jwtDecode(data.access_token).sub;
+
+        if (typeof window !== "undefined" && window.localStorage)
+          localStorage.setItem("user", JSON.stringify(user));
+        if (user.type == 0) {
+          if (typeof window !== "undefined" && window.localStorage)
+            localStorage.setItem("user_type", "doctor");
+          router.push("/transcription");
+        } else if (user.type == 1) {
+          if (typeof window !== "undefined" && window.localStorage)
+            localStorage.setItem("user_type", "data_scientist");
+          router.push("/dashboard");
+        } else if (user.type == 2) {
+          if (typeof window !== "undefined" && window.localStorage)
+            localStorage.setItem("user_type", "intern");
+          router.push("/recording-anamnesis");
+        }
+      } else {
+        toast.error("Invalid credentials! Please try again.");
+      }
+    } catch (error) {
+      toast.error("unespected error: " + error.message);
     }
+
     setIsLoading(false);
   };
+
   return (
     <main className={styles.container}>
+      <ToastContainer />
       <div className={styles.description}>
         <p className={styles.subtitle}>Welcome to</p>
-        <h1 className={styles.title}>MedTalk AI</h1>
+        <h1 className={styles.title}>MedTalkAI</h1>
         <p className={styles.text}>
-          Introducing MedTalk AI, a tool designed to assist medical
-          documentation for healthcare professionals. This solution leverages
-          speech-to-text technology, allowing medical staff to effortlessly
-          transcribe crucial patient information with accuracy and efficiency.
+          Introducing MedTalkAI, a tool designed to assist medical documentation
+          for healthcare professionals. This solution leverages speech-to-text
+          technology, allowing medical staff to effortlessly transcribe crucial
+          patient information with accuracy and efficiency.
         </p>
         <div className={styles.logos}>
           <Image src={hapvida} alt="hapvida logo" width={150} />

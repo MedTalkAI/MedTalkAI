@@ -1,76 +1,85 @@
 .transcriptionResult {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
-    width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  width: 50%;
 }
 
 .title {
-    color: #000;
-    font-family: 'Inter';
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    letter-spacing: -0.25px;
+  color: #000;
+  font-family: Raleway;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.25px;
 }
 
 .textArea {
-    display: flex;
-    padding: 15px 21px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    border-radius: 10px;
-    color: #000;
-    font-family: 'Inter';
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    letter-spacing: -0.25px;
-    width: 90%;
+  display: flex;
+  padding: 15px 21px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 10px;
+  color: #000;
+  font-family: Raleway;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.25px;
+  width: 90%;
+
+  border: 1px solid #838383;
+  text-align: center;
 }
 
 .textAreaFixed {
-    border: 1px solid #6485B2;
-    background: #F3F8FF;
+  border: 1px solid #6485b2;
+  text-align: start;
+  background: #f3f8ff;
 }
 
 .textAreaEditable {
-    border: 1px solid #6BB264;
-    background: #F4FFF3;
+  border: 1px solid #6bb264;
+  text-align: start;
+  background: #f4fff3;
 }
 
 .btnSaveEdits {
-    display: flex;
-    padding: 5px 15px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    border-radius: 10px;
-    background: #3B9B33;
-    border: none;
-    color: #FFF;
-    text-align: center;
-    font-family: 'Inter';
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
+  display: flex;
+  padding: 5px 15px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 10px;
+  background: #3b9b33;
+  border: none;
+  color: #fff;
+  text-align: center;
+  font-family: Raleway;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
 }
 
 .btnSaveEdits:hover {
-    background: #6BB264;
-    color: #ffffff;
+  background: #6bb264;
+  color: #ffffff;
+}
+
+.transcriptionResult textarea{
+  width: -webkit-fill-available;
 }
 
 @media screen and (max-width: 750px) {
-    .transcriptionResult {
-        width: 100%;
-    }
-    .textArea {
-        width: 93%;
-    }
+  .transcriptionResult {
+    width: 100%;
+  }
+  .textArea {
+    width: 93%;
+  }
 }

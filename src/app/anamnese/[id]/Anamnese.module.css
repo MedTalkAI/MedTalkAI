@@ -1,0 +1,93 @@
+.anamnese {
+    margin-top: 30px;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-bottom: 70px;
+}
+
+.anamnese main {
+    display: flex;
+    flex-direction: column;
+}
+.buttonVoltar{
+    display: flex;
+    align-items: center;
+}
+.buttonVoltar a {
+    padding-right: 5px;
+}
+.anamnese .title {
+    color: #000;
+    font-family: 'Inter';
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: -0.25px;
+}
+
+.detail {
+    color: #000;
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    letter-spacing: -0.25px;
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+    margin-top: 60px;
+}
+
+.texts {
+    flex: 1;
+}
+
+.texts>div {
+    width: 100%;
+}
+
+.metrics {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.selection {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    gap: 20px;
+    margin-top: 20px;
+    vertical-align: middle;
+    align-items: center;
+}
+
+.selection select {
+    width: fit-content;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    border: 1px solid #9B9B9B;
+    background: #FFF;
+    color: #3B769D;
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: -0.25px;
+    border: #3B769D 1px solid;
+}
+
+
+@media (max-width: 700px) {
+    .content {
+        flex-direction: column;
+    }
+}

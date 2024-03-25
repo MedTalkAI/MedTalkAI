@@ -1,0 +1,191 @@
+.content {
+    margin-top: 30px;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-bottom: 70px;
+    text-align: center;
+}
+
+.content main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    vertical-align: middle;
+    justify-content: center;
+    align-content: center;
+}
+
+.content .title {
+    color: #000;
+    font-family: 'Inter';
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: -0.25px;
+}
+
+.profile {
+    display: flex;
+    width: 700px;
+    margin: auto;
+    margin-top: 20px;
+    padding: 51px 43px;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 48px;
+    border-radius: 10px;
+    background: #FFF;
+    box-shadow: 0px 0px 10px 2px rgba(103, 103, 103, 0.20);
+}
+
+.profile .info {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.profile .info h3 {
+    color: #000;
+    font-family: 'Inter';
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+.profile .info p {
+    color: var(--black, #212427);
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.profile .info button {
+    border: none;
+    background-color: transparent;
+    color: #CC224B;
+    font-family: 'Inter';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+.profile form {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+}
+
+.profile form label {
+    color: var(--grey, #8A94A0);
+    font-family: 'Raleway';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.profile form input {
+    display: inline-flex;
+    height: fit-content;
+    padding: 12px 164px 11px 11px;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 5px;
+    border: 1px solid var(--grey, #8A94A0);
+    color: var(--grey, #8A94A0);
+    font-family: 'Inter';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.profile form button {
+    display: flex;
+    width: 117px;
+    padding: 6px 25px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 5px;
+    background: #3B9B33;
+    border: none;
+    color: #FFF;
+    text-align: center;
+    font-family: 'Inter';
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.buttonCancel {
+    margin-top: 7px;
+    display: flex;
+    width: 100px;
+    height: 40px;
+    padding: 5px 15px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: #FF3B3B;
+    color: #FFF;
+    text-align: center;
+    font-family: 'Raleway';
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    border: none;
+}
+
+.buttonOk {
+    margin-top: 7px;
+    display: flex;
+    width: 100px;
+    height: 40px;
+    padding: 5px 15px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: #3B9B33;
+    color: #FFF;
+    text-align: center;
+    font-family: 'Raleway';
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    border: none;
+
+}
+
+.Logout button {
+    margin-top: 20px;
+    width: 165px;
+    padding: 15px 47px 15px 47px;
+    border-radius: 15px;
+    background: #3B769D;
+    color: #FFF;
+    font-family: 'Inter';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    border: none;
+}

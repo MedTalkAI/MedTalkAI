@@ -1,16 +1,17 @@
 "use client";
 import Style from "./HistoryTranscription.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const HistoryTranscription = ({
-  transcription,
-  model,
-  wer,
-  bleu,
-  cosine,
-  kappa,
-  date,
-}) => {
+const HistoryTranscription = ({ transcription }) => {
+  let doctor = false;
+  const storedUser =
+    typeof window !== "undefined" && window.localStorage
+      ? localStorage.getItem("user")
+      : null;
+  if (storedUser) {
+    const user = JSON.parse(storedUser);
+    doctor = user.type === "doctor";
+  }
   const [expanded, setExpanded] = useState(false);
 
   const handleExpand = () => {
@@ -19,24 +20,56 @@ const HistoryTranscription = ({
 
   return (
     <div className={Style.history} onClick={handleExpand}>
-      <p className={Style.transciption}>{transcription}</p>
-      <span
-        className={Style.model}
-        style={{ display: expanded ? "inline" : "none" }}
+      <p className={Style.transciption}>
+        {doctor
+          ? transcription.corrected_transcription
+          : expanded
+          ? transcription.model_transcription
+          : transcription.model_transcription.length >= 200
+          ? transcription.model_transcription.slice(0, 200) + "..."
+          : transcription.model_transcription}
+      </p>
+      {!doctor && (
+        <>
+          <span
+            className={Style.model}
+            style={{ display: expanded ? "inline" : "none" }}
+          >
+            Modelo: {transcription.model}
+          </span>
+          <ul
+            className={Style.metrics}
+            style={{ display: expanded ? "block" : "none" }}
+          >
+            <li>
+              <b>WER:</b> {transcription.wer}
+            </li>
+            <li>
+              <b>BLEU:</b> {transcription.bleu}
+            </li>
+            <li>
+              <b>COSINE SIMILARITY:</b> {transcription.cosine}
+            </li>
+            <li>
+              <b>KAPPA:</b> {transcription.kappa}
+            </li>
+          </ul>
+        </>
+      )}
+      <div
+        style={{
+          display: "flex",
+          width: "100%",
+          justifyContent: doctor ? "end" : "space-between",
+          alignItems: "center",
+        }}
       >
-        Modelo: {model}
-      </span>
-      <ul
-        className={Style.metrics}
-        style={{ display: expanded ? "block" : "none" }}
-      >
-        <li>WER: {wer}</li>
-        <li>BLEU: {bleu}</li>
-        <li>COSINE SIMILARITY: {cosine}</li>
-        <li>KAPPA: {kappa}</li>
-      </ul>
-      <div style={{ display: "flex", width: "100%", justifyContent: "flex-end" }}>
-        <span className={Style.date}>{date}</span>
+        {!doctor && (
+          <button className={Style.button}>
+            {expanded ? "- Shrink" : "+ Expand"}
+          </button>
+        )}
+        <span className={Style.date}>{transcription.date}</span>
       </div>
     </div>
   );

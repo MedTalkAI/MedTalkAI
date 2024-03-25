@@ -9,10 +9,24 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "chart.js": "^4.4.2",
     "eslint": "8.56.0",
     "eslint-config-next": "14.0.4",
-    "next": "14.0.4",
+    "jwt-decode": "^4.0.0",
+    "next": "^14.0.4",
+    "node": "^21.7.1",
+    "pcm-util": "^3.0.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-audio-player": "^0.17.0",
+    "react-audio-voice-recorder": "^2.2.0",
+    "react-chartjs-2": "^5.2.0",
+    "react-confirm-alert": "^3.0.6",
+    "react-csv-downloader": "^3.1.0",
+    "react-dom": "18.2.0",
+    "react-icons": "^5.0.1",
+    "react-loading": "^2.0.3",
+    "react-modal": "^3.16.1",
+    "react-toastify": "^10.0.4",
+    "sharp": "^0.33.2"
   }
 }

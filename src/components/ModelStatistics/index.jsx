@@ -1,19 +1,50 @@
-import Style from "./ModelStatistics.module.css"
+import React from "react";
+import Style from "./ModelStatistics.module.css";
+import { useRouter } from "next/navigation";
+import { MdDownload } from "react-icons/md";
 
-const ModelStatistics = ({ model, wers, bleus, cosines }) => {
+const ModelStatistics = ({ statistics, onCsvDownloader }) => {
+  const router = useRouter();
+  
+  const handlePretrain = () => {
+    router.push(`/pretrain/${statistics.name}`);
+  };
+
   const renderTable = () => {
-    const metrics = ["Average", "Variance", "SD"];
+    if (!statistics) {
+      return <p>Loading...</p>;
+    }
+
+    const metrics = ["Mean", "Variance", "SD"];
+
     const data = [
-      { metric: "WER", values: [wers.mean, wers.variance, wers.std_deviation] },
+      {
+        metric: "WER",
+        values: [
+          statistics?.wer?.mean || "N/A",
+          statistics?.wer?.variance || "N/A",
+          statistics?.wer?.std_deviation || "N/A",
+        ],
+      },
       {
         metric: "BLEU",
-        values: [bleus.mean, bleus.variance, bleus.std_deviation],
+        values: [
+          statistics?.bleu?.mean || "N/A",
+          statistics?.bleu?.variance || "N/A",
+          statistics?.bleu?.std_deviation || "N/A",
+        ],
       },
       {
         metric: "COSINE SIMILARITY",
-        values: [cosines.mean, cosines.variance, cosines.std_deviation],
+        values: [
+          statistics?.cosine?.mean || "N/A",
+          statistics?.cosine?.variance || "N/A",
+          statistics?.cosine?.std_deviation || "N/A",
+        ],
       },
     ];
+    
+
 
     return (
       <table className={Style.table}>
@@ -21,7 +52,9 @@ const ModelStatistics = ({ model, wers, bleus, cosines }) => {
           <tr>
             <th></th>
             {metrics.map((metric, index) => (
-              <th className={Style.metric} key={index}>{metric}</th>
+              <th className={Style.metric} key={index}>
+                {metric}
+              </th>
             ))}
           </tr>
         </thead>
@@ -30,7 +63,9 @@ const ModelStatistics = ({ model, wers, bleus, cosines }) => {
             <tr key={index}>
               <th className={Style.metric}>{row.metric}</th>
               {row.values.map((value, idx) => (
-                <td key={idx}>{value}</td>
+                <td key={idx}>
+                  {typeof value === "number" ? value.toFixed(3) : value}
+                </td>
               ))}
             </tr>
           ))}
@@ -41,10 +76,20 @@ const ModelStatistics = ({ model, wers, bleus, cosines }) => {
 
   return (
     <div>
-      <h1 className={Style.title}>Model Statistics ({model})</h1>
-      {renderTable()}
+      <div className={Style.head}>
+        <h1 className={Style.title}>{statistics.name}</h1>       
+      </div>
+
+      <div style={{ overflowX: "auto" }}>{renderTable()}</div>
+      <div className={Style.bottom}>
+        <span>Transcriptions quantity: {statistics?.transcriptions_amt}</span>
+        <button onClick={handlePretrain}>Fine-tuning</button>
+        <button onClick={()=>onCsvDownloader(statistics.id)} className={Style.exportarBenchmark}>
+          <MdDownload />
+        </button>
+      </div>
     </div>
   );
-};
+}; 
 
 export default ModelStatistics;

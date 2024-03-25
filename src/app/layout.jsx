@@ -10,7 +10,7 @@ const raleway = Raleway({
 import "./globals.css";
 
 export const metadata = {
-  title: "MedTalk AI | Insight",
+  title: "MedTalkAI | Insight",
 };
 
 export default function RootLayout({ children }) {

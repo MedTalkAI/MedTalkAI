@@ -1,36 +1,105 @@
 "use client";
 
 import Style from "./TranscriptionResult.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const TranscriptionResult = ({ text, isEditable }) => {
+const TranscriptionResult = ({
+  text,
+  isEditable,
+  onSave,
+  transcription_id,
+}) => {
   const [editableText, setEditableText] = useState(text);
+  const [isDataSicentist, setIsDataSicentist] = useState(false);
 
   const handleTextChange = (e) => {
     setEditableText(e.target.value);
   };
 
+  const handleSaveEdits = async () => {
+    console.log("save edits");
+    try {
+      let model_transcription = text;
+      let correct_transcription = editableText;
+
+      const formData = new FormData();
+      formData.append("correction", correct_transcription);
+
+      // Submit FormData via fetch
+      const token =
+        typeof window !== "undefined" && window.localStorage
+          ? localStorage.getItem("access_token")
+          : null;
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/corrections/${transcription_id}`,
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const result = await response.json();
+      console.log(result);
+
+      onSave(correct_transcription, result);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  useEffect(() => {
+    setEditableText(text);
+  }, [text]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.localStorage) {
+      const type = JSON.parse(localStorage.getItem("user")).type;
+      setIsDataSicentist(type == 1);
+    }
+  }, []);
+
   return (
     <div className={Style.transcriptionResult}>
+      {/**
+         @todo: alinhar verticamente o texto quando ele for vazio
+      **/}
       <h1 className={Style.title}>
-        {isEditable ? "Corrected Transcript" : "Model Transcript"}
+        {isEditable ? "Corrected" : "Model"} Transcription
       </h1>
       <textarea
         className={`${Style.textArea} ${
-          isEditable ? Style.textAreaEditable : Style.textAreaFixed
+          text
+            ? isEditable
+              ? Style.textAreaEditable
+              : Style.textAreaFixed
+            : ""
         }`}
         name=""
-        value={editableText}
+        value={editableText || "No transcription performed"}
         onChange={handleTextChange}
-        readOnly={!isEditable}
-        cols="30"
+        readOnly={isDataSicentist || (isEditable && editableText === null)}
+        cols="32"
         rows="10"
-      ></textarea>
+        style={{
+          resize: text ? "vertical" : "none",
+          textAlign: !editableText ? "center" : "left",
+          display: !editableText ? "flex" : "block",
+          justifyContent: !editableText ? "center" : "normal",
+          alignItems: !editableText ? "center" : "normal",
+          position: "relative",
+        }}
+      />
       <div
         style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}
       >
-        {isEditable && (
-          <button className={Style.btnSaveEdits}>Save Corrections</button>
+        {isDataSicentist == false && isEditable && text && (
+          <button className={Style.btnSaveEdits} onClick={handleSaveEdits}>
+            Save Corrections
+          </button>
         )}
       </div>
     </div>
