@@ -14,6 +14,32 @@
     flex-direction: column;
     gap: 30px;
 }
+.benchmarkAndGroupSelect{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+.exportarBenchmark{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    height: 35px;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    border-radius: 10px;
+    border: 1px solid #1c5880;
+    background: #01429c;
+    color: #FFF;
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: -0.25px;
+    border: #3B769D 1px solid;
+    margin-right: 10px;
+  }
 
 .groupSelect {
     display: flex;

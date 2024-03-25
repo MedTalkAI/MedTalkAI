@@ -10,7 +10,6 @@ const Anamnesis = () => {
   const [openDropdown, setOpenDropdown] = useState(false);
   const [orderBy, setOrderBy] = useState("");
   const [transcriptions, setTranscriptions] = useState([]);
-
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -76,33 +75,50 @@ const Anamnesis = () => {
                 <span class="material-symbols-outlined">info</span>
                 <p>You can select any anamnese, see all metrics about it</p>
               </div>
-
-              <div className={Style.dropdown} ref={dropdownRef}>
-                <div
-                  className={Style.select}
-                  onClick={() => {
-                    setOpenDropdown(!openDropdown);
-                  }}
-                >
-                  <p>Order by {orderBy}</p>
-                  {!openDropdown && (
-                    <span class="material-symbols-outlined">expand_more</span>
-                  )}
+                <div className={Style.dropdown} ref={dropdownRef}>
+                  <div
+                    className={Style.select}
+                    onClick={() => {
+                      setOpenDropdown(!openDropdown);
+                    }}
+                  >
+                    <p>Order by {orderBy}</p>
+                    {!openDropdown && (
+                      <span class="material-symbols-outlined">expand_more</span>
+                    )}
+                    {openDropdown && (
+                      <span class="material-symbols-outlined">expand_less</span>
+                    )}
+                  </div>
                   {openDropdown && (
-                    <span class="material-symbols-outlined">expand_less</span>
-                  )}
-                </div>
-                {openDropdown && (
-                  <div className={Style.menu}>
-                    {orderBy != "" && (
+                    <div className={Style.menu}>
+                      {orderBy != "" && (
+                        <div
+                          className={Style.item}
+                          onClick={() => {
+                            setOrderBy("");
+                          }}
+                        >
+                          Default
+                        </div>
+                      )}
                       <div
                         className={Style.item}
                         onClick={() => {
-                          setOrderBy("");
+                          setOrderBy("Date");
                         }}
                       >
-                        Default
+                        Date
                       </div>
+                      <div
+                        className={Style.item}
+                        onClick={() => {
+                          setOrderBy("Name");
+                        }}
+                      >
+                        Name
+                      </div>
+
                     )}
                     <div
                       className={Style.item}
@@ -120,9 +136,8 @@ const Anamnesis = () => {
                     >
                       Oldest
                     </div>
-                  </div>
-                )}
-              </div>
+                  )}
+                </div>
             </div>
           </div>
           <div className={Style.anamnesisGroup}>

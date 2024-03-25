@@ -88,3 +88,25 @@
   border: 0;
   cursor: pointer;
 }
+
+.bottom .exportarBenchmark{
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  height: 35px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  border-radius: 10px;
+  border: 1px solid #1c5880;
+  background: #01429c;
+  color: #FFF;
+  text-align: center;
+  font-family: Raleway;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  border: 0;
+  cursor: pointer;
+}
