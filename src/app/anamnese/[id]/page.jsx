@@ -94,6 +94,10 @@ const Anamnese = () => {
     <div>
       <Navbar />
       <div className={Style.anamnese}>
+      <div className={Style.buttonVoltar}>
+        <a href="\anamnesis">Anamnese </a>
+        <p> &lt; Anamnese {id}</p>
+      </div>
         <h1 className={Style.title}>Anamnese {id}</h1>
         <div className={Style.controls}>
           <ReactAudioPlayer src={audioSrc} controls />
