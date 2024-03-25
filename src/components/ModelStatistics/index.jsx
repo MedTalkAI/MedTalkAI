@@ -61,9 +61,7 @@ const ModelStatistics = ({ statistics, onCsvDownloader }) => {
             <tr key={index}>
               <th className={Style.metric}>{row.metric}</th>
               {row.values.map((value, idx) => (
-                <td key={idx}>
-                  {typeof value === "number" ? value.toFixed(3) : value}
-                </td>
+                <td key={idx}>{parseFloat(value).toFixed(3)}</td>
               ))}
             </tr>
           ))}

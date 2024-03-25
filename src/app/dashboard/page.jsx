@@ -82,11 +82,6 @@ const Dashboard = () => {
     if (standard) {
       setDefaultModel(standard);
     }
-  }, []);
-
-  useEffect(() => {
-    console.log("models");
-    console.log(JSON.stringify(models));
   }, [models]);
 
   //já que preciso tratar como blob irei modificar aqui.
