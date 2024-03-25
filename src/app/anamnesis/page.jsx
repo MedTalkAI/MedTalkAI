@@ -5,6 +5,7 @@ import Style from "./Anamnesis.module.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useRef, useState } from "react";
+import CsvDownloader from 'react-csv-downloader'
 
 const Anamnesis = () => {
   const [openDropdown, setOpenDropdown] = useState(false);
@@ -44,6 +45,14 @@ const Anamnesis = () => {
     fetchData();
   }, []);
 
+  const csvData = transcriptions.map(transcription => ({
+    Latest_Correction: transcription.latest_correction,
+    Model_Name: transcription.model_name,
+    WER: parseFloat(transcription.wer).toFixed(2),
+    BLEU: parseFloat(transcription.bleu).toFixed(2),
+    COSINE_SIMILARITY: parseFloat(transcription.cosine).toFixed(2)
+  }));
+
   return (
     <div>
       <Navbar path="/anamnesis" />
@@ -53,6 +62,18 @@ const Anamnesis = () => {
           <h1 className={Style.title}>Anamnesis</h1>
           <div className={Style.controls}>
             <h3>Selected anamnese</h3>
+            <CsvDownloader
+              data={csvData}
+              filename="transcriptions.csv"
+              type="button"
+            >
+              <button className={Style.exportarBenchmark}>
+                <span class="material-symbols-outlined">
+                  file_save
+                </span>
+                 <p>Benchmark</p>
+              </button> 
+            </CsvDownloader>
             <div className={Style.actionGroup}>
               <div className={Style.info}>
                 <span class="material-symbols-outlined">info</span>
