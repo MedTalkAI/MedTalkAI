@@ -56,7 +56,6 @@ const Anamnesis = () => {
           return new Date(a.date) - new Date(b.date);
         });
       });
-    } else {
     }
     setOpenDropdown(false);
   }, [orderBy]);
@@ -72,54 +71,56 @@ const Anamnesis = () => {
             <h3>Selected anamnese</h3>
             <div className={Style.actionGroup}>
               <div className={Style.info}>
-                <span class="material-symbols-outlined">info</span>
+                <span className="material-symbols-outlined">info</span>
                 <p>You can select any anamnese, see all metrics about it</p>
               </div>
-                <div className={Style.dropdown} ref={dropdownRef}>
-                  <div
-                    className={Style.select}
-                    onClick={() => {
-                      setOpenDropdown(!openDropdown);
-                    }}
-                  >
-                    <p>Order by {orderBy}</p>
-                    {!openDropdown && (
-                      <span class="material-symbols-outlined">expand_more</span>
-                    )}
-                    {openDropdown && (
-                      <span class="material-symbols-outlined">expand_less</span>
-                    )}
-                  </div>
+              <div className={Style.dropdown} ref={dropdownRef}>
+                <div
+                  className={Style.select}
+                  onClick={() => {
+                    setOpenDropdown(!openDropdown);
+                  }}
+                >
+                  <p>Order by {orderBy}</p>
+                  {!openDropdown && (
+                    <span className="material-symbols-outlined">
+                      expand_more
+                    </span>
+                  )}
                   {openDropdown && (
-                    <div className={Style.menu}>
-                      {orderBy != "" && (
-                        <div
-                          className={Style.item}
-                          onClick={() => {
-                            setOrderBy("");
-                          }}
-                        >
-                          Default
-                        </div>
-                      )}
+                    <span className="material-symbols-outlined">
+                      expand_less
+                    </span>
+                  )}
+                </div>
+                {openDropdown && (
+                  <div className={Style.menu}>
+                    {orderBy !== "" && (
                       <div
                         className={Style.item}
                         onClick={() => {
-                          setOrderBy("Date");
+                          setOrderBy("");
                         }}
                       >
-                        Date
+                        Default
                       </div>
-                      <div
-                        className={Style.item}
-                        onClick={() => {
-                          setOrderBy("Name");
-                        }}
-                      >
-                        Name
-                      </div>
-
                     )}
+                    <div
+                      className={Style.item}
+                      onClick={() => {
+                        setOrderBy("Date");
+                      }}
+                    >
+                      Date
+                    </div>
+                    <div
+                      className={Style.item}
+                      onClick={() => {
+                        setOrderBy("Name");
+                      }}
+                    >
+                      Name
+                    </div>
                     <div
                       className={Style.item}
                       onClick={() => {
@@ -136,8 +137,9 @@ const Anamnesis = () => {
                     >
                       Oldest
                     </div>
-                  )}
-                </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
           <div className={Style.anamnesisGroup}>
