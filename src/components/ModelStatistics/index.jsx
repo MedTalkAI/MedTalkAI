@@ -1,10 +1,11 @@
 import React from "react";
 import Style from "./ModelStatistics.module.css";
 import { useRouter } from "next/navigation";
+import CsvDownloader from 'react-csv-downloader'
 
-const ModelStatistics = ({ statistics }) => {
+const ModelStatistics = ({ statistics, tableData }) => {
   const router = useRouter();
-
+  
   const handlePretrain = () => {
     router.push(`/pretrain/${statistics.name}`);
   };
@@ -42,6 +43,8 @@ const ModelStatistics = ({ statistics }) => {
         ],
       },
     ];
+    
+
 
     return (
       <table className={Style.table}>
@@ -74,7 +77,17 @@ const ModelStatistics = ({ statistics }) => {
   return (
     <div>
       <div className={Style.head}>
-        <h1 className={Style.title}>Model Statistics ({statistics.name})</h1>
+        <h1 className={Style.title}>{statistics.name}</h1>
+        <CsvDownloader
+          data={tableData} //ver se essa é a melhor tecnica pra download já que o csv vai vir pronto
+          filename="benchmarks.csv"
+          type="button"
+        >
+          <button className={Style.exportarBenchmark}>
+            <span class="material-symbols-outlined">export_notes</span>
+            <p>Benchmark</p>
+          </button> 
+        </CsvDownloader>
       </div>
 
       <div style={{ overflowX: "auto" }}>{renderTable()}</div>

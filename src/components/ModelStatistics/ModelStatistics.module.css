@@ -8,6 +8,22 @@
   letter-spacing: -0.25px;
 }
 
+.exportarBenchmark{
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  height: 35px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  border-radius: 10px;
+  border: 1px solid #02385c;
+  background: #01429c;
+  color: #FFF;
+  font-family: 'Inter';
+  font-size: 15px;
+}
+
 .table {
   width: 100%;
   height: 220px;

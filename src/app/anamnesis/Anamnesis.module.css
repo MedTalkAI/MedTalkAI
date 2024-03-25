@@ -20,26 +20,6 @@
     letter-spacing: -0.25px;
 }
 
-.exportarBenchmark{
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    padding-inline: 8px;
-    justify-content: center;
-    align-items: center;
-    gap: 4px;
-    border-radius: 10px;
-    border: 1.25px solid #3B769D;
-    background: #F3F8FF;
-    color: #3B769D;
-    font-family: 'Inter';
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    letter-spacing: -0.25px;
-}
-
 .controls {
     width: 100%;
 }
