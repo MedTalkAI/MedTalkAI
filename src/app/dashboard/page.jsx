@@ -11,10 +11,10 @@ import Modal from "react-modal";
 const Dashboard = () => {
   const [defaultModel, setDefaultModel] = useState(null);
   const [models, setModels] = useState([]);
-  const [benchmarks, setBenchmarks] = useState([]);
+  const [csvContent, setCsvContent] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
- 
-  
+
+
 
   const updateModelStandard = () => {
     if (!defaultModel) {
@@ -26,11 +26,10 @@ const Dashboard = () => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${
-          typeof window !== "undefined" && window.localStorage
-            ? localStorage.getItem("access_token")
-            : ""
-        }`,
+        Authorization: `Bearer ${typeof window !== "undefined" && window.localStorage
+          ? localStorage.getItem("access_token")
+          : ""
+          }`,
       },
     })
       .then((response) => {
@@ -64,11 +63,10 @@ const Dashboard = () => {
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/models`, {
       headers: {
-        Authorization: `Bearer ${
-          typeof window !== "undefined" && window.localStorage
-            ? localStorage.getItem("access_token")
-            : ""
-        }`,
+        Authorization: `Bearer ${typeof window !== "undefined" && window.localStorage
+          ? localStorage.getItem("access_token")
+          : ""
+          }`,
       },
     })
       .then((response) => response.json())
@@ -90,61 +88,42 @@ const Dashboard = () => {
     console.log("models");
     console.log(JSON.stringify(models));
   }, [models]);
-//já que preciso tratar como blob irei modificar aqui.
-  const fetchBenchmarks = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/model/${defaultModel.id}}`
-        );
-        if (response.ok) {
-          const data = await response.json();
-          setBenchmarks(data);
-        } else {
-          throw new Error("Failed to fetch benchmarks");
-        }
-      } catch (error) {
-        console.error('Failed to fetch benchmarks:', error);
+
+  //já que preciso tratar como blob irei modificar aqui.
+  function saveCsv(id) {
+  fetch(`${process.env.NEXT_PUBLIC_API_URL}/models/${id}/csv`, {
+    headers: {
+      Authorization: `Bearer ${typeof window !== "undefined" && window.localStorage
+        ? localStorage.getItem("access_token")
+        : ""
+        }`,
+    },
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Erro ao obter o arquivo');
       }
-    };
-    
-    useEffect(() => {
-      fetchBenchmarks();
-    }, []);
-  
-    const csvData = [
-      {
-        ID: "ID",
-        Audio_Source: "Audio_Source",
-        Model_ID: "Model_ID",
-        Transcription: "Transcription",
-        Date: "Date",
-        Kappa: "Kappa",
-        User_ID: "User_ID",
-        Anamnese_ID: "Anamnese_ID",
-        Corrections_Quantity: "Corrections_Quantity",
-        Latest_Correction: "Latest_Correction",
-        WER: "WER",
-        BLEU: "BLEU",
-        COSINE_SIMILARITY: "COSINE_SIMILARITY"
-      },
-        benchmarks.map(benchmark => ({
-        ID: benchmark.id,
-        Audio_Source: benchmark.audio_src,
-        Model_ID: benchmark.model_id,
-        Transcription: benchmark.transcription,
-        Date: benchmark.date,
-        Kappa: benchmark.kappa,
-        User_ID: benchmark.user_id,
-        Anamnese_ID: benchmark.anamnese_id,
-        Corrections_Quantity: benchmark.corrections_quantity,
-        Latest_Correction: benchmark.latest_correction,
-        WER: parseFloat(benchmark.wer).toFixed(2),
-        BLEU: parseFloat(benchmark.bleu).toFixed(2),
-        COSINE_SIMILARITY: parseFloat(benchmark.cosine).toFixed(2)
-      }))
-    ];
-    //até aqui, isso era só testes.
-    
+      return response.text(); // Obter o conteúdo do arquivo como texto
+    })
+    .then(csvContent => {
+      // Cria um link temporário para download do arquivo
+      const url = window.URL.createObjectURL(new Blob([csvContent], { type: 'text/csv' }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'arquivo.csv');
+      // Adiciona o link ao documento e aciona o clique para iniciar o download
+      document.body.appendChild(link);
+      link.click();
+      // Remove o link do documento
+      document.body.removeChild(link);
+    })
+    .catch(error => {
+      console.error('Erro:', error);
+    });
+}
+
+
+
 
   return (
     <div className={Style.Dashboard}>
@@ -179,7 +158,7 @@ const Dashboard = () => {
           <div className={Style.models}>
             <div className={Style.modelStatistics}>
               {models.map((model) => (
-                <ModelStatistics key={model.id} statistics={model} tableData={csvData} />//ver como passo o dado pro componente
+                <ModelStatistics key={model.id} statistics={model} onCsvDownloader={saveCsv} />
               ))}
             </div>
           </div>

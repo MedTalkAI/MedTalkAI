@@ -1,9 +1,9 @@
 import React from "react";
 import Style from "./ModelStatistics.module.css";
 import { useRouter } from "next/navigation";
-import CsvDownloader from 'react-csv-downloader'
+import { TbTableExport } from "react-icons/tb";
 
-const ModelStatistics = ({ statistics, tableData }) => {
+const ModelStatistics = ({ statistics, onCsvDownloader }) => {
   const router = useRouter();
   
   const handlePretrain = () => {
@@ -77,26 +77,20 @@ const ModelStatistics = ({ statistics, tableData }) => {
   return (
     <div>
       <div className={Style.head}>
-        <h1 className={Style.title}>{statistics.name}</h1>
-        <CsvDownloader
-          data={tableData} //ver se essa é a melhor tecnica pra download já que o csv vai vir pronto
-          filename="benchmarks.csv"
-          type="button"
-        >
-          <button className={Style.exportarBenchmark}>
-            <span class="material-symbols-outlined">export_notes</span>
-            <p>Benchmark</p>
-          </button> 
-        </CsvDownloader>
+        <h1 className={Style.title}>{statistics.name}</h1>       
       </div>
 
       <div style={{ overflowX: "auto" }}>{renderTable()}</div>
       <div className={Style.bottom}>
         <span>Transcriptions quantity: {statistics?.transcriptions_amt}</span>
         <button onClick={handlePretrain}>Fine-tuning</button>
+        <button onClick={()=>onCsvDownloader(statistics.id)} className={Style.exportarBenchmark}>
+          <p>Benchmark</p>
+          <TbTableExport />
+        </button>
       </div>
     </div>
   );
-};
+}; 
 
 export default ModelStatistics;
