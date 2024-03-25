@@ -69,17 +69,20 @@ const AudioRecorderComponent = ({
       }
 
       // Submit FormData via fetch
-      const response = await fetch("http://localhost:5000/transcriptions", {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${
-            typeof window !== "undefined" && window.localStorage
-              ? localStorage.getItem("access_token")
-              : ""
-          }`,
-        },
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/transcriptions`,
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${
+              typeof window !== "undefined" && window.localStorage
+                ? localStorage.getItem("access_token")
+                : ""
+            }`,
+          },
+        }
+      );
 
       // Handle response as needed
       const data = await response.json();

@@ -27,16 +27,18 @@ export default function Home() {
     formData.append("password", password);
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/auth/login", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
         if (typeof window !== "undefined" && window.localStorage)
           localStorage.setItem("access_token", data.access_token);
-        console.log(data);
 
         const user = jwtDecode(data.access_token).sub;
 
@@ -47,7 +49,9 @@ export default function Home() {
             localStorage.setItem("user_type", "doctor");
           router.push("/transcription");
         } else if (user.type == 1) {
-          // router.push("/dashboard");
+          if (typeof window !== "undefined" && window.localStorage)
+            localStorage.setItem("user_type", "data_scientist");
+          router.push("/dashboard");
         } else if (user.type == 2) {
           if (typeof window !== "undefined" && window.localStorage)
             localStorage.setItem("user_type", "intern");

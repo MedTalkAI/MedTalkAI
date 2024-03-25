@@ -55,8 +55,8 @@ const Transcription = () => {
       formData.append("date", date);
       formData.append("model_transcription", modelTranscription);
       formData.append("corrected_transcription", correctedText);
-      formData.append("wer", Number(metrics?.metrics.wer.toFixed(2)));
-      formData.append("bleu", Number(metrics?.metrics.bleu.toFixed(2)));
+      formData.append("wer", Number(metrics?.metrics?.wer.toFixed(2)));
+      formData.append("bleu", Number(metrics?.metrics?.bleu.toFixed(2)));
       formData.append(
         "cosine",
         Number(metrics?.metrics.cosine_similarity.toFixed(2))
@@ -64,13 +64,18 @@ const Transcription = () => {
       formData.append("model", model);
       formData.append("user", username);
 
-      await fetch("http://localhost:5000/transcription/save", {
-        method: "POST",
-        body: formData,
-      });
       await fetch(
-        "http://localhost:5000/metrics/model/" +
-          encodeURIComponent(model, "utf-8"),
+        `${process.env.NEXT_PUBLIC_API_URL}/corrections/${transcription_id}`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/metrics/model/${encodeURIComponent(
+          model,
+          "utf-8"
+        )}`,
         {
           method: "POST",
         }

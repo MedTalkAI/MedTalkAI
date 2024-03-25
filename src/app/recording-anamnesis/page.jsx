@@ -18,7 +18,7 @@ const RecordingAnamnesis = () => {
     setSelectedAnamnese(null);
     const fetchData = async () => {
       try {
-        let url = "http://127.0.0.1:5000/anamneses?recorded=false";
+        let url = `${process.env.NEXT_PUBLIC_API_URL}/anamneses?recorded=false`;
 
         const response = await fetch(url, {
           method: "GET",
@@ -56,17 +56,20 @@ const RecordingAnamnesis = () => {
 
       formData.append("model", model);
       if (transcriptionId && selectedAnamnese.text && model)
-        await fetch("http://localhost:5000/corrections/" + transcriptionId, {
-          method: "POST",
-          body: formData,
-          headers: {
-            Authorization: `Bearer ${
-              typeof window !== "undefined" && window.localStorage
-                ? localStorage.getItem("access_token")
-                : ""
-            }`,
-          },
-        });
+        await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/corrections/${transcriptionId}`,
+          {
+            method: "POST",
+            body: formData,
+            headers: {
+              Authorization: `Bearer ${
+                typeof window !== "undefined" && window.localStorage
+                  ? localStorage.getItem("access_token")
+                  : ""
+              }`,
+            },
+          }
+        );
 
       toast.success("Anamnesis saved successfully!");
       setCorrectedTranscription(null);
