@@ -82,7 +82,7 @@ const Dashboard = () => {
     if (standard) {
       setDefaultModel(standard);
     }
-  }, []);
+  }, [models]);
 
   return (
     <div className={Style.Dashboard}>
