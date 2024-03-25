@@ -84,11 +84,6 @@ const Dashboard = () => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log("models");
-    console.log(JSON.stringify(models));
-  }, [models]);
-
   return (
     <div className={Style.Dashboard}>
       <Navbar path="/dashboard" />

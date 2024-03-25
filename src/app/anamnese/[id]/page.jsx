@@ -112,11 +112,11 @@ const Anamnese = () => {
           <div className={Style.metrics}>
             {transcription && (
               <Metrics
-                bleu={transcription.bleu}
-                cosine={transcription.cosine}
-                kappa={transcription.kappa}
+                bleu={parseFloat(transcription.bleu)}
+                cosine={parseFloat(transcription.cosine)}
+                kappa={parseFloat(transcription.kappa)}
                 transcription={transcription.transcription}
-                wer={transcription.wer}
+                wer={parseFloat(transcription.wer)}
               />
             )}
             {transcription && (

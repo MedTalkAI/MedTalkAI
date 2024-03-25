@@ -143,6 +143,24 @@ const MyAnamnesis = () => {
     }
   }, [selectedTranscription]);
 
+  useEffect(() => {
+    if (orderBy === "last") {
+      setTranscriptions((prevTranscriptions) => {
+        return prevTranscriptions.sort((a, b) => {
+          return new Date(b.date) - new Date(a.date);
+        });
+      });
+    } else if (orderBy === "oldest") {
+      setTranscriptions((prevTranscriptions) => {
+        return prevTranscriptions.sort((a, b) => {
+          return new Date(a.date) - new Date(b.date);
+        });
+      });
+    } else {
+    }
+    setOpenDropdown(false);
+  }, [orderBy]);
+
   return (
     <div>
       <Navbar path="/my-anamnesis" />
@@ -208,18 +226,18 @@ const MyAnamnesis = () => {
                     <div
                       className={Style.item}
                       onClick={() => {
-                        setOrderBy("Date");
+                        setOrderBy("last");
                       }}
                     >
-                      Date
+                      Last
                     </div>
                     <div
                       className={Style.item}
                       onClick={() => {
-                        setOrderBy("Name");
+                        setOrderBy("oldest");
                       }}
                     >
-                      Name
+                      Oldest
                     </div>
                   </div>
                 )}
