@@ -13,6 +13,7 @@ const RecordingAnamnesis = () => {
   const [model, setModel] = useState();
   const [transcriptionId, setTranscriptionId] = useState();
   const [anamneses, setAnamneses] = useState([]);
+  const [isFixed, setIsFixed] = useState(false);
   const [isRecorded, setIsRecorded] = useState(false);
 
   useEffect(() => {
@@ -90,6 +91,25 @@ const RecordingAnamnesis = () => {
     toast.success("Anamnesis recorded successfully!");
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      if (scrollTop > 0) {
+        setIsFixed(true);
+      } else {
+        setIsFixed(false);
+      }
+    };
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener("scroll", handleScroll);
+
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, []);
+
   const anamnesisRecord = () => {
     if (selectedAnamnese === null) {
       return (
@@ -132,17 +152,22 @@ const RecordingAnamnesis = () => {
 
   return (
     <div className={Styles.container}>
+      <div className={isFixed ? Styles.fixedNavbar : ""}>
       <div className={Styles.navbar}>
         <Navbar path="/recording-anamnesis" />
       </div>
       <ToastContainer />
       <div className={Styles.containerAnamnese}>
+        <h1 className={Styles.title}>Recording Anamneses</h1>
+        <div className={isFixed ? Styles.fixedContent : ""}>
+          <p className={Styles.subTitle}>Record Selected Anamnese</p>
+          <div>{anamnesisRecord()}</div>
+        </div>
         <div className={Styles.controls}>
           <h1 className={Styles.title}>Recording Anamneses</h1>
           <p className={Styles.subTitle}>Record Selected Anamnese</p>
           {anamnesisRecord()}
         </div>
-
         <div className={Styles.anamnesisGroup}>
           {anamneses && renderizarAnamneses()}
         </div>
