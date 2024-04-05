@@ -23,13 +23,14 @@
     padding-right: 10px;
     padding-left: 10px;
     margin-top: 32px;
-    z-index: -11;
 }
+
 .fixedNavbar {
     position: sticky;
     top: 0;
     z-index: 100;
 }
+
 .fixedContent {
     position: sticky;
     top: 79.469px;
@@ -105,10 +106,4 @@
     border: 1px solid #3B769D;
     background: #F3F8FF;
     box-shadow: 0px 0px 5px 3px rgba(151, 151, 151, 0.25);
-}
-
-.controls {}
-
-.navbar {
-    z-index: 1000;
 }
