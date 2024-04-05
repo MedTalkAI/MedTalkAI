@@ -4,7 +4,7 @@
 }
 
 .containerAnamnese {
-    margin-top: 30px;
+    margin-top: 15px;
     margin-left: 2%;
     margin-right: 2%;
     margin-bottom: 70px;
@@ -23,6 +23,17 @@
     padding-left: 10px;
     margin-top: 32px;
 }
+.fixedNavbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+.fixedContent {
+    position: sticky;
+    top: 79.469px;
+    z-index: 100;
+    background: #FFF;
+}
 
 .title{
     color: #000;
@@ -31,7 +42,7 @@
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    margin-top: 50px;
+    margin-top: 25px;
     margin-bottom: 21px;
     letter-spacing: -0.25px;
     margin-left: 10px;
@@ -39,8 +50,8 @@
 
 .subTitle{
     margin-left: 10px;
-    margin-top: 21px;
-    margin-bottom: 21px;
+    margin-top: 15px;
+    margin-bottom: 15px;
     color: #000;
     font-family: Inter;
     font-size: 20px;
