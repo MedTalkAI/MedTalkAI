@@ -31,6 +31,8 @@
 .fixedContent {
     position: sticky;
     top: 79.469px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     z-index: 100;
     background: #FFF;
 }
