@@ -6,6 +6,7 @@ import styles from "./AudioRecorderComponent.module.css";
 const AudioRecorderComponent = ({
   anamnese_id,
   onTrascribe,
+  onIsRecorded,
   toastedErrror,
 }) => {
   const [loading, setLoading] = useState(false);
@@ -70,7 +71,9 @@ const AudioRecorderComponent = ({
 
       // Submit FormData via fetch
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/transcriptions`,
+        `${process.env.NEXT_PUBLIC_API_URL}/transcriptions${
+          intern ? "/bolsista" : ""
+        }`,
         {
           method: "POST",
           body: formData,
@@ -83,14 +86,13 @@ const AudioRecorderComponent = ({
           },
         }
       );
-
       // Handle response as needed
       const data = await response.json();
-      console.log(data); // Log or handle the response data
-
       // Handle transcription
-      onTrascribe(model, data.transcription, data.id);
+      onIsRecorded(true);
+      onTrascribe(data);
     } catch (error) {
+      onIsRecorded(false);
       toastedErrror("Error transcribing audio: " + error.message);
     }
 

@@ -48,15 +48,23 @@ const Navbar = ({ path }) => {
             </Link>
           </>
         )}
-        {userType === "health_intern" && (
+        {userType === "intern" && (
           <>
-            <Link href="/record-anamnesis">
-              <span className={path === "/record-anamnesis" ? "selected" : ""}>
+            <Link href="/recording-anamnesis">
+              <span
+                className={path === "/recording-anamnesis" ? "selected" : ""}
+              >
                 Record Anamnesis
+              </span>
+            </Link>
+            <Link href="/my-anamnesis">
+              <span className={path === "/my-anamnesis" ? "selected" : ""}>
+                My Anamnesis
               </span>
             </Link>
           </>
         )}
+
         <Link href="/my-profile">
           <span className={path === "/my-profile" ? "selected" : ""}>
             My Profile

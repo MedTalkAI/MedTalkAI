@@ -141,7 +141,7 @@
     font-weight: 400;
     line-height: normal;
     letter-spacing: -0.25px;
-    height: auto;
+    height: 100px;
 }
 
 .anamnese textarea:focus {
@@ -149,7 +149,8 @@
 }
 
 /* Estilo base para os botões */
-.updateButton, .deleteButton {
+.updateButton,
+.deleteButton {
     margin-top: 7px;
     display: flex;
     width: fit-content;
@@ -160,7 +161,8 @@
     gap: 10px;
     flex-shrink: 0;
     border-radius: 10px;
-    background: #3B9B33; /* Cor de fundo padrão */
+    background: #3B9B33;
+    /* Cor de fundo padrão */
     color: #FFF;
     text-align: center;
     font-family: 'Raleway';
@@ -173,7 +175,8 @@
 
 /* Estilo específico para o botão de exclusão */
 .deleteButton {
-    background: #CC224B; /* Cor de fundo diferente para o botão de exclusão */
+    background: #CC224B;
+    /* Cor de fundo diferente para o botão de exclusão */
 }
 
 .buttonCancel {

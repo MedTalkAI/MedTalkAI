@@ -66,8 +66,10 @@ const Anamnesis = () => {
       <div className={Style.content}>
         <ToastContainer />
         <main>
-          <h1 className={Style.title}>Anamnesis</h1>
-          <div className={Style.controls}>
+          <div className={Style.fixed}>
+            <h1 className={Style.title}>Anamnesis</h1>
+            <div className={Style.controls}></div>
+
             <h3>Selected anamnese</h3>
             <div className={Style.actionGroup}>
               <div className={Style.info}>

@@ -13,9 +13,11 @@ const RecordingAnamnesis = () => {
   const [model, setModel] = useState();
   const [transcriptionId, setTranscriptionId] = useState();
   const [anamneses, setAnamneses] = useState([]);
+  const [isRecorded, setIsRecorded] = useState(false);
 
   useEffect(() => {
     setSelectedAnamnese(null);
+
     const fetchData = async () => {
       try {
         let url = `${process.env.NEXT_PUBLIC_API_URL}/anamneses?recorded=false`;
@@ -79,11 +81,13 @@ const RecordingAnamnesis = () => {
     }
   };
 
-  const handleTranscribe = (model, transcription, id) => {
-    setTranscription(transcription);
-    setModel(model);
-    setTranscriptionId(id);
-    handleCorrection();
+  const handleTranscribe = (anamneseRecorded) => {
+    setAnamneses(
+      anamneses.filter(
+        (anamnese) => anamnese.id !== anamneseRecorded.anamnese_id
+      )
+    );
+    toast.success("Anamnesis recorded successfully!");
   };
 
   const anamnesisRecord = () => {
@@ -101,6 +105,7 @@ const RecordingAnamnesis = () => {
         <AudioRecorderComponent
           path="/recording-anamnesis"
           onTrascribe={handleTranscribe}
+          onIsRecorded={setIsRecorded}
           anamnese_id={selectedAnamnese?.id}
         />
       );
@@ -127,12 +132,17 @@ const RecordingAnamnesis = () => {
 
   return (
     <div className={Styles.container}>
-      <Navbar path="/recording-anamnesis" />
+      <div className={Styles.navbar}>
+        <Navbar path="/recording-anamnesis" />
+      </div>
       <ToastContainer />
       <div className={Styles.containerAnamnese}>
-        <h1 className={Styles.title}>Recording Anamneses</h1>
-        <p className={Styles.subTitle}>Record Selected Anamnese</p>
-        {anamnesisRecord()}
+        <div className={Styles.controls}>
+          <h1 className={Styles.title}>Recording Anamneses</h1>
+          <p className={Styles.subTitle}>Record Selected Anamnese</p>
+          {anamnesisRecord()}
+        </div>
+
         <div className={Styles.anamnesisGroup}>
           {anamneses && renderizarAnamneses()}
         </div>
