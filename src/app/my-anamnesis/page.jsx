@@ -22,6 +22,7 @@ const MyAnamnesis = () => {
   const [audioSrc, setAudioSrc] = useState("");
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [userType, setUserType] = useState(null);
 
   const handleDeleteConfirmation = () => {
     setIsDeleteModalOpen(true);
@@ -30,7 +31,9 @@ const MyAnamnesis = () => {
   const handleConfirmDelete = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/${selectedTranscription.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/${
+          userType == "intern" ? "bolsista/" : ""
+        }${selectedTranscription.id}`,
         {
           method: "DELETE",
           headers: {
@@ -44,7 +47,9 @@ const MyAnamnesis = () => {
       );
       if (response.ok) {
         // Exclua a transcrição do estado
-        const updatedTranscriptions = transcriptions.filter(transcription => transcription.id !== selectedTranscription.id);
+        const updatedTranscriptions = transcriptions.filter(
+          (transcription) => transcription.id !== selectedTranscription.id
+        );
         setTranscriptions(updatedTranscriptions);
         setSelectedTranscription(null);
         toast.success("Transcription deleted successfully");
@@ -109,34 +114,67 @@ const MyAnamnesis = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/user`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${
-                typeof window !== "undefined" && window.localStorage
-                  ? localStorage.getItem("access_token")
-                  : ""
-              }`,
-            },
-          }
-        );
-        if (response.ok) {
-          const transcriptions = await response.json();
-          console.log(transcriptions);
-          setTranscriptions(transcriptions);
-        } else {
-          throw new Error("Failed to fetch transcriptions");
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    const user = localStorage.getItem("user_type");
+    setUserType(user);
 
-    fetchData();
+    if (user == "intern") {
+      const fetchData = async () => {
+        try {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/bolsista/user`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${
+                  typeof window !== "undefined" && window.localStorage
+                    ? localStorage.getItem("access_token")
+                    : ""
+                }`,
+              },
+            }
+          );
+          if (response.ok) {
+            const transcriptions = await response.json();
+            console.log(transcriptions);
+            setTranscriptions(transcriptions);
+          } else {
+            throw new Error("Failed to fetch transcriptions");
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetchData();
+    } else {
+      const fetchData = async () => {
+        try {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/user`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${
+                  typeof window !== "undefined" && window.localStorage
+                    ? localStorage.getItem("access_token")
+                    : ""
+                }`,
+              },
+            }
+          );
+          if (response.ok) {
+            const transcriptions = await response.json();
+            console.log(transcriptions);
+            setTranscriptions(transcriptions);
+          } else {
+            throw new Error("Failed to fetch transcriptions");
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      fetchData();
+    }
 
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -157,7 +195,9 @@ const MyAnamnesis = () => {
       textareaRef.current.focus();
 
       fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/audio/${selectedTranscription.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/${
+          userType == "intern" ? "bolsista" : "audio"
+        }/${selectedTranscription.id}${userType == "intern" ? "/audio" : ""}`,
         {
           headers: {
             Authorization: `Bearer ${
@@ -221,12 +261,14 @@ const MyAnamnesis = () => {
                   }}
                 >
                   <ReactAudioPlayer src={audioSrc} controls />
-                  <button
-                    className={Style.updateButton}
-                    onClick={handleUpdateConfirmation}
-                  >
-                    Update Correction
-                  </button>
+                  {userType !== "intern" && (
+                    <button
+                      className={Style.updateButton}
+                      onClick={handleUpdateConfirmation}
+                    >
+                      Update Correction
+                    </button>
+                  )}
                   <button
                     className={Style.deleteButton}
                     onClick={handleDeleteConfirmation}
@@ -308,19 +350,34 @@ const MyAnamnesis = () => {
                 {selectedTranscription === transcription ? (
                   <textarea
                     ref={textareaRef}
-                    value={editableText}
-                    onChange={(e) => {
-                      setEditableText(e.target.value);
-                    }}
+                    value={
+                      userType == "intern"
+                        ? transcription.anamnese_id
+                        : editableText
+                    }
+                    onChange={
+                      userType == "intern"
+                        ? ""
+                        : (e) => {
+                            setEditableText(e.target.value);
+                          }
+                    }
+                    contentEditable={userType == "intern" ? false : true}
                   ></textarea>
                 ) : (
                   <>
-                    <p>{transcription.latest_correction}</p>
+                    <p>
+                      {userType == "intern"
+                        ? transcription.anamnese_id
+                        : transcription.latest_correction}
+                    </p>
                     <div className={Style.data}>
                       <span>
-                        {new Date(transcription.date).toLocaleDateString(
-                          "en-GB"
-                        )}
+                        {new Date(
+                          userType == "intern"
+                            ? transcription.recorded_at
+                            : transcription.date
+                        ).toLocaleDateString("en-GB")}
                       </span>
                     </div>
                   </>
@@ -363,7 +420,7 @@ const MyAnamnesis = () => {
           </button>
         </div>
       </Modal>
-      
+
       <Modal
         isOpen={isDeleteModalOpen}
         onRequestClose={handleCancelDelete}
