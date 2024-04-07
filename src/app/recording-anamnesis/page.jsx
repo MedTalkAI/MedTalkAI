@@ -131,32 +131,24 @@ const RecordingAnamnesis = () => {
     setSelectedAnamnese(anamnese);
   };
 
-  const renderizarAnamnesesi = () => {
-    return anamneses.map((anamnese) => (
-      <div
-        className={`${Styles.anamnese} ${
-          selectedAnamnese?.id === anamnese.id ? Styles.selected : ""
-        }`}
-        key={anamnese.id}
-        onClick={() => handleAnamneseClick(anamnese)}
-      >
-        <span>{anamnese.text}</span>
-      </div>
-    ));
-  };
+  
   const renderizarAnamneses = () => {
     return (
-      <ul>
-        <li className={Styles.anamneseHeader}>
+      <ul className={Styles.ul}>
+        <li className={`${Styles.anamneseHeader} ${Styles.header}`}>
           <span className={Styles.anamneseId}>Nº Anamnesis</span>
           <span className={Styles.anamneseText}>Anamnesis</span>
-          <span className={Styles.anamneseWorks}>Nº Words</span>
+          <span className={Styles.anamneseWorks}> <span class="material-symbols-outlined">
+              arrow_drop_down
+            </span>
+            <span>Nº Words</span>
+          </span>
         </li>
-        {anamneses.map((anamnese) => (
+        {anamneses.map((anamnese, index) => (
           <li
             className={`${Styles.anamnese} ${
               selectedAnamnese?.id === anamnese.id ? Styles.selected : ""
-            }`}
+            } ${index % 2 === 0 ? Styles.anamneseEven : Styles.anamneseOdd}`}
             key={anamnese.id}
             onClick={() => handleAnamneseClick(anamnese)}
           >
@@ -176,6 +168,7 @@ const RecordingAnamnesis = () => {
       </ul>
     );
   };
+  
   
   return (
     <div className={Styles.container}>

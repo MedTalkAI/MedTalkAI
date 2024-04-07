@@ -81,7 +81,9 @@
     margin-bottom: 32px;
     margin-left: 10px;
 }
-
+.ul{
+    padding-inline-start:0;
+}
 .anamnese {
     align-items: center;
     cursor: pointer;
@@ -96,8 +98,9 @@
     display: flex;
     flex-direction: row;
     padding: 10px 30px;
-    background: #FFF;
+    background: #F1F2F7;
     font-size: 1rem;
+    border-bottom: 2px solid #000;
 }
 .selected {
     border-radius: 10px;
@@ -129,12 +132,15 @@
     margin-left: 23px;
     text-align: center;
 }
+.anamneseHeader .anamneseWorks{
+    cursor: pointer;
+}
 .anamneseOdd {
-    background-color: #F8F9FD; /* Cor de fundo para elementos ímpares */
+    background-color: #F1F2F7; /* Cor de fundo para elementos ímpares */
 }
   
 .anamneseEven {
-    background-color: #F1F2F7; /* Cor de fundo para elementos pares */
+    background-color: #F8F9FD; /* Cor de fundo para elementos pares */
 }
 
 .button{
