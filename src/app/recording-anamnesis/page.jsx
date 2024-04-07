@@ -131,7 +131,7 @@ const RecordingAnamnesis = () => {
     setSelectedAnamnese(anamnese);
   };
 
-  const renderizarAnamneses = () => {
+  const renderizarAnamnesesi = () => {
     return anamneses.map((anamnese) => (
       <div
         className={`${Styles.anamnese} ${
@@ -144,7 +144,39 @@ const RecordingAnamnesis = () => {
       </div>
     ));
   };
-
+  const renderizarAnamneses = () => {
+    return (
+      <ul>
+        <li className={Styles.anamneseHeader}>
+          <span className={Styles.anamneseId}>Nº Anamnesis</span>
+          <span className={Styles.anamneseText}>Anamnesis</span>
+          <span className={Styles.anamneseWorks}>Nº Words</span>
+        </li>
+        {anamneses.map((anamnese) => (
+          <li
+            className={`${Styles.anamnese} ${
+              selectedAnamnese?.id === anamnese.id ? Styles.selected : ""
+            }`}
+            key={anamnese.id}
+            onClick={() => handleAnamneseClick(anamnese)}
+          >
+            <span className={Styles.anamneseId}>{anamnese.id}</span>
+            <span className={Styles.anamneseText}>{anamnese.text}</span>
+            <span className={Styles.anamneseWorks}>
+              {((anamnese.text).split(/\s+/)).length}
+            </span>
+            {selectedAnamnese?.id === anamnese.id && (
+              <button className={Styles.button}>
+                <span className="material-symbols-outlined">edit</span>
+                <span className={Styles.textSpanButton}>Edit Anamnesis</span>
+              </button>
+            )}
+          </li>
+        ))}
+      </ul>
+    );
+  };
+  
   return (
     <div className={Styles.container}>
       <div className={isFixed ? Styles.fixedNavbar : ""}>
