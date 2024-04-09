@@ -5,7 +5,7 @@ import { MdDownload } from "react-icons/md";
 
 const ModelStatistics = ({ statistics, onCsvDownloader }) => {
   const router = useRouter();
-  
+
   const handlePretrain = () => {
     router.push(`/pretrain/${statistics.name}`);
   };
@@ -43,8 +43,6 @@ const ModelStatistics = ({ statistics, onCsvDownloader }) => {
         ],
       },
     ];
-    
-
 
     return (
       <table className={Style.table}>
@@ -63,9 +61,7 @@ const ModelStatistics = ({ statistics, onCsvDownloader }) => {
             <tr key={index}>
               <th className={Style.metric}>{row.metric}</th>
               {row.values.map((value, idx) => (
-                <td key={idx}>
-                  {typeof value === "number" ? value.toFixed(3) : value}
-                </td>
+                <td key={idx}>{parseFloat(value).toFixed(3)}</td>
               ))}
             </tr>
           ))}
@@ -77,19 +73,31 @@ const ModelStatistics = ({ statistics, onCsvDownloader }) => {
   return (
     <div>
       <div className={Style.head}>
-        <h1 className={Style.title}>{statistics.name}</h1>       
+        <h1 className={Style.title}>{statistics.name}</h1>
       </div>
 
       <div style={{ overflowX: "auto" }}>{renderTable()}</div>
       <div className={Style.bottom}>
         <span>Transcriptions quantity: {statistics?.transcriptions_amt}</span>
-        <button onClick={handlePretrain}>Fine-tuning</button>
-        <button onClick={()=>onCsvDownloader(statistics.id)} className={Style.exportarBenchmark}>
-          <MdDownload />
-        </button>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            gap: "10px",
+            alignItems: "center",
+          }}
+        >
+          <button onClick={handlePretrain}>Fine-tuning</button>
+          <button
+            onClick={() => onCsvDownloader(statistics.id)}
+            className={Style.exportarBenchmark}
+          >
+            <MdDownload />
+          </button>
+        </div>
       </div>
     </div>
   );
-}; 
+};
 
 export default ModelStatistics;

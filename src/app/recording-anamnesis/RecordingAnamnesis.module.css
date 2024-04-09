@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
-.container{
+
+.container {
     background: white;
 }
 
@@ -19,6 +20,7 @@
     padding-right: 10px;
     padding-left: 10px;
     margin-top: 32px;
+    z-index: -11;
 }
 .fixedNavbar {
     position: sticky;
@@ -34,7 +36,7 @@
     background: #FFF;
 }
 
-.title{
+.title {
     color: #000;
     font-family: Inter;
     font-size: 40px;
@@ -47,7 +49,7 @@
     margin-left: 10px;
 }
 
-.subTitle{
+.subTitle {
     margin-left: 10px;
     margin-top: 15px;
     margin-bottom: 15px;
@@ -61,12 +63,12 @@
 }
 
 
-.infoMessage{
+.infoMessage {
     color: #3B769D;
-    padding-right: 10px;   
+    padding-right: 10px;
 }
 
-.infoIcon{
+.infoIcon {
     display: inline-flex;
     height: 40px;
     padding: 10px 0px 10px 11px;
@@ -102,13 +104,13 @@
     font-size: 1rem;
     border-bottom: 2px solid #000;
 }
+
 .selected {
     border-radius: 10px;
     border: 1px solid #3B769D;
     background: #F3F8FF;
     box-shadow: 0px 0px 5px 3px rgba(151, 151, 151, 0.25);
 }
-
 
 .anamneseId{
     width: 107px;
@@ -162,4 +164,9 @@
 .textSpanButton{
     margin-right:0;
     margin-left: 5px;
+}
+.controls {}
+
+.navbar {
+    z-index: 1000;
 }

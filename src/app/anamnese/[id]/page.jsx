@@ -83,7 +83,7 @@ const Anamnese = () => {
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
       });
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     console.log("transcription");
@@ -116,11 +116,11 @@ const Anamnese = () => {
           <div className={Style.metrics}>
             {transcription && (
               <Metrics
-                bleu={transcription.bleu}
-                cosine={transcription.cosine}
-                kappa={transcription.kappa}
+                bleu={parseFloat(transcription.bleu)}
+                cosine={parseFloat(transcription.cosine)}
+                kappa={parseFloat(transcription.kappa)}
                 transcription={transcription.transcription}
-                wer={transcription.wer}
+                wer={parseFloat(transcription.wer)}
               />
             )}
             {transcription && (

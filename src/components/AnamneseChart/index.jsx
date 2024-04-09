@@ -46,6 +46,12 @@ const AnamneseChart = ({ dataSets, labels, metric = "wer" }) => {
               },
             },
           },
+          scales: {
+            y: {
+              min: 0, // Define o valor mínimo do eixo y
+              max: 1, // Define o valor máximo do eixo y
+            },
+          },
           legend: {
             display: false,
           },

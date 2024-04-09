@@ -43,73 +43,111 @@ const Anamnesis = () => {
     fetchData();
   }, []);
 
-  
-  
+  useEffect(() => {
+    if (orderBy === "last") {
+      setTranscriptions((prevTranscriptions) => {
+        return prevTranscriptions.sort((a, b) => {
+          return new Date(b.date) - new Date(a.date);
+        });
+      });
+    } else if (orderBy === "oldest") {
+      setTranscriptions((prevTranscriptions) => {
+        return prevTranscriptions.sort((a, b) => {
+          return new Date(a.date) - new Date(b.date);
+        });
+      });
+    }
+    setOpenDropdown(false);
+  }, [orderBy]);
+
   return (
     <div>
       <Navbar path="/anamnesis" />
       <div className={Style.content}>
         <ToastContainer />
         <main>
-          <h1 className={Style.title}>Anamnesis</h1>
-          <div className={Style.controls}>
+          <div className={Style.fixed}>
+            <h1 className={Style.title}>Anamnesis</h1>
+            <div className={Style.controls}></div>
+
             <h3>Selected anamnese</h3>
             <div className={Style.actionGroup}>
               <div className={Style.info}>
-                <span class="material-symbols-outlined">info</span>
+                <span className="material-symbols-outlined">info</span>
                 <p>You can select any anamnese, see all metrics about it</p>
               </div>
-                <div className={Style.dropdown} ref={dropdownRef}>
-                  <div
-                    className={Style.select}
-                    onClick={() => {
-                      setOpenDropdown(!openDropdown);
-                    }}
-                  >
-                    <p>Order by {orderBy}</p>
-                    {!openDropdown && (
-                      <span class="material-symbols-outlined">expand_more</span>
-                    )}
-                    {openDropdown && (
-                      <span class="material-symbols-outlined">expand_less</span>
-                    )}
-                  </div>
+              <div className={Style.dropdown} ref={dropdownRef}>
+                <div
+                  className={Style.select}
+                  onClick={() => {
+                    setOpenDropdown(!openDropdown);
+                  }}
+                >
+                  <p>Order by {orderBy}</p>
+                  {!openDropdown && (
+                    <span className="material-symbols-outlined">
+                      expand_more
+                    </span>
+                  )}
                   {openDropdown && (
-                    <div className={Style.menu}>
-                      {orderBy != "" && (
-                        <div
-                          className={Style.item}
-                          onClick={() => {
-                            setOrderBy("");
-                          }}
-                        >
-                          Default
-                        </div>
-                      )}
-                      <div
-                        className={Style.item}
-                        onClick={() => {
-                          setOrderBy("Date");
-                        }}
-                      >
-                        Date
-                      </div>
-                      <div
-                        className={Style.item}
-                        onClick={() => {
-                          setOrderBy("Name");
-                        }}
-                      >
-                        Name
-                      </div>
-                    </div>
+                    <span className="material-symbols-outlined">
+                      expand_less
+                    </span>
                   )}
                 </div>
+                {openDropdown && (
+                  <div className={Style.menu}>
+                    {orderBy !== "" && (
+                      <div
+                        className={Style.item}
+                        onClick={() => {
+                          setOrderBy("");
+                        }}
+                      >
+                        Default
+                      </div>
+                    )}
+                    <div
+                      className={Style.item}
+                      onClick={() => {
+                        setOrderBy("Date");
+                      }}
+                    >
+                      Date
+                    </div>
+                    <div
+                      className={Style.item}
+                      onClick={() => {
+                        setOrderBy("Name");
+                      }}
+                    >
+                      Name
+                    </div>
+                    <div
+                      className={Style.item}
+                      onClick={() => {
+                        setOrderBy("last");
+                      }}
+                    >
+                      Last
+                    </div>
+                    <div
+                      className={Style.item}
+                      onClick={() => {
+                        setOrderBy("oldest");
+                      }}
+                    >
+                      Oldest
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
           <div className={Style.anamnesisGroup}>
             {transcriptions.map((transcription, index) => (
               <a
+                className={Style.anamneseLink}
                 href={"/anamnese/" + transcription.id}
                 key={index}
                 style={{ textDecoration: "none" }}

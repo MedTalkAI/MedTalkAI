@@ -14,9 +14,11 @@ const RecordingAnamnesis = () => {
   const [transcriptionId, setTranscriptionId] = useState();
   const [anamneses, setAnamneses] = useState([]);
   const [isFixed, setIsFixed] = useState(false);
+  const [isRecorded, setIsRecorded] = useState(false);
 
   useEffect(() => {
     setSelectedAnamnese(null);
+
     const fetchData = async () => {
       try {
         let url = `${process.env.NEXT_PUBLIC_API_URL}/anamneses?recorded=false`;
@@ -80,11 +82,13 @@ const RecordingAnamnesis = () => {
     }
   };
 
-  const handleTranscribe = (model, transcription, id) => {
-    setTranscription(transcription);
-    setModel(model);
-    setTranscriptionId(id);
-    handleCorrection();
+  const handleTranscribe = (anamneseRecorded) => {
+    setAnamneses(
+      anamneses.filter(
+        (anamnese) => anamnese.id !== anamneseRecorded.anamnese_id
+      )
+    );
+    toast.success("Anamnesis recorded successfully!");
   };
 
   useEffect(() => {
@@ -121,6 +125,7 @@ const RecordingAnamnesis = () => {
         <AudioRecorderComponent
           path="/recording-anamnesis"
           onTrascribe={handleTranscribe}
+          onIsRecorded={setIsRecorded}
           anamnese_id={selectedAnamnese?.id}
         />
       );
@@ -173,6 +178,7 @@ const RecordingAnamnesis = () => {
   return (
     <div className={Styles.container}>
       <div className={isFixed ? Styles.fixedNavbar : ""}>
+      <div className={Styles.navbar}>
         <Navbar path="/recording-anamnesis" />
       </div>
       <ToastContainer />
@@ -181,6 +187,11 @@ const RecordingAnamnesis = () => {
         <div className={isFixed ? Styles.fixedContent : ""}>
           <p className={Styles.subTitle}>Record Selected Anamnese</p>
           <div>{anamnesisRecord()}</div>
+        </div>
+        <div className={Styles.controls}>
+          <h1 className={Styles.title}>Recording Anamneses</h1>
+          <p className={Styles.subTitle}>Record Selected Anamnese</p>
+          {anamnesisRecord()}
         </div>
         <div className={Styles.anamnesisGroup}>
           {anamneses && renderizarAnamneses()}
