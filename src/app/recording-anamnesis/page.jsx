@@ -136,20 +136,45 @@ const RecordingAnamnesis = () => {
     setSelectedAnamnese(anamnese);
   };
 
+  
   const renderizarAnamneses = () => {
-    return anamneses.map((anamnese) => (
-      <div
-        className={`${Styles.anamnese} ${
-          selectedAnamnese?.id === anamnese.id ? Styles.selected : ""
-        }`}
-        key={anamnese.id}
-        onClick={() => handleAnamneseClick(anamnese)}
-      >
-        <span>{anamnese.text}</span>
-      </div>
-    ));
+    return (
+      <ul className={Styles.ul}>
+        <li className={`${Styles.anamneseHeader} ${Styles.header}`}>
+          <span className={Styles.anamneseId}>Nº Anamnesis</span>
+          <span className={Styles.anamneseText}>Anamnesis</span>
+          <span className={Styles.anamneseWorks}> <span class="material-symbols-outlined">
+              arrow_drop_down
+            </span>
+            <span>Nº Words</span>
+          </span>
+        </li>
+        {anamneses.map((anamnese, index) => (
+          <li
+            className={`${Styles.anamnese} ${
+              selectedAnamnese?.id === anamnese.id ? Styles.selected : ""
+            } ${index % 2 === 0 ? Styles.anamneseEven : Styles.anamneseOdd}`}
+            key={anamnese.id}
+            onClick={() => handleAnamneseClick(anamnese)}
+          >
+            <span className={Styles.anamneseId}>{anamnese.id}</span>
+            <span className={Styles.anamneseText}>{anamnese.text}</span>
+            <span className={Styles.anamneseWorks}>
+              {((anamnese.text).split(/\s+/)).length}
+            </span>
+            {selectedAnamnese?.id === anamnese.id && (
+              <button className={Styles.button}>
+                <span className="material-symbols-outlined">edit</span>
+                <span className={Styles.textSpanButton}>Edit Anamnesis</span>
+              </button>
+            )}
+          </li>
+        ))}
+      </ul>
+    );
   };
-
+  
+  
   return (
     <div className={Styles.container}>
       <div className={isFixed ? Styles.fixedNavbar : ""}>
