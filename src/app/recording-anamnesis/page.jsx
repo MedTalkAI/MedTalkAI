@@ -6,7 +6,6 @@ import AudioRecorderComponent from "@/components/AudioRecorderComponent/index.js
 import Navbar from "@/components/Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ReactPaginate from "react-paginate";
 import Modal from "react-modal";
 import TranscriptionResult from "@/components/TranscriptionResult";
 
@@ -18,9 +17,6 @@ const RecordingAnamnesis = () => {
   const [anamneses, setAnamneses] = useState([]);
   const [isFixed, setIsFixed] = useState(false);
   const [isRecorded, setIsRecorded] = useState(false);
-  const [pageNumber, setPageNumber] = useState(0);
-  const itemsPerPage = 10; // Number of items per page
-  const pagesVisited = pageNumber * itemsPerPage;
   const [isEditAnamnese, setIsEditAnamnese] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -165,11 +161,6 @@ const RecordingAnamnesis = () => {
   };
 
   const renderizarAnamneses = () => {
-    const displayedAnamneses = anamneses.slice(
-      pagesVisited,
-      pagesVisited + itemsPerPage
-    );
-
     return (
       <ul className={Styles.ul}>
         <li className={`${Styles.anamneseHeader} ${Styles.header}`}>
@@ -179,7 +170,7 @@ const RecordingAnamnesis = () => {
             <span>Nº Words</span>
           </span>
         </li>
-        {displayedAnamneses.map((anamnese, index) => (
+        {anamneses.map((anamnese, index) => (
           <li
             className={`${Styles.anamnese} ${
               selectedAnamnese?.id === anamnese.id ? Styles.selected : ""
@@ -210,48 +201,6 @@ const RecordingAnamnesis = () => {
     );
   };
 
-  const handlePageChange = ({ selected }) => {
-    setPageNumber(selected);
-  };
-
-  return (
-    <div className={Styles.container}>
-      <div className={Styles.navbar}>
-        <Navbar path="/recording-anamnesis" />
-      </div>
-      <ToastContainer />
-      <div className={Styles.containerAnamnese}>
-        <h1 className={Styles.title}>Recording Anamneses</h1>
-        <div className={Styles.subTitle}>Record Selected Anamnese</div>
-        <div>
-          {selectedAnamnese ? (
-            <AudioRecorderComponent />
-          ) : (
-            "Select an anamnese to record."
-          )}
-        </div>
-        <div className={Styles.anamnesisGroup}>
-          {anamneses.length > 0 ? renderizarAnamneses() : "No data to display."}
-        </div>
-        <div className={Styles.paginationContainer}>
-          <div className={Styles.details}>
-            Anamneses {pagesVisited} a {pagesVisited + 10} de {anamneses.length}
-          </div>
-          <ReactPaginate
-            previousLabel={
-              <span class="material-symbols-outlined">arrow_back_ios_new</span>
-            }
-            nextLabel={
-              <span class="material-symbols-outlined">arrow_forward_ios</span>
-            }
-            pageCount={Math.ceil(anamneses.length / itemsPerPage)}
-            onPageChange={handlePageChange}
-            containerClassName={Styles.pagination}
-            previousLinkClassName={Styles.paginationLink}
-            nextLinkClassName={Styles.paginationLink}
-            disabledClassName={Styles.paginationDisabled}
-            activeClassName={Styles.paginationActive}
-          />
   return (
     <div className={Styles.container}>
       <div className={isFixed ? Styles.fixedNavbar : ""}>
