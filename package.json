@@ -27,6 +27,7 @@
     "react-loading": "^2.0.3",
     "react-modal": "^3.16.1",
     "react-toastify": "^10.0.4",
+    "react-paginate": "^8.2.0",
     "sharp": "^0.33.2"
   }
 }
