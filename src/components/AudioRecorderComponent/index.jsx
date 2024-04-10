@@ -71,9 +71,7 @@ const AudioRecorderComponent = ({
 
       // Submit FormData via fetch
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/transcriptions${
-          intern ? "/bolsista" : ""
-        }`,
+        `${process.env.NEXT_PUBLIC_API_URL}/recordings`,
         {
           method: "POST",
           body: formData,
@@ -91,6 +89,8 @@ const AudioRecorderComponent = ({
       // Handle transcription
       onIsRecorded(true);
       onTrascribe(data);
+      setAudioUrl(null);
+      setAudioName(null);
     } catch (error) {
       onIsRecorded(false);
       toastedErrror("Error transcribing audio: " + error.message);
