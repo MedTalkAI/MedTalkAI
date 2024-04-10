@@ -232,7 +232,7 @@ const RecordingAnamnesis = () => {
           </div>
           <div className={Styles.paginationContainer}>
             <div className={Styles.details}>
-              Anamneses {pagesVisited} a {pagesVisited + 10} de{" "}
+              Anamneses {pagesVisited} a {anamneses.length > 10 ? (pagesVisited + 10 > anamneses.length ? anamneses.length : pagesVisited + 10) :  anamneses.length} de{" "}
               {anamneses.length}
             </div>
             <ReactPaginate
