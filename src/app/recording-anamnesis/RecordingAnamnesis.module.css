@@ -31,7 +31,7 @@
 
 .fixedContent {
     position: sticky;
-    top: 0px;
+    top: 79.4px;
     padding-top: 10px;
     padding-bottom: 15px;
     z-index: 100;
@@ -53,7 +53,7 @@
 
 .subTitle {
     margin-left: 10px;
-    margin-top: 15px;
+    margin-top: 10px;
     margin-bottom: 15px;
     color: #000;
     font-family: Inter;
@@ -83,7 +83,7 @@
     border: 1.25px solid #3B769D;
     color: #3B769D;
     background: #F3F8FF;
-    margin-bottom: 32px;
+    margin-bottom: 10px;
     margin-left: 10px;
 }
 
@@ -190,9 +190,6 @@
 
 .controls {}
 
-.navbar {
-    z-index: 1000;
-}
 
 .selected .anamneseText {
     display: block;
