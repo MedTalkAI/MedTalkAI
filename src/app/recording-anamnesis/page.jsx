@@ -7,6 +7,8 @@ import Navbar from "@/components/Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ReactPaginate from "react-paginate";
+import Modal from "react-modal";
+import TranscriptionResult from "@/components/TranscriptionResult";
 
 const RecordingAnamnesis = () => {
   const [selectedAnamnese, setSelectedAnamnese] = useState();
@@ -19,6 +21,8 @@ const RecordingAnamnesis = () => {
   const [pageNumber, setPageNumber] = useState(0);
   const itemsPerPage = 10; // Number of items per page
   const pagesVisited = pageNumber * itemsPerPage;
+  const [isEditAnamnese, setIsEditAnamnese] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     setSelectedAnamnese(null);
@@ -51,6 +55,26 @@ const RecordingAnamnesis = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    console.log(selectedAnamnese);
+  }, [selectedAnamnese]);
+
+  const handeUpdated = (editableText) => {
+    console.log("editableText");
+    console.log(editableText);
+    const aux_anamneses = JSON.parse(JSON.stringify(anamneses));
+    const updatedAnamneses = aux_anamneses.map((anamnese) => {
+      if (anamnese.id === selectedAnamnese.id) {
+        anamnese.text = editableText;
+      }
+      return anamnese;
+    });
+    setAnamneses(updatedAnamneses);
+    setIsModalOpen(false);
+    setSelectedAnamnese(null);
+    toast.success("Anamnesis updated successfully!");
+  };
 
   const handleCorrection = async () => {
     try {
@@ -152,8 +176,6 @@ const RecordingAnamnesis = () => {
           <span className={Styles.anamneseId}>Nº Anamnesis</span>
           <span className={Styles.anamneseText}>Anamnesis</span>
           <span className={Styles.anamneseWorks}>
-            {" "}
-            <span class="material-symbols-outlined">arrow_drop_down</span>
             <span>Nº Words</span>
           </span>
         </li>
@@ -171,7 +193,13 @@ const RecordingAnamnesis = () => {
               {anamnese.text.split(/\s+/).length}
             </span>
             {selectedAnamnese?.id === anamnese.id && (
-              <button className={Styles.button}>
+              <button
+                className={Styles.button}
+                onClick={() => {
+                  setIsFixed(false);
+                  setIsModalOpen(true);
+                }}
+              >
                 <span className="material-symbols-outlined">edit</span>
                 <span className={Styles.textSpanButton}>Edit Anamnesis</span>
               </button>
@@ -224,8 +252,63 @@ const RecordingAnamnesis = () => {
             disabledClassName={Styles.paginationDisabled}
             activeClassName={Styles.paginationActive}
           />
+  return (
+    <div className={Styles.container}>
+      <div className={isFixed ? Styles.fixedNavbar : ""}>
+        <div className={Styles.navbar}>
+          <Navbar path="/recording-anamnesis" />
+        </div>
+        <ToastContainer />
+        <div className={Styles.containerAnamnese}>
+          <h1 className={Styles.title}>Recording Anamneses</h1>
+          <div className={isFixed ? Styles.fixedContent : ""}>
+            <p className={Styles.subTitle}>Record Selected Anamnese</p>
+            <div>{anamnesisRecord()}</div>
+          </div>
+          <div className={Styles.anamnesisGroup}>
+            {anamneses && renderizarAnamneses()}
+          </div>
         </div>
       </div>
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={() => {
+          setIsModalOpen(false);
+          setSelectedAnamnese(null);
+        }}
+        contentLabel="Confirmação de Atualização"
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          },
+          content: {
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            width: window.innerWidth * 0.8,
+            height: window.innerHeight * 0.8,
+            margin: "auto",
+            borderRadius: "4px",
+            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.3)",
+            backgroundColor: "#fff",
+          },
+        }}
+      >
+        <h2>Editing anamnese #{selectedAnamnese?.id}</h2>
+        <div className={Styles.results}>
+          <TranscriptionResult
+            text={selectedAnamnese?.text}
+            isEditable={false}
+          />
+          <TranscriptionResult
+            text={selectedAnamnese?.text}
+            isEditable={true}
+            onSave={handeUpdated}
+            transcription_id={selectedAnamnese?.id}
+          />
+        </div>
+      </Modal>
     </div>
   );
 };
