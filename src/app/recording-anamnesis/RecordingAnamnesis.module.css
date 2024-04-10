@@ -1,76 +1,91 @@
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
 
 .container {
-    background: white;
+  background: white;
 }
 
 .containerAnamnese {
-    margin-top: 15px;
-    margin-left: 2%;
-    margin-right: 2%;
-    margin-bottom: 70px;
+  margin-top: 15px;
+  margin-left: 2%;
+  margin-right: 2%;
+  margin-bottom: 70px;
 }
 
 .content main {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .anamnesisGroup {
-    padding-right: 10px;
-    padding-left: 10px;
-    margin-top: 32px;
-    z-index: -11;
+  padding-right: 10px;
+  padding-left: 10px;
+  margin-top: 32px;
+  z-index: -11;
 }
 
 .fixedNavbar {
-    position: sticky;
-    top: 0;
-    z-index: 100;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .fixedContent {
-    position: sticky;
-    top: 0px;
-    padding-top: 10px;
-    padding-bottom: 15px;
-    z-index: 100;
-    background: #FFF;
+  position: sticky;
+  top: 0px;
+  padding-top: 10px;
+  padding-bottom: 15px;
+  z-index: 100;
+  background: #fff;
 }
 
 .title {
-    color: #000;
-    font-family: Inter;
-    font-size: 40px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    margin-top: 25px;
-    margin-bottom: 21px;
-    letter-spacing: -0.25px;
-    margin-left: 10px;
+  color: #000;
+  font-family: Inter;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-top: 25px;
+  margin-bottom: 21px;
+  letter-spacing: -0.25px;
+  margin-left: 10px;
 }
 
 .subTitle {
-    margin-left: 10px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    color: #000;
-    font-family: Inter;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-    letter-spacing: -0.25px;
+  margin-left: 10px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  color: #000;
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.25px;
 }
 
-
 .infoMessage {
-    color: #3B769D;
-    padding-right: 10px;
+  color: #3b769d;
+  padding-right: 10px;
 }
 
 .infoIcon {
+  display: inline-flex;
+  height: 40px;
+  padding: 10px 0px 10px 11px;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 7.54px;
+  flex-shrink: 0;
+  align-items: center;
+  border-radius: 10px;
+  border: 1.25px solid #3b769d;
+  background: #f3f8ff;
+  margin-bottom: 32px;
+  margin-left: 10px;
+}
+.ul {
+  padding-inline-start: 0;
     display: inline-flex;
     height: 40px;
     padding: 10px 0px 10px 11px;
@@ -86,21 +101,37 @@
     margin-left: 10px;
 }
 
-.ul {
-    padding-inline-start: 0;
-}
 
 .anamnese {
-    align-items: center;
-    cursor: pointer;
-    display: flex;
-    flex-direction: row;
-    padding: 10px 30px;
-    background: #FFF;
-    font-size: 1rem;
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  padding: 10px 30px;
+  background: #fff;
+  font-size: 1rem;
 }
 
 .anamneseHeader {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 30px;
+  background: #f1f2f7;
+  font-size: 1rem;
+  border-bottom: 2px solid #000;
+}
+
+.selected {
+  border-radius: 10px;
+  border: 1px solid #3b769d;
+  background: #f3f8ff;
+  box-shadow: 0px 0px 5px 3px rgba(151, 151, 151, 0.25);
+}
+
+.anamneseId {
+  width: 107px;
+  margin-right: 23px;
+  text-align: center;
     display: flex;
     flex-direction: row;
     padding: 10px 30px;
@@ -117,13 +148,26 @@
     height: fit-content;
 }
 
-.anamneseId {
-    width: 107px;
-    margin-right: 32px;
-    text-align: center;
-}
 
 .anamneseText {
+  max-height: 4em; /* Ajuste o valor conforme necessário para limitar o número de linhas */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 4; /* Número de linhas a serem exibidas */
+  -webkit-box-orient: vertical;
+  font-size: 1rem;
+  width: 610px;
+  margin-right: 23px;
+  margin-left: 23px;
+}
+.anamneseWorks {
+  width: 107px;
+  margin-right: 23px;
+  margin-left: 23px;
+  text-align: center;
+}
+.anamneseHeader .anamneseWorks {
+  cursor: pointer;
     max-height: 4em;
     /* Ajuste o valor conforme necessário para limitar o número de linhas */
     overflow: hidden;
@@ -155,6 +199,59 @@
 }
 
 .anamneseOdd {
+  background-color: #f1f2f7; /* Cor de fundo para elementos ímpares */
+}
+
+.anamneseEven {
+  background-color: #f8f9fd; /* Cor de fundo para elementos pares */
+}
+
+.button {
+  display: flex;
+  height: 40px;
+  font-size: 1rem;
+  border: none;
+  width: 178px;
+  background-color: #3aa351;
+  color: #fff;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: center;
+}
+.button span {
+  margin-right: 5px;
+  text-align: center;
+}
+.textSpanButton {
+  margin-right: 0;
+  margin-left: 5px;
+}
+
+.navbar {
+  z-index: 1000;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+  padding: 0;
+}
+
+.pagination li {
+  display: inline-block;
+  margin: 0 4px;
+}
+
+.pagination a {
+  color: #333;
+  text-decoration: none;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
     background-color: #F1F2F7;
     /* Cor de fundo para elementos ímpares */
 }
@@ -189,8 +286,41 @@
 
 .controls {}
 
-.navbar {
-    z-index: 1000;
+.pagination a:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination .paginationActive a {
+  background-color: #3b769d;
+  color: #fff;
+}
+
+.pagination .paginationDisabled a {
+  pointer-events: none;
+  color: #999;
+  border-color: #999;
+}
+
+.paginationLink span {
+  font-size: 15px;
+}
+
+.paginationContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Optional: align items vertically */
+  margin-bottom: 10px; /* Adjust margin as needed */
+}
+
+.details {
+  /* Optional styles for the details */
+  color: #838383;
+  font-family: Inter;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.25px;
 }
 
 .selected .anamneseText {
