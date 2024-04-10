@@ -8,6 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Modal from "react-modal";
 import TranscriptionResult from "@/components/TranscriptionResult";
+import ReactPaginate from "react-paginate";
 
 const RecordingAnamnesis = () => {
   const [selectedAnamnese, setSelectedAnamnese] = useState();
@@ -19,6 +20,10 @@ const RecordingAnamnesis = () => {
   const [isRecorded, setIsRecorded] = useState(false);
   const [isEditAnamnese, setIsEditAnamnese] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [pageNumber, setPageNumber] = useState(0);
+  const itemsPerPage = 10;
+  const pagesVisited = pageNumber * itemsPerPage;
 
   useEffect(() => {
     setSelectedAnamnese(null);
@@ -160,7 +165,16 @@ const RecordingAnamnesis = () => {
     setSelectedAnamnese(anamnese);
   };
 
+  const handlePageChange = ({ selected }) => {
+    setPageNumber(selected);
+  };
+
   const renderizarAnamneses = () => {
+    const displayedAnamneses = anamneses.slice(
+      pagesVisited,
+      pagesVisited + itemsPerPage
+    );
+
     return (
       <ul className={Styles.ul}>
         <li className={`${Styles.anamneseHeader} ${Styles.header}`}>
@@ -170,7 +184,7 @@ const RecordingAnamnesis = () => {
             <span>Nº Words</span>
           </span>
         </li>
-        {anamneses.map((anamnese, index) => (
+        {displayedAnamneses.map((anamnese, index) => (
           <li
             className={`${Styles.anamnese} ${
               selectedAnamnese?.id === anamnese.id ? Styles.selected : ""
@@ -217,6 +231,29 @@ const RecordingAnamnesis = () => {
           <div className={Styles.anamnesisGroup}>
             {anamneses && renderizarAnamneses()}
           </div>
+          <div className={Styles.paginationContainer}>
+            <div className={Styles.details}>
+              Anamneses {pagesVisited} a {pagesVisited + 10} de{" "}
+              {anamneses.length}
+            </div>
+            <ReactPaginate
+              previousLabel={
+                <span class="material-symbols-outlined">
+                  arrow_back_ios_new
+                </span>
+              }
+              nextLabel={
+                <span class="material-symbols-outlined">arrow_forward_ios</span>
+              }
+              pageCount={Math.ceil(anamneses.length / itemsPerPage)}
+              onPageChange={handlePageChange}
+              containerClassName={Styles.pagination}
+              previousLinkClassName={Styles.paginationLink}
+              nextLinkClassName={Styles.paginationLink}
+              disabledClassName={Styles.paginationDisabled}
+              activeClassName={Styles.paginationActive}
+            />
+          </div>
         </div>
       </div>
       <Modal
@@ -235,8 +272,10 @@ const RecordingAnamnesis = () => {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            width: window.innerWidth * 0.8,
-            height: window.innerHeight * 0.8,
+            width:
+              typeof window !== "undefined" ? window.innerWidth * 0.8 : "80%",
+            height:
+              typeof window !== "undefined" ? window.innerHeight * 0.6 : "60%",
             margin: "auto",
             borderRadius: "4px",
             boxShadow: "0 2px 4px rgba(0, 0, 0, 0.3)",
@@ -244,7 +283,7 @@ const RecordingAnamnesis = () => {
           },
         }}
       >
-        <h2>Editing anamnese #{selectedAnamnese?.id}</h2>
+        <h1>Editing anamnese #{selectedAnamnese?.id}</h1>
         <div className={Styles.results}>
           <TranscriptionResult
             text={selectedAnamnese?.text}

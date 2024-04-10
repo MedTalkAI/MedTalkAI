@@ -81,6 +81,7 @@
     align-items: center;
     border-radius: 10px;
     border: 1.25px solid #3B769D;
+    color: #3B769D;
     background: #F3F8FF;
     margin-bottom: 32px;
     margin-left: 10px;
@@ -107,7 +108,7 @@
     background: #F1F2F7;
     font-size: 15px;
     font-weight: 600;
-    border-bottom: 2px solid #000;
+    border-bottom: 2px solid #838383;
 }
 
 .selected {
@@ -155,7 +156,7 @@
 }
 
 .anamneseOdd {
-    background-color: #F1F2F7;
+    background-color: #FFF;
     /* Cor de fundo para elementos ímpares */
 }
 
@@ -205,4 +206,64 @@
     justify-content: space-between;
     gap: 50px;
     width: 95%;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+    padding: 0;
+}
+
+.pagination li {
+    display: inline-block;
+    margin: 0 4px;
+}
+
+.pagination a {
+    color: #333;
+    text-decoration: none;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.pagination a:hover {
+    background-color: #f0f0f0;
+}
+
+.pagination .paginationActive a {
+    background-color: #3b769d;
+    color: #fff;
+}
+
+.pagination .paginationDisabled a {
+    pointer-events: none;
+    color: #999;
+    border-color: #999;
+}
+
+.paginationLink span {
+    font-size: 15px;
+}
+
+.paginationContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* Optional: align items vertically */
+    margin-bottom: 10px;
+    /* Adjust margin as needed */
+}
+
+.details {
+    /* Optional styles for the details */
+    color: #838383;
+    font-family: Inter;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: -0.25px;
 }

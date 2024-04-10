@@ -400,8 +400,10 @@ const RecordedAnamnesis = () => {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            width: window.innerWidth * 0.8,
-            height: window.innerHeight * 0.8,
+            width:
+              typeof window !== "undefined" ? window.innerWidth * 0.8 : "80%",
+            height:
+              typeof window !== "undefined" ? window.innerHeight * 0.6 : "60%",
             margin: "auto",
             borderRadius: "4px",
             boxShadow: "0 2px 4px rgba(0, 0, 0, 0.3)",
