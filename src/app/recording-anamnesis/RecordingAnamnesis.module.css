@@ -17,12 +17,10 @@
 }
 
 .anamnesisGroup {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(315px, 1fr));
-    grid-gap: 20px;
     padding-right: 10px;
     padding-left: 10px;
     margin-top: 32px;
+    z-index: -11;
 }
 
 .fixedNavbar {
@@ -33,7 +31,7 @@
 
 .fixedContent {
     position: sticky;
-    top: 79.469px;
+    top: 0px;
     padding-top: 10px;
     padding-bottom: 15px;
     z-index: 100;
@@ -83,27 +81,189 @@
     align-items: center;
     border-radius: 10px;
     border: 1.25px solid #3B769D;
+    color: #3B769D;
     background: #F3F8FF;
     margin-bottom: 32px;
     margin-left: 10px;
 }
 
+.ul {
+    padding-inline-start: 0;
+}
+
 .anamnese {
+    align-items: center;
     cursor: pointer;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: auto;
-    padding: 10px;
-    border-radius: 10px;
+    flex-direction: row;
+    padding: 10px 30px;
     background: #FFF;
-    /* Sombra */
-    box-shadow: 0px 0px 5px 3px rgba(151, 151, 151, 0.25);
+    font-size: 1rem;
+}
+
+.anamneseHeader {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 30px;
+    background: #F1F2F7;
+    font-size: 15px;
+    font-weight: 600;
+    border-bottom: 2px solid #838383;
 }
 
 .selected {
-    border-radius: 10px;
-    border: 1px solid #3B769D;
+    border: 1.25px solid #3B769D;
     background: #F3F8FF;
-    box-shadow: 0px 0px 5px 3px rgba(151, 151, 151, 0.25);
+    box-shadow: 0px 0px 6px 2px rgba(52, 108, 144, 0.25);
+    height: fit-content;
+}
+
+.anamneseId {
+    width: 107px;
+    margin-right: 32px;
+    text-align: center;
+}
+
+.anamneseText {
+    max-height: 4em;
+    /* Ajuste o valor conforme necessário para limitar o número de linhas */
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    line-height: 1.3em;
+    font-size: 1rem;
+    width: 610px;
+    margin-right: 23px;
+    margin-left: 23px;
+    text-overflow: ellipsis;
+
+}
+
+.anamneseWorks {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 107px;
+    margin-right: 23px;
+    margin-left: 23px;
+    text-align: center;
+    padding-right: 10%;
+}
+
+.anamneseHeader .anamneseWorks {
+    cursor: pointer;
+}
+
+.anamneseOdd {
+    background-color: #FFF;
+    /* Cor de fundo para elementos ímpares */
+}
+
+.anamneseEven {
+    background-color: #F8F9FD;
+    /* Cor de fundo para elementos pares */
+}
+
+.button {
+    display: flex;
+    height: 40px;
+    font-size: 1rem;
+    border: none;
+    width: 178px;
+    background-color: #3AA351;
+    color: #FFF;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+}
+
+.button span {
+    margin-right: 5px;
+    text-align: center;
+}
+
+.textSpanButton {
+    margin-right: 0;
+    margin-left: 5px;
+}
+
+.controls {}
+
+.navbar {
+    z-index: 1000;
+}
+
+.selected .anamneseText {
+    display: block;
+    max-height: none;
+    overflow: visible;
+    height: fit-content;
+}
+
+.results {
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+    width: 95%;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+    padding: 0;
+}
+
+.pagination li {
+    display: inline-block;
+    margin: 0 4px;
+}
+
+.pagination a {
+    color: #333;
+    text-decoration: none;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.pagination a:hover {
+    background-color: #f0f0f0;
+}
+
+.pagination .paginationActive a {
+    background-color: #3b769d;
+    color: #fff;
+}
+
+.pagination .paginationDisabled a {
+    pointer-events: none;
+    color: #999;
+    border-color: #999;
+}
+
+.paginationLink span {
+    font-size: 15px;
+}
+
+.paginationContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* Optional: align items vertically */
+    margin-bottom: 10px;
+    /* Adjust margin as needed */
+}
+
+.details {
+    /* Optional styles for the details */
+    color: #838383;
+    font-family: Inter;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: -0.25px;
 }

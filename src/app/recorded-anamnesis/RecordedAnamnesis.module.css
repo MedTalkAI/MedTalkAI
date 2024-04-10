@@ -1,0 +1,327 @@
+.content {
+    margin-top: 30px;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-bottom: 70px;
+}
+
+.content main {
+    display: flex;
+    flex-direction: column;
+}
+
+.content .title {
+    color: #000;
+    font-family: 'Inter';
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: -0.25px;
+}
+
+.controls {
+    width: 100%;
+    height: 150px;
+}
+
+.info {
+    display: flex;
+    width: fit-content;
+    height: fit-content;
+    padding-inline: 8px;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    border-radius: 10px;
+    border: 1.25px solid #3B769D;
+    background: #F3F8FF;
+    color: #3B769D;
+    font-family: 'Inter';
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.25px;
+}
+
+.actionGroup {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 40px;
+}
+
+.droopdown {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: fit-content;
+}
+
+.select {
+    display: flex;
+    width: fit-content;
+    padding-inline: 8px;
+    height: 37px;
+    flex-shrink: 0;
+    justify-content: space-evenly;
+    align-items: center;
+    border-radius: 5px;
+    border: 1px solid #9B9B9B;
+    background: #FFF;
+    color: #346C90;
+    font-family: 'Inter';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: auto;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #FFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 10000;
+}
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    background: #FFF;
+    color: black;
+    font-family: 'Inter';
+    font-style: normal;
+    line-height: normal;
+    cursor: pointer;
+}
+
+.item:hover {
+    background: #F3F8FF;
+}
+
+/* Estilo base para os botões */
+.updateButton,
+.deleteButton {
+    margin-top: 7px;
+    display: flex;
+    width: fit-content;
+    height: 40px;
+    padding: 5px 15px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: #3B9B33;
+    /* Cor de fundo padrão */
+    color: #FFF;
+    text-align: center;
+    font-family: 'Raleway';
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    border: none;
+}
+
+/* Estilo específico para o botão de exclusão */
+.deleteButton {
+    background: #CC224B;
+    /* Cor de fundo diferente para o botão de exclusão */
+}
+
+.buttonCancel {
+    margin-top: 7px;
+    display: flex;
+    width: 100px;
+    height: 40px;
+    padding: 5px 15px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: #FF3B3B;
+    color: #FFF;
+    text-align: center;
+    font-family: 'Raleway';
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    border: none;
+}
+
+.buttonOk {
+    margin-top: 7px;
+    display: flex;
+    width: 100px;
+    height: 40px;
+    padding: 5px 15px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: #3B9B33;
+    color: #FFF;
+    text-align: center;
+    font-family: 'Raleway';
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    border: none;
+
+}
+
+
+@media screen and (max-width: 1160px) {
+    .content {
+        flex-direction: column;
+        margin-left: 5%;
+        margin-right: 5%;
+        gap: 5%;
+    }
+}
+
+@media screen and (max-width: 750px) {
+    .content main {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+
+/* CODIGO DA TABELA*/
+.ul {
+    padding-inline-start: 0;
+}
+
+.anamnese {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    padding: 10px 30px;
+    background: #FFF;
+    font-size: 1rem;
+}
+
+.anamneseHeader {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 30px;
+    background: #F1F2F7;
+    font-size: 15px;
+    font-weight: 600;
+    border-bottom: 2px solid #838383;
+}
+
+.selected {
+    border: 1.25px solid #3B769D;
+    background: #F3F8FF;
+    box-shadow: 0px 0px 6px 2px rgba(52, 108, 144, 0.25);
+    height: fit-content;
+}
+
+.anamneseId {
+    width: 107px;
+    margin-right: 32px;
+    text-align: center;
+}
+
+.anamneseText {
+    max-height: 4em;
+    /* Ajuste o valor conforme necessário para limitar o número de linhas */
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    line-height: 1.3em;
+    font-size: 1rem;
+    width: 610px;
+    margin-right: 23px;
+    margin-left: 23px;
+    text-overflow: ellipsis;
+
+}
+
+.anamneseWorks {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 107px;
+    margin-right: 23px;
+    margin-left: 23px;
+    text-align: center;
+    padding-right: 10%;
+}
+
+.anamneseHeader .anamneseWorks {
+    cursor: pointer;
+}
+
+.anamneseOdd {
+    background-color: #FFF;
+    /* Cor de fundo para elementos ímpares */
+}
+
+.anamneseEven {
+    background-color: #F8F9FD;
+    /* Cor de fundo para elementos pares */
+}
+
+.button {
+    display: flex;
+    height: 40px;
+    font-size: 1rem;
+    border: none;
+    width: 178px;
+    background-color: #3AA351;
+    color: #FFF;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+}
+
+.button span {
+    margin-right: 5px;
+    text-align: center;
+}
+
+.textSpanButton {
+    margin-right: 0;
+    margin-left: 5px;
+}
+
+.controls {}
+
+.navbar {
+    z-index: 1000;
+}
+
+.selected .anamneseText {
+    display: block;
+    max-height: none;
+    overflow: visible;
+    height: fit-content;
+}
+
+.results {
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+    width: 95%;
+}

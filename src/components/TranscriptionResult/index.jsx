@@ -23,7 +23,7 @@ const TranscriptionResult = ({
       let correct_transcription = editableText;
 
       const formData = new FormData();
-      formData.append("correction", correct_transcription);
+      formData.append("text", correct_transcription);
 
       // Submit FormData via fetch
       const token =
@@ -32,9 +32,9 @@ const TranscriptionResult = ({
           : null;
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/corrections/${transcription_id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/anamneses/${transcription_id}`,
         {
-          method: "POST",
+          method: "PUT",
           body: formData,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -45,7 +45,7 @@ const TranscriptionResult = ({
       const result = await response.json();
       console.log(result);
 
-      onSave(correct_transcription, result);
+      onSave(correct_transcription);
     } catch (error) {
       console.error("Error:", error);
     }

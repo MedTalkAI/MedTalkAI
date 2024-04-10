@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 20px;
-  width: 50%;
+  width: 100%;
 }
 
 .title {
@@ -71,7 +71,7 @@
   color: #ffffff;
 }
 
-.transcriptionResult textarea{
+.transcriptionResult textarea {
   width: -webkit-fill-available;
 }
 
@@ -79,6 +79,7 @@
   .transcriptionResult {
     width: 100%;
   }
+
   .textArea {
     width: 93%;
   }

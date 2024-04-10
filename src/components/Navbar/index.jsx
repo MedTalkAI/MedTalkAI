@@ -57,9 +57,11 @@ const Navbar = ({ path }) => {
                 Record Anamnesis
               </span>
             </Link>
-            <Link href="/my-anamnesis">
-              <span className={path === "/my-anamnesis" ? "selected" : ""}>
-                My Anamnesis
+            <Link href="/recorded-anamnesis">
+              <span
+                className={path === "/recorded-anamnesis" ? "selected" : ""}
+              >
+                Recorded
               </span>
             </Link>
           </>
