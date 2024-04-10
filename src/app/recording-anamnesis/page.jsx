@@ -6,6 +6,7 @@ import AudioRecorderComponent from "@/components/AudioRecorderComponent/index.js
 import Navbar from "@/components/Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ReactPaginate from "react-paginate";
 
 const RecordingAnamnesis = () => {
   const [selectedAnamnese, setSelectedAnamnese] = useState();
@@ -15,6 +16,9 @@ const RecordingAnamnesis = () => {
   const [anamneses, setAnamneses] = useState([]);
   const [isFixed, setIsFixed] = useState(false);
   const [isRecorded, setIsRecorded] = useState(false);
+  const [pageNumber, setPageNumber] = useState(0);
+  const itemsPerPage = 10; // Number of items per page
+  const pagesVisited = pageNumber * itemsPerPage;
 
   useEffect(() => {
     setSelectedAnamnese(null);
@@ -101,7 +105,7 @@ const RecordingAnamnesis = () => {
       }
     };
 
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       window.addEventListener("scroll", handleScroll);
 
       return () => {
@@ -136,20 +140,24 @@ const RecordingAnamnesis = () => {
     setSelectedAnamnese(anamnese);
   };
 
-  
   const renderizarAnamneses = () => {
+    const displayedAnamneses = anamneses.slice(
+      pagesVisited,
+      pagesVisited + itemsPerPage
+    );
+
     return (
       <ul className={Styles.ul}>
         <li className={`${Styles.anamneseHeader} ${Styles.header}`}>
           <span className={Styles.anamneseId}>Nº Anamnesis</span>
           <span className={Styles.anamneseText}>Anamnesis</span>
-          <span className={Styles.anamneseWorks}> <span class="material-symbols-outlined">
-              arrow_drop_down
-            </span>
+          <span className={Styles.anamneseWorks}>
+            {" "}
+            <span class="material-symbols-outlined">arrow_drop_down</span>
             <span>Nº Words</span>
           </span>
         </li>
-        {anamneses.map((anamnese, index) => (
+        {displayedAnamneses.map((anamnese, index) => (
           <li
             className={`${Styles.anamnese} ${
               selectedAnamnese?.id === anamnese.id ? Styles.selected : ""
@@ -160,7 +168,7 @@ const RecordingAnamnesis = () => {
             <span className={Styles.anamneseId}>{anamnese.id}</span>
             <span className={Styles.anamneseText}>{anamnese.text}</span>
             <span className={Styles.anamneseWorks}>
-              {((anamnese.text).split(/\s+/)).length}
+              {anamnese.text.split(/\s+/).length}
             </span>
             {selectedAnamnese?.id === anamnese.id && (
               <button className={Styles.button}>
@@ -173,28 +181,49 @@ const RecordingAnamnesis = () => {
       </ul>
     );
   };
-  
-  
+
+  const handlePageChange = ({ selected }) => {
+    setPageNumber(selected);
+  };
+
   return (
     <div className={Styles.container}>
-      <div className={isFixed ? Styles.fixedNavbar : ""}>
       <div className={Styles.navbar}>
         <Navbar path="/recording-anamnesis" />
       </div>
       <ToastContainer />
       <div className={Styles.containerAnamnese}>
         <h1 className={Styles.title}>Recording Anamneses</h1>
-        <div className={isFixed ? Styles.fixedContent : ""}>
-          <p className={Styles.subTitle}>Record Selected Anamnese</p>
-          <div>{anamnesisRecord()}</div>
-        </div>
-        <div className={Styles.controls}>
-          <h1 className={Styles.title}>Recording Anamneses</h1>
-          <p className={Styles.subTitle}>Record Selected Anamnese</p>
-          {anamnesisRecord()}
+        <div className={Styles.subTitle}>Record Selected Anamnese</div>
+        <div>
+          {selectedAnamnese ? (
+            <AudioRecorderComponent />
+          ) : (
+            "Select an anamnese to record."
+          )}
         </div>
         <div className={Styles.anamnesisGroup}>
-          {anamneses && renderizarAnamneses()}
+          {anamneses.length > 0 ? renderizarAnamneses() : "No data to display."}
+        </div>
+        <div className={Styles.paginationContainer}>
+          <div className={Styles.details}>
+            Anamneses {pagesVisited} a {pagesVisited + 10} de {anamneses.length}
+          </div>
+          <ReactPaginate
+            previousLabel={
+              <span class="material-symbols-outlined">arrow_back_ios_new</span>
+            }
+            nextLabel={
+              <span class="material-symbols-outlined">arrow_forward_ios</span>
+            }
+            pageCount={Math.ceil(anamneses.length / itemsPerPage)}
+            onPageChange={handlePageChange}
+            containerClassName={Styles.pagination}
+            previousLinkClassName={Styles.paginationLink}
+            nextLinkClassName={Styles.paginationLink}
+            disabledClassName={Styles.paginationDisabled}
+            activeClassName={Styles.paginationActive}
+          />
         </div>
       </div>
     </div>
