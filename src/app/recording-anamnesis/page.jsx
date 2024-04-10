@@ -217,14 +217,13 @@ const RecordingAnamnesis = () => {
 
   return (
     <div className={Styles.container}>
-      <div className={isFixed ? Styles.fixedNavbar : ""}>
-        <div className={Styles.navbar}>
+      <div className={!isModalOpen && isFixed ? Styles.fixedNavbar : ""}>
           <Navbar path="/recording-anamnesis" />
-        </div>
+      </div>
         <ToastContainer />
         <div className={Styles.containerAnamnese}>
           <h1 className={Styles.title}>Recording Anamneses</h1>
-          <div className={isFixed ? Styles.fixedContent : ""}>
+          <div className={!isModalOpen && isFixed ? Styles.fixedContent : ""}>
             <p className={Styles.subTitle}>Record Selected Anamnese</p>
             <div>{anamnesisRecord()}</div>
           </div>
@@ -255,7 +254,7 @@ const RecordingAnamnesis = () => {
             />
           </div>
         </div>
-      </div>
+      
       <Modal
         isOpen={isModalOpen}
         onRequestClose={() => {
