@@ -451,13 +451,10 @@ const RecordedAnamnesis = () => {
         <div className={Style.results}>
           <TranscriptionResult
             text={selectedTranscription?.anamnese}
-            isEditable={false}
-          />
-          <TranscriptionResult
-            text={selectedTranscription?.anamnese}
             isEditable={true}
             onSave={handeUpdated}
             transcription_id={selectedTranscription?.anamnese_id}
+            title={'Anamnesis'}
           />
         </div>
       </Modal>
