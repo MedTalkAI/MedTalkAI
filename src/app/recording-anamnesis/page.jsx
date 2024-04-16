@@ -45,7 +45,7 @@ const RecordingAnamnesis = () => {
 
         if (response.ok) {
           const data = await response.json();
-          setAnamneses(data);
+          setAnamneses(data.sort((a, b) => a.id - b.id));
         } else {
           throw new Error("Failed to fetch anamneses");
         }

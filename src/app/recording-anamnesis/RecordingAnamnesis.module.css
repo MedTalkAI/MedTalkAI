@@ -128,6 +128,7 @@
   /* Ajuste o valor conforme necessário para limitar o número de linhas */
   overflow: hidden;
   display: -webkit-box;
+  white-space: pre-wrap;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   line-height: 1.3em;
