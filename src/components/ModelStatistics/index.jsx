@@ -15,7 +15,7 @@ const ModelStatistics = ({ model, onCsvDownloader }) => {
         values: [
           model?.wer?.mean || "N/A",
           model?.wer?.variance || "N/A",
-          model?.wer?.std_deviation || "N/A",
+          model?.wer?.std || "N/A",
         ],
       },
       {
@@ -23,7 +23,7 @@ const ModelStatistics = ({ model, onCsvDownloader }) => {
         values: [
           model?.bleu?.mean || "N/A",
           model?.bleu?.variance || "N/A",
-          model?.bleu?.std_deviation || "N/A",
+          model?.bleu?.std || "N/A",
         ],
       },
       {
@@ -31,7 +31,7 @@ const ModelStatistics = ({ model, onCsvDownloader }) => {
         values: [
           model?.cosine?.mean || "N/A",
           model?.cosine?.variance || "N/A",
-          model?.cosine?.std_deviation || "N/A",
+          model?.cosine?.std || "N/A",
         ],
       },
     ];

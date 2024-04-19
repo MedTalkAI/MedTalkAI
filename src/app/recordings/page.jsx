@@ -2,14 +2,16 @@
 
 import Navbar from "@/components/Navbar";
 import Style from "./Recordings.module.css";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
+import ReactLoading from "react-loading";
 import FilterItem from "@/components/FilterItem";
 
 const Recordings = () => {
   const [recordings, setRecordings] = useState([]);
-  const [statusOptions, setStatusOptions] = useState([true, false]);
+  const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState(['True', 'False']);
   const [users, setUsers] = useState([]);
   const [recordingsToBe, setRecordingsToBe] = useState(null);
 
@@ -43,6 +45,7 @@ const Recordings = () => {
           setRecordingsToBe(
             recordings.filter((recording) => recording.status === false).length
           );
+          setLoading(false);
         } else {
           throw new Error("Failed to fetch recordings");
         }
@@ -55,7 +58,7 @@ const Recordings = () => {
   }, []);
 
   const handleFilterChange = (filterName, selectedOptions) => {
-    if (filterName === "Status") {
+    if (filterName === "Transcribed") {
       setSelectedStatus(selectedOptions);
     } else if (filterName === "User") {
       setSelectedUser(selectedOptions);
@@ -63,13 +66,13 @@ const Recordings = () => {
   };
 
   const handleResetFilters = () => {
-    setSelectedStatus([]); // Reset status filter
-    setSelectedUser([]); // Reset user filter
+    setSelectedStatus([]);
+    setSelectedUser([]);
   };
 
   const statusTranslation = {
-    true: "Transcribed",
-    false: "Not Transcribed",
+    true: "True",
+    false: "False",
   };
 
   const filteredRecordings = recordings.filter((recording) => {
@@ -104,71 +107,84 @@ const Recordings = () => {
               </div>
             </div>
           )}
-          <div className={Style.filterContainer}>
-            <div className={Style.filterIcon}>
-              <span class="material-symbols-outlined">filter_list</span>
+          {loading && (
+            <div className={Style.loading}>
+              <ReactLoading
+                type="spinningBubbles"
+                color="#001D3B"
+                height={"5%"}
+                width={"5%"}
+              />
+              <p>Loading...</p>
             </div>
+          )}
+          {recordings.length > 0 && (
+            <div>
+              <div className={Style.filterContainer}>
+                <div className={Style.filterIcon}>
+                  <span class="material-symbols-outlined">filter_list</span>
+                </div>
 
-            <div className={Style.filters}>
-              <div className={Style.filterList}>
-                <FilterItem
-                  filterName={"Status"}
-                  filterOptions={["Transcribed", "Not Transcribed"]}
-                  selectedOptions={selectedStatus}
-                  onChange={(selectedOptions) =>
-                    handleFilterChange("Status", selectedOptions)
-                  }
-                />
-                <FilterItem
-                  filterName={"User"}
-                  filterOptions={users}
-                  selectedOptions={selectedUser}
-                  onChange={(selectedOptions) =>
-                    handleFilterChange("User", selectedOptions)
-                  }
-                />
+                <div className={Style.filters}>
+                  <div className={Style.filterList}>
+                    <FilterItem
+                      filterName={"Transcribed"}
+                      filterOptions={status}
+                      selectedOptions={selectedStatus}
+                      onChange={(selectedOptions) =>
+                        handleFilterChange("Transcribed", selectedOptions)
+                      }
+                    />
+                    <FilterItem
+                      filterName={"User"}
+                      filterOptions={users}
+                      selectedOptions={selectedUser}
+                      onChange={(selectedOptions) =>
+                        handleFilterChange("User", selectedOptions)
+                      }
+                    />
+                  </div>
+                  {(selectedUser.length > 0 || selectedStatus.length > 0) && (
+                    <div
+                      className={Style.resetFilters}
+                      onClick={handleResetFilters}
+                    >
+                      <span class="material-symbols-outlined">refresh</span>
+                      Reset Filters
+                    </div>
+                  )}
+                </div>
               </div>
-
-              {selectedStatus.length > 0 ||
-                (selectedUser.length > 0 && (
-                  <div
-                    className={Style.resetFilters}
-                    onClick={handleResetFilters}
-                  >
-                    <span class="material-symbols-outlined">refresh</span>
-                    Reset Filters
+              <div className={Style.recordings}>
+                {filteredRecordings.map((recording) => (
+                  <div className={Style.recording}>
+                    <div className={Style.recordingInfo}>
+                      <div>
+                        <h2>{recording.id}</h2>
+                      </div>
+                    </div>
+                    <div className={Style.recordingUser}>{recording.user}</div>
+                    <div className={Style.recordingUser}>
+                      {recording.recorded_at}
+                    </div>
+                    <div className={Style.recordingUser}>
+                      {recording.anamnese_id}
+                    </div>
+                    <div
+                      className={`${Style.status} ${
+                        recording.status ? Style.done : Style.undone
+                      }`}
+                    >
+                      <span class="material-symbols-outlined">
+                        {recording.status ? "check_circle" : "cancel"}
+                      </span>
+                      {recording.status ? "Transcribed" : "Not Transcribed"}
+                    </div>
                   </div>
                 ))}
-            </div>
-          </div>
-          <div className={Style.recordings}>
-            {filteredRecordings.map((recording) => (
-              <div className={Style.recording}>
-                <div className={Style.recordingInfo}>
-                  <div>
-                    <h2>{recording.id}</h2>
-                  </div>
-                </div>
-                <div className={Style.recordingUser}>{recording.user}</div>
-                <div className={Style.recordingUser}>
-                  {recording.recorded_at}
-                </div>
-                <div className={Style.recordingUser}>
-                  {recording.anamnese_id}
-                </div>
-                <div
-                  className={`${Style.status} ${
-                    recording.status ? Style.done : Style.undone
-                  }`}
-                >
-                  <span class="material-symbols-outlined">
-                    {true ? "check_circle" : "cancel"}
-                  </span>
-                  Transcribed
-                </div>
               </div>
-            ))}
-          </div>
+            </div>
+          )}
         </main>
       </div>
     </div>

@@ -53,9 +53,9 @@ const FilterItem = ({
       >
         <div className={Style.filterContent} onClick={toggleExpanded}>
           {selectedOptions.length > 0 ? selectedOptions[0] : filterName}
-          {selectedOptions.length > 0 && (
+          {selectedOptions.length > 1 && (
             <div className={Style.filterQuantity}>
-              +{selectedOptions.length}
+              +{selectedOptions.length -1}
             </div>
           )}
         </div>

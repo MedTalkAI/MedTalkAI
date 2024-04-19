@@ -160,3 +160,12 @@
   border: 1px solid #346c90;
   margin-bottom: 5px;
 }
+
+.loading {
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
