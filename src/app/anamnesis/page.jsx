@@ -110,7 +110,7 @@ const Anamnesis = () => {
   const filteredTranscriptions = transcriptions.filter((transcription) => {
     const modelFilter =
       selectedModels.length === 0 ||
-      selectedModels.includes(transcription.model_name);
+      selectedModels.includes(transcription.model);
     const typeFilter =
       selectedTypes.length === 0 ||
       selectedTypes.includes(
@@ -118,7 +118,7 @@ const Anamnesis = () => {
       );
     const userFilter =
       selectedUsers.length === 0 ||
-      selectedUsers.includes(transcription.user_id);
+      selectedUsers.includes(transcription.user);
     return modelFilter && typeFilter && userFilter;
   });
 
