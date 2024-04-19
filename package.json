@@ -13,6 +13,7 @@
     "eslint": "8.56.0",
     "eslint-config-next": "14.0.4",
     "jwt-decode": "^4.0.0",
+    "material-symbols": "^0.17.2",
     "next": "^14.0.4",
     "node": "^21.7.2",
     "pcm-util": "^3.0.0",
