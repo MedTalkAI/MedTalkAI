@@ -44,14 +44,14 @@ const Anamnesis = () => {
           setTranscriptions(transcriptions);
           setUsers(
             transcriptions
-              .map((transcription) => transcription.user_id)
-              .filter((user_id, index, self) => self.indexOf(user_id) === index)
+              .map((transcription) => transcription.user)
+              .filter((user, index, self) => self.indexOf(user) === index)
           );
           setModels(
             transcriptions
-              .map((transcription) => transcription.model_name)
+              .map((transcription) => transcription.model)
               .filter(
-                (model_name, index, self) => self.indexOf(model_name) === index
+                (model, index, self) => self.indexOf(model) === index
               )
           );
         } else {
