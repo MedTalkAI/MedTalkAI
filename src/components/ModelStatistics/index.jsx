@@ -1,6 +1,5 @@
 import React from "react";
 import Style from "./ModelStatistics.module.css";
-import "material-symbols";
 
 const ModelStatistics = ({ model, onCsvDownloader }) => {
   const renderTable = () => {

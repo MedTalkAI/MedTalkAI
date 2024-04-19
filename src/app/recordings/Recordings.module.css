@@ -1,0 +1,162 @@
+.content {
+  margin-top: 30px;
+  margin-left: 2%;
+  margin-right: 2%;
+  margin-bottom: 70px;
+}
+
+.content main {
+  display: flex;
+  flex-direction: column;
+}
+
+.head {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.options {
+  display: inline-flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
+}
+
+.content button {
+  display: flex;
+  padding: 5px 15px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 10px;
+  border: none;
+
+  color: #fff;
+  font-family: Raleway;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.25px;
+}
+
+.secondaryButton {
+  background: #d35a2d;
+}
+
+.secondaryButton:hover {
+  box-shadow: 0px 0px 10px 2px rgba(78, 78, 78, 0.25);
+  cursor: pointer;
+}
+
+.secondaryButton:active {
+  background: #b84c26;
+  box-shadow: none;
+}
+
+.secondaryButton:disabled,
+.secondaryButton:disabled:hover {
+  background: #b5897f;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.recordingsTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.tag {
+  display: inline-flex;
+  padding: 10px 11px;
+  align-items: center;
+  gap: 8px;
+
+  border-radius: 10px;
+  border: 1.25px solid #d35a2d;
+  background: #fff4f0;
+
+  color: #d35a2d;
+  font-family: Inter;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.25px;
+}
+
+.title {
+  color: #000;
+  font-family: "Inter";
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.25px;
+}
+
+.status {
+  display: flex;
+  padding: 2px 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  flex: 1 0 0;
+  border-radius: 100px;
+  color: #fff;
+}
+
+.done {
+  background: #3b9b33;
+}
+
+.undone {
+  background: #cc224b;
+}
+
+.filterContainer {
+  color: #346c90;
+  margin-top: 38px;
+  margin-bottom: 33px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.selected span {
+  background: rgba(52, 109, 144, 0.089);
+}
+
+.filters {
+  align-items: center;
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+}
+
+.resetFilters {
+  display: flex;
+  padding: 2px;
+  align-items: center;
+  gap: 5px;
+  border-radius: 50px;
+}
+
+.resetFilters:hover {
+  cursor: pointer;
+  background: rgba(52, 108, 144, 0.2);
+}
+
+.filterList {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 22px;
+}
+
+.recording {
+  border: 1px solid #346c90;
+  margin-bottom: 5px;
+}

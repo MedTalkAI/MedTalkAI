@@ -66,110 +66,27 @@ const Anamnesis = () => {
       <div className={Style.content}>
         <ToastContainer />
         <main>
-          <div className={Style.fixed}>
+          <div className={Style.head}>
             <h1 className={Style.title}>Anamnesis</h1>
-            <div className={Style.controls}></div>
-
-            <h3>Selected anamnese</h3>
-            <div className={Style.actionGroup}>
-              <div className={Style.info}>
-                <span className="material-symbols-outlined">info</span>
-                <p>You can select any anamnese, see all metrics about it</p>
-              </div>
-              <div className={Style.dropdown} ref={dropdownRef}>
-                <div
-                  className={Style.select}
-                  onClick={() => {
-                    setOpenDropdown(!openDropdown);
-                  }}
-                >
-                  <p>Order by {orderBy}</p>
-                  {!openDropdown && (
-                    <span className="material-symbols-outlined">
-                      expand_more
-                    </span>
-                  )}
-                  {openDropdown && (
-                    <span className="material-symbols-outlined">
-                      expand_less
-                    </span>
-                  )}
-                </div>
-                {openDropdown && (
-                  <div className={Style.menu}>
-                    {orderBy !== "" && (
-                      <div
-                        className={Style.item}
-                        onClick={() => {
-                          setOrderBy("");
-                        }}
-                      >
-                        Default
-                      </div>
-                    )}
-                    <div
-                      className={Style.item}
-                      onClick={() => {
-                        setOrderBy("Date");
-                      }}
-                    >
-                      Date
-                    </div>
-                    <div
-                      className={Style.item}
-                      onClick={() => {
-                        setOrderBy("Name");
-                      }}
-                    >
-                      Name
-                    </div>
-                    <div
-                      className={Style.item}
-                      onClick={() => {
-                        setOrderBy("last");
-                      }}
-                    >
-                      Last
-                    </div>
-                    <div
-                      className={Style.item}
-                      onClick={() => {
-                        setOrderBy("oldest");
-                      }}
-                    >
-                      Oldest
-                    </div>
-                  </div>
-                )}
-              </div>
+            <div className={Style.options}>
+              <button className={Style.benchmark} disabled>
+                <span class="material-symbols-outlined">bubble_chart</span>
+                Benchmark
+              </button>
+              <button className={Style.upload}>
+                <span class="material-symbols-outlined">upload_file</span>
+                Upload Anamnesis
+              </button>
             </div>
           </div>
-          <div className={Style.anamnesisGroup}>
-            {transcriptions.map((transcription, index) => (
-              <a
-                className={Style.anamneseLink}
-                href={"/anamnese/" + transcription.id}
-                key={index}
-                style={{ textDecoration: "none" }}
-              >
-                <div className={Style.anamnese} key={index}>
-                  <p>{transcription.latest_correction}</p>
-                  <span className={Style.modelName}>
-                    {transcription.model_name}
-                  </span>
-                  <span className={Style.modelMetric}>
-                    WER {parseFloat(transcription.wer).toFixed(2)}
-                  </span>
-                  <span className={Style.modelMetric}>
-                    BLEU:{parseFloat(transcription.bleu).toFixed(2)}
-                  </span>
-                  <span className={Style.modelMetric}>
-                    COSINE SIMILARITY:{" "}
-                    {parseFloat(transcription.cosine).toFixed(2)}{" "}
-                  </span>
-                </div>
-              </a>
-            ))}
+          <div className={Style.recordingsTag}>
+            <div className={Style.tag}>
+              <span class="material-symbols-outlined">audio_file</span>
+              10 recordings ready to be transcribed
+            </div>
+            <button className={Style.secondaryButton} disabled>
+              Transcribe
+            </button>
           </div>
         </main>
       </div>
