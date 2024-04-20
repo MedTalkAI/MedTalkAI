@@ -6,9 +6,57 @@ import Style from "./Anamnesis.module.css";
 import { ToastContainer, toast } from "react-toastify";
 import ReactLoading from "react-loading";
 import "react-toastify/dist/ReactToastify.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import ReactPaginate from "react-paginate";
+import {
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  TableSortLabel,
+  TableContainer,
+} from "@mui/material";
+
+const headCells = [
+  { id: "id", label: "ID" },
+  { id: "transcription", label: "Transcription" },
+  { id: "model", label: "Model" },
+  { id: "user", label: "User" },
+  { id: "date", label: "Date" },
+];
+
+function ATableHead({ order, orderBy, onRequestSort }) {
+  const createSortHandler = (property) => (event) => {
+    onRequestSort(event, property);
+  };
+
+  return (
+    <TableHead>
+      <TableRow>
+        {headCells.map((headCell) => (
+          <TableCell
+            key={headCell.id}
+            sortDirection={orderBy === headCell.id ? order : false}
+            className={Style.tableHeading}
+          >
+            <TableSortLabel
+              active={orderBy === headCell.id}
+              direction={orderBy === headCell.id ? order : "asc"}
+              onClick={createSortHandler(headCell.id)}
+            >
+              {headCell.label}
+            </TableSortLabel>
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+  );
+}
 
 const Anamnesis = () => {
+  const [order, setOrder] = useState("asc");
+  const [orderBy, setOrderBy] = useState("id");
   const [transcriptions, setTranscriptions] = useState([]);
   const [recordingsToBe, setRecordingsToBe] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -21,6 +69,14 @@ const Anamnesis = () => {
 
   const [users, setUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
+
+  const [pageNumber, setPageNumber] = useState(0);
+  const itemsPerPage = 10;
+  const pagesVisited = pageNumber * itemsPerPage;
+
+  const handlePageChange = ({ selected }) => {
+    setPageNumber(selected);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,9 +106,7 @@ const Anamnesis = () => {
           setModels(
             transcriptions
               .map((transcription) => transcription.model)
-              .filter(
-                (model, index, self) => self.indexOf(model) === index
-              )
+              .filter((model, index, self) => self.indexOf(model) === index)
           );
         } else {
           throw new Error("Failed to fetch transcriptions");
@@ -92,6 +146,14 @@ const Anamnesis = () => {
     setLoading(false);
   }, []);
 
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+  };
+
   const handleFilterChange = (filterName, selectedOptions) => {
     if (filterName === "Model") {
       setSelectedModels(selectedOptions);
@@ -117,10 +179,49 @@ const Anamnesis = () => {
         transcription.anamnese_id === null ? "Original" : "Hapvida"
       );
     const userFilter =
-      selectedUsers.length === 0 ||
-      selectedUsers.includes(transcription.user);
+      selectedUsers.length === 0 || selectedUsers.includes(transcription.user);
     return modelFilter && typeFilter && userFilter;
   });
+
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
+  const descendingComparator = (a, b) => {
+    if (b < a) return -1;
+    if (b > a) return 1;
+    return 0;
+  };
+
+  const getComparator = (order, orderBy) => {
+    return order === "desc"
+      ? (a, b) => descendingComparator(a[orderBy], b[orderBy])
+      : (a, b) => -descendingComparator(a[orderBy], b[orderBy]);
+  };
+
+  const stableSort = (array, comparator) => {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) {
+        return order;
+      }
+      return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
+  };
+
+  const sortedTranscriptions = stableSort(
+    filteredTranscriptions,
+    getComparator(order, orderBy)
+  );
+
+  const displayedAnamneses = sortedTranscriptions.slice(
+    pagesVisited,
+    pagesVisited + itemsPerPage
+  );
 
   return (
     <div>
@@ -211,24 +312,59 @@ const Anamnesis = () => {
                   )}
                 </div>
               </div>
-              <div>
-                {filteredTranscriptions.map((transcription) => (
-                  <div
-                    style={{
-                      border: "1px solid #ccc",
-                    }}
-                  >
-                    <div>
-                      <span>{transcription.transcription}</span>
-                    </div>
-                    <div>
-                      <span>{transcription.model_name}</span>
-                    </div>
-                    <div>
-                      <span>{transcription.date}</span>
-                    </div>
-                  </div>
-                ))}
+              <TableContainer>
+                <Table aria-labelledby="anamnesis" size="medium">
+                  <ATableHead
+                    order={order}
+                    orderBy={orderBy}
+                    onRequestSort={handleRequestSort}
+                  />
+                  <TableBody>
+                    {displayedAnamneses.map((anamnese) => (
+                      <TableRow key={anamnese.id}>
+                        <TableCell>{anamnese.id}</TableCell>
+                        <TableCell className={Style.anamneseText}>
+                          {anamnese.transcription}
+                        </TableCell>
+                        <TableCell>{anamnese.model}</TableCell>
+                        <TableCell>{anamnese.user}</TableCell>
+                        <TableCell>{formatDate(anamnese.date)}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <div className={Style.paginationContainer}>
+                <div className={Style.details}>
+                  Anamneses {pagesVisited} a{" "}
+                  {filteredTranscriptions.length > 10
+                    ? pagesVisited + 10 > filteredTranscriptions.length
+                      ? filteredTranscriptions.length
+                      : pagesVisited + 10
+                    : filteredTranscriptions.length}{" "}
+                  de {filteredTranscriptions.length}
+                </div>
+                <ReactPaginate
+                  previousLabel={
+                    <span class="material-symbols-outlined">
+                      arrow_back_ios_new
+                    </span>
+                  }
+                  nextLabel={
+                    <span class="material-symbols-outlined">
+                      arrow_forward_ios
+                    </span>
+                  }
+                  pageCount={Math.ceil(
+                    filteredTranscriptions.length / itemsPerPage
+                  )}
+                  onPageChange={handlePageChange}
+                  containerClassName={Style.pagination}
+                  previousLinkClassName={Style.paginationLink}
+                  nextLinkClassName={Style.paginationLink}
+                  disabledClassName={Style.paginationDisabled}
+                  activeClassName={Style.paginationActive}
+                />
               </div>
             </div>
           )}

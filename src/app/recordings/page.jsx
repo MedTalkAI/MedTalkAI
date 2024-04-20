@@ -260,7 +260,6 @@ const Recordings = () => {
                   )}
                 </div>
               </div>
-              <div></div>
               <TableContainer>
                 <Table aria-labelledby="recordings" size="medium">
                   <RTableHead
@@ -319,7 +318,7 @@ const Recordings = () => {
                       arrow_forward_ios
                     </span>
                   }
-                  pageCount={Math.ceil(recordings.length / itemsPerPage)}
+                  pageCount={Math.ceil(filteredRecordings.length / itemsPerPage)}
                   onPageChange={handlePageChange}
                   containerClassName={Style.pagination}
                   previousLinkClassName={Style.paginationLink}
