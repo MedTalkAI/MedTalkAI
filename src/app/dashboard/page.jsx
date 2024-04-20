@@ -14,8 +14,6 @@ const Dashboard = () => {
   const [csvContent, setCsvContent] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-
-
   const updateModelStandard = () => {
     if (!defaultModel) {
       toast.error("Default model is not selected");
@@ -26,10 +24,11 @@ const Dashboard = () => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${typeof window !== "undefined" && window.localStorage
-          ? localStorage.getItem("access_token")
-          : ""
-          }`,
+        Authorization: `Bearer ${
+          typeof window !== "undefined" && window.localStorage
+            ? localStorage.getItem("access_token")
+            : ""
+        }`,
       },
     })
       .then((response) => {
@@ -63,16 +62,22 @@ const Dashboard = () => {
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/models`, {
       headers: {
-        Authorization: `Bearer ${typeof window !== "undefined" && window.localStorage
-          ? localStorage.getItem("access_token")
-          : ""
-          }`,
+        Authorization: `Bearer ${
+          typeof window !== "undefined" && window.localStorage
+            ? localStorage.getItem("access_token")
+            : ""
+        }`,
       },
     })
       .then((response) => response.json())
       .then((data) => {
         if (models.length === 0) {
-          setModels(data);
+          setModels(data.sort((a, b) => {
+            if (a.standard === b.standard) {
+              return a.name.localeCompare(b.name); // Sort alphabetically by name
+            }
+            return a.standard ? -1 : 1; // Move standard models before non-standard ones
+          }));
           console.log(data.find((model) => model.standard));
           setDefaultModel(data.find((model) => model.standard));
         }
@@ -86,41 +91,39 @@ const Dashboard = () => {
 
   //já que preciso tratar como blob irei modificar aqui.
   function saveCsv(id) {
-  fetch(`${process.env.NEXT_PUBLIC_API_URL}/models/${id}/csv`, {
-    headers: {
-      Authorization: `Bearer ${typeof window !== "undefined" && window.localStorage
-        ? localStorage.getItem("access_token")
-        : ""
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/models/${id}/csv`, {
+      headers: {
+        Authorization: `Bearer ${
+          typeof window !== "undefined" && window.localStorage
+            ? localStorage.getItem("access_token")
+            : ""
         }`,
-    },
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Erro ao obter o arquivo');
-      }
-      return response.text(); // Obter o conteúdo do arquivo como texto
+      },
     })
-    .then(csvContent => {
-      // Cria um link temporário para download do arquivo
-      const url = window.URL.createObjectURL(new Blob([csvContent], { type: 'text/csv' }));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'arquivo.csv');
-      // Adiciona o link ao documento e aciona o clique para iniciar o download
-      document.body.appendChild(link);
-      link.click();
-      // Remove o link do documento
-      document.body.removeChild(link);
-    })
-    .catch(error => {
-      console.error('Erro:', error);
-    });
-}
-const handleBenchmark = () => {
-  //implementar 
-};
-
-
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Erro ao obter o arquivo");
+        }
+        return response.text(); // Obter o conteúdo do arquivo como texto
+      })
+      .then((csvContent) => {
+        // Cria um link temporário para download do arquivo
+        const url = window.URL.createObjectURL(
+          new Blob([csvContent], { type: "text/csv" })
+        );
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "arquivo.csv");
+        // Adiciona o link ao documento e aciona o clique para iniciar o download
+        document.body.appendChild(link);
+        link.click();
+        // Remove o link do documento
+        document.body.removeChild(link);
+      })
+      .catch((error) => {
+        console.error("Erro:", error);
+      });
+  }
 
   return (
     <div className={Style.Dashboard}>
@@ -131,9 +134,6 @@ const handleBenchmark = () => {
           <div className={Style.sides}>
             <h1 className={Style.title}>Model Dashboard</h1>
             <div className={Style.benchmarkAndGroupSelect}>
-              <button onClick={()=>handleBenchmark()} className={Style.exportarBenchmark}>
-                Benchmark
-              </button>
               <div className={Style.groupSelect}>
                 <h2>Default Model</h2>
                 {models.length > 0 && (
@@ -160,7 +160,12 @@ const handleBenchmark = () => {
           <div className={Style.models}>
             <div className={Style.modelStatistics}>
               {models.map((model) => (
-                <ModelStatistics key={model.id} statistics={model} onCsvDownloader={saveCsv} />
+                <ModelStatistics
+                  key={model.id}
+                  model={model}
+                  onCsvDownloader={saveCsv}
+                  className={Style.modelItem}
+                />
               ))}
             </div>
           </div>

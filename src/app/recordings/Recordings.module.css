@@ -42,64 +42,6 @@
   letter-spacing: -0.25px;
 }
 
-.benchmark {
-  background: #008080;
-}
-
-.benchmark:hover {
-  box-shadow: 0px 0px 10px 2px rgba(78, 78, 78, 0.25);
-  cursor: pointer;
-}
-
-.benchmark:active {
-  background: #006666;
-  box-shadow: none;
-}
-
-.benchmark:disabled,
-.benchmark:disabled:hover {
-  background: #6e9d9d;
-  box-shadow: none;
-  cursor: not-allowed;
-}
-
-.upload {
-  background: #346c90;
-}
-
-.upload:hover {
-  box-shadow: 0px 0px 10px 2px rgba(78, 78, 78, 0.25);
-  cursor: pointer;
-}
-
-.upload:active {
-  background: #2e6181;
-  box-shadow: none;
-}
-
-.upload:disabled,
-.upload:disabled:hover {
-  background: #6e8a9d;
-  box-shadow: none;
-  cursor: not-allowed;
-}
-
-.title {
-  color: #000;
-  font-family: "Inter";
-  font-size: 40px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  letter-spacing: -0.25px;
-}
-
-.recordingsTag {
-  display: inline-flex;
-  align-items: center;
-  gap: 20px;
-}
-
 .secondaryButton {
   background: #d35a2d;
 }
@@ -121,6 +63,12 @@
   box-shadow: none;
 }
 
+.recordingsTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+}
+
 .tag {
   display: inline-flex;
   padding: 10px 11px;
@@ -138,6 +86,40 @@
   font-weight: 500;
   line-height: normal;
   letter-spacing: -0.25px;
+}
+
+.title {
+  color: #000;
+  font-family: "Inter";
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.25px;
+}
+
+.tableHeading {
+  white-space: nowrap;
+}
+
+.status {
+  white-space: nowrap;
+  display: flex;
+  padding: 2px 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  flex: 1 0 0;
+  border-radius: 100px;
+  color: #fff;
+}
+
+.done {
+  background: #3b9b33;
+}
+
+.undone {
+  background: #cc224b;
 }
 
 .filterContainer {
@@ -177,6 +159,19 @@
   display: inline-flex;
   align-items: flex-start;
   gap: 22px;
+}
+
+.recording {
+  border: 1px solid #346c90;
+  margin-bottom: 5px;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 .anamneseText {

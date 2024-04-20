@@ -1,12 +1,13 @@
 "use client";
 
+import * as React from "react";
 import Navbar from "@/components/Navbar";
-import FilterItem from "@/components/FilterItem";
-import Style from "./Anamnesis.module.css";
-import { ToastContainer, toast } from "react-toastify";
-import ReactLoading from "react-loading";
+import Style from "./Recordings.module.css";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
+import ReactLoading from "react-loading";
+import FilterItem from "@/components/FilterItem";
 import ReactPaginate from "react-paginate";
 import {
   Table,
@@ -19,14 +20,14 @@ import {
 } from "@mui/material";
 
 const headCells = [
-  { id: "id", label: "ID" },
-  { id: "transcription", label: "Transcription" },
-  { id: "model", label: "Model" },
+  { id: "id", label: "Nº Anamnesis" },
+  { id: "anamnese", label: "Anamnesis" },
   { id: "user", label: "User" },
-  { id: "date", label: "Date" },
+  { id: "recorded_at", label: "Date" },
+  { id: "status", label: "Status" },
 ];
 
-function ATableHead({ order, orderBy, onRequestSort }) {
+function RTableHead({ order, orderBy, onRequestSort }) {
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -54,21 +55,17 @@ function ATableHead({ order, orderBy, onRequestSort }) {
   );
 }
 
-const Anamnesis = () => {
+const Recordings = () => {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("id");
-  const [transcriptions, setTranscriptions] = useState([]);
-  const [recordingsToBe, setRecordingsToBe] = useState(null);
+  const [recordings, setRecordings] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const [types, setTypes] = useState(["Original", "Hapvida"]);
-  const [selectedTypes, setSelectedTypes] = useState([]);
-
-  const [models, setModels] = useState([]);
-  const [selectedModels, setSelectedModels] = useState([]);
-
+  const [status, setStatus] = useState(["True", "False"]);
   const [users, setUsers] = useState([]);
-  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [recordingsToBe, setRecordingsToBe] = useState(null);
+
+  const [selectedStatus, setSelectedStatus] = useState([]);
+  const [selectedUser, setSelectedUser] = useState([]);
 
   const [pageNumber, setPageNumber] = useState(0);
   const itemsPerPage = 10;
@@ -82,43 +79,7 @@ const Anamnesis = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/transcriptions`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${
-                typeof window !== "undefined" && window.localStorage
-                  ? localStorage.getItem("access_token")
-                  : ""
-              }`,
-            },
-          }
-        );
-        if (response.ok) {
-          const transcriptions = await response.json();
-          console.log(transcriptions);
-          setTranscriptions(transcriptions);
-          setUsers(
-            transcriptions
-              .map((transcription) => transcription.user)
-              .filter((user, index, self) => self.indexOf(user) === index)
-          );
-          setModels(
-            transcriptions
-              .map((transcription) => transcription.model)
-              .filter((model, index, self) => self.indexOf(model) === index)
-          );
-        } else {
-          throw new Error("Failed to fetch transcriptions");
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    const fetchRecordings = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/recordings?count=true&status=false`,
+          `${process.env.NEXT_PUBLIC_API_URL}/recordings`,
           {
             method: "GET",
             headers: {
@@ -132,7 +93,16 @@ const Anamnesis = () => {
         );
         if (response.ok) {
           const recordings = await response.json();
-          setRecordingsToBe(recordings.count);
+          setRecordings(recordings);
+          setUsers(
+            recordings
+              .map((recording) => recording.user)
+              .filter((user, index, self) => self.indexOf(user) === index)
+          );
+          setRecordingsToBe(
+            recordings.filter((recording) => recording.status === false).length
+          );
+          setLoading(false);
         } else {
           throw new Error("Failed to fetch recordings");
         }
@@ -141,9 +111,7 @@ const Anamnesis = () => {
       }
     };
 
-    fetchRecordings();
     fetchData();
-    setLoading(false);
   }, []);
 
   const formatDate = (date) => {
@@ -155,32 +123,30 @@ const Anamnesis = () => {
   };
 
   const handleFilterChange = (filterName, selectedOptions) => {
-    if (filterName === "Model") {
-      setSelectedModels(selectedOptions);
-    } else if (filterName === "Type") {
-      setSelectedTypes(selectedOptions);
+    if (filterName === "Transcribed") {
+      setSelectedStatus(selectedOptions);
     } else if (filterName === "User") {
-      setSelectedUsers(selectedOptions);
+      setSelectedUser(selectedOptions);
     }
   };
+
   const handleResetFilters = () => {
-    setSelectedModels([]);
-    setSelectedTypes([]);
-    setSelectedUsers([]);
+    setSelectedStatus([]);
+    setSelectedUser([]);
   };
 
-  const filteredTranscriptions = transcriptions.filter((transcription) => {
-    const modelFilter =
-      selectedModels.length === 0 ||
-      selectedModels.includes(transcription.model);
-    const typeFilter =
-      selectedTypes.length === 0 ||
-      selectedTypes.includes(
-        transcription.anamnese_id === null ? "Original" : "Hapvida"
-      );
+  const statusTranslation = {
+    true: "True",
+    false: "False",
+  };
+
+  const filteredRecordings = recordings.filter((recording) => {
+    const statusFilter =
+      selectedStatus.length === 0 ||
+      selectedStatus.includes(statusTranslation[recording.status]);
     const userFilter =
-      selectedUsers.length === 0 || selectedUsers.includes(transcription.user);
-    return modelFilter && typeFilter && userFilter;
+      selectedUser.length === 0 || selectedUser.includes(recording.user);
+    return statusFilter && userFilter;
   });
 
   const handleRequestSort = (event, property) => {
@@ -213,32 +179,28 @@ const Anamnesis = () => {
     return stabilizedThis.map((el) => el[0]);
   };
 
-  const sortedTranscriptions = stableSort(
-    filteredTranscriptions,
+  const sortedRecordings = stableSort(
+    filteredRecordings,
     getComparator(order, orderBy)
   );
 
-  const displayedAnamneses = sortedTranscriptions.slice(
+  const displayedAnamneses = sortedRecordings.slice(
     pagesVisited,
     pagesVisited + itemsPerPage
   );
 
   return (
     <div>
-      <Navbar path="/anamnesis" />
+      <Navbar path="/recordings" />
       <div className={Style.content}>
         <ToastContainer />
         <main>
           <div className={Style.head}>
-            <h1 className={Style.title}>Anamnesis</h1>
+            <h1 className={Style.title}>Recordings</h1>
             <div className={Style.options}>
-              <button className={Style.benchmark} disabled>
-                <span class="material-symbols-outlined">bubble_chart</span>
-                Benchmark
-              </button>
-              <button className={Style.upload}>
-                <span class="material-symbols-outlined">upload_file</span>
-                Upload Anamnesis
+              <button className={Style.secondaryButton} disabled>
+                <span class="material-symbols-outlined">audio_file</span>
+                Generate Transcriptions
               </button>
             </div>
           </div>
@@ -248,9 +210,6 @@ const Anamnesis = () => {
                 <span class="material-symbols-outlined">audio_file</span>
                 {recordingsToBe} recordings ready to be transcribed
               </div>
-              <button className={Style.secondaryButton} disabled>
-                Transcribe
-              </button>
             </div>
           )}
           {loading && (
@@ -264,7 +223,7 @@ const Anamnesis = () => {
               <p>Loading...</p>
             </div>
           )}
-          {transcriptions.length > 0 && (
+          {recordings.length > 0 && (
             <div>
               <div className={Style.filterContainer}>
                 <div className={Style.filterIcon}>
@@ -274,34 +233,23 @@ const Anamnesis = () => {
                 <div className={Style.filters}>
                   <div className={Style.filterList}>
                     <FilterItem
-                      filterName={"Model"}
-                      filterOptions={models}
-                      selectedOptions={selectedModels}
+                      filterName={"Transcribed"}
+                      filterOptions={status}
+                      selectedOptions={selectedStatus}
                       onChange={(selectedOptions) =>
-                        handleFilterChange("Model", selectedOptions)
-                      }
-                    />
-                    <FilterItem
-                      filterName={"Type"}
-                      filterOptions={types}
-                      selectedOptions={selectedTypes}
-                      onChange={(selectedOptions) =>
-                        handleFilterChange("Type", selectedOptions)
+                        handleFilterChange("Transcribed", selectedOptions)
                       }
                     />
                     <FilterItem
                       filterName={"User"}
                       filterOptions={users}
-                      selectedOptions={selectedUsers}
+                      selectedOptions={selectedUser}
                       onChange={(selectedOptions) =>
                         handleFilterChange("User", selectedOptions)
                       }
                     />
                   </div>
-
-                  {(selectedModels.length > 0 ||
-                    selectedTypes.length > 0 ||
-                    selectedUsers.length > 0) && (
+                  {(selectedUser.length > 0 || selectedStatus.length > 0) && (
                     <div
                       className={Style.resetFilters}
                       onClick={handleResetFilters}
@@ -313,22 +261,37 @@ const Anamnesis = () => {
                 </div>
               </div>
               <TableContainer>
-                <Table aria-labelledby="anamnesis" size="medium">
-                  <ATableHead
+                <Table aria-labelledby="recordings" size="medium">
+                  <RTableHead
                     order={order}
                     orderBy={orderBy}
                     onRequestSort={handleRequestSort}
                   />
                   <TableBody>
-                    {displayedAnamneses.map((anamnese) => (
-                      <TableRow key={anamnese.id}>
-                        <TableCell>{anamnese.id}</TableCell>
+                    {displayedAnamneses.map((recording) => (
+                      <TableRow key={recording.id}>
+                        <TableCell>{recording.anamnese_id}</TableCell>
                         <TableCell className={Style.anamneseText}>
-                          {anamnese.transcription}
+                          {recording.anamnese}
                         </TableCell>
-                        <TableCell>{anamnese.model}</TableCell>
-                        <TableCell>{anamnese.user}</TableCell>
-                        <TableCell>{formatDate(anamnese.date)}</TableCell>
+                        <TableCell>{recording.user}</TableCell>
+                        <TableCell>
+                          {formatDate(recording.recorded_at)}
+                        </TableCell>
+                        <TableCell>
+                          <div
+                            className={`${Style.status} ${
+                              recording.status ? Style.done : Style.undone
+                            }`}
+                          >
+                            <span class="material-symbols-outlined">
+                              {recording.status ? "check_circle" : "cancel"}
+                            </span>
+                            {recording.status
+                              ? "Transcribed"
+                              : "Not Transcribed"}
+                          </div>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -337,12 +300,12 @@ const Anamnesis = () => {
               <div className={Style.paginationContainer}>
                 <div className={Style.details}>
                   Anamneses {pagesVisited} a{" "}
-                  {filteredTranscriptions.length > 10
-                    ? pagesVisited + 10 > filteredTranscriptions.length
-                      ? filteredTranscriptions.length
+                  {filteredRecordings.length > 10
+                    ? pagesVisited + 10 > filteredRecordings.length
+                      ? filteredRecordings.length
                       : pagesVisited + 10
-                    : filteredTranscriptions.length}{" "}
-                  de {filteredTranscriptions.length}
+                    : filteredRecordings.length}{" "}
+                  de {filteredRecordings.length}
                 </div>
                 <ReactPaginate
                   previousLabel={
@@ -355,9 +318,7 @@ const Anamnesis = () => {
                       arrow_forward_ios
                     </span>
                   }
-                  pageCount={Math.ceil(
-                    filteredTranscriptions.length / itemsPerPage
-                  )}
+                  pageCount={Math.ceil(filteredRecordings.length / itemsPerPage)}
                   onPageChange={handlePageChange}
                   containerClassName={Style.pagination}
                   previousLinkClassName={Style.paginationLink}
@@ -374,4 +335,4 @@ const Anamnesis = () => {
   );
 };
 
-export default Anamnesis;
+export default Recordings;
