@@ -98,7 +98,12 @@
   letter-spacing: -0.25px;
 }
 
+.tableHeading {
+  white-space: nowrap;
+}
+
 .status {
+  white-space: nowrap;
   display: flex;
   padding: 2px 10px;
   justify-content: center;
@@ -162,10 +167,73 @@
 }
 
 .loading {
-  
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100%;
+}
+
+.anamneseText {
+  white-space: pre-wrap;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+  padding: 0;
+}
+
+.pagination li {
+  display: inline-block;
+  margin: 0 4px;
+}
+
+.pagination a {
+  color: #333;
+  text-decoration: none;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.pagination a:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination .paginationActive a {
+  background-color: #3b769d;
+  color: #fff;
+}
+
+.pagination .paginationDisabled a {
+  pointer-events: none;
+  color: #999;
+  border-color: #999;
+}
+
+.paginationLink span {
+  font-size: 15px;
+}
+
+.paginationContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* Optional: align items vertically */
+  margin-bottom: 10px;
+  /* Adjust margin as needed */
+}
+
+.details {
+  /* Optional styles for the details */
+  color: #838383;
+  font-family: Inter;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.25px;
 }
