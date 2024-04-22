@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { styled } from "@mui/material/styles";
 import Navbar from "@/components/Navbar";
 import Style from "./Recordings.module.css";
 import { ToastContainer } from "react-toastify";
@@ -18,6 +19,35 @@ import {
   TableSortLabel,
   TableContainer,
 } from "@mui/material";
+import { tableCellClasses } from "@mui/material/TableCell";
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: "#F1F2F7",
+    color: "#000000",
+    fontWeight: "bold",
+    fontSize: 15,
+    fontFamily: "Inter",
+    borderBottom: "2px solid #838383",
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontFamily: "Inter",
+    fontSize: 15,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(even)": {
+    backgroundColor: "#F8F9FD",
+  },
+  "&:nth-of-type(odd)": {
+    backgroundColor: "#ffffff",
+  },
+  // hide last border
+  "& td, & th": {
+    border: 0,
+  },
+}));
 
 const headCells = [
   { id: "id", label: "Nº Anamnesis" },
@@ -36,7 +66,7 @@ function RTableHead({ order, orderBy, onRequestSort }) {
     <TableHead>
       <TableRow>
         {headCells.map((headCell) => (
-          <TableCell
+          <StyledTableCell
             key={headCell.id}
             sortDirection={orderBy === headCell.id ? order : false}
             className={Style.tableHeading}
@@ -48,7 +78,7 @@ function RTableHead({ order, orderBy, onRequestSort }) {
             >
               {headCell.label}
             </TableSortLabel>
-          </TableCell>
+          </StyledTableCell>
         ))}
       </TableRow>
     </TableHead>
@@ -269,16 +299,18 @@ const Recordings = () => {
                   />
                   <TableBody>
                     {displayedAnamneses.map((recording) => (
-                      <TableRow key={recording.id}>
-                        <TableCell>{recording.anamnese_id}</TableCell>
-                        <TableCell className={Style.anamneseText}>
+                      <StyledTableRow key={recording.id}>
+                        <StyledTableCell>
+                          {recording.anamnese_id}
+                        </StyledTableCell>
+                        <StyledTableCell className={Style.anamneseText}>
                           {recording.anamnese}
-                        </TableCell>
-                        <TableCell>{recording.user}</TableCell>
-                        <TableCell>
+                        </StyledTableCell>
+                        <StyledTableCell>{recording.user}</StyledTableCell>
+                        <StyledTableCell>
                           {formatDate(recording.recorded_at)}
-                        </TableCell>
-                        <TableCell>
+                        </StyledTableCell>
+                        <StyledTableCell>
                           <div
                             className={`${Style.status} ${
                               recording.status ? Style.done : Style.undone
@@ -291,8 +323,8 @@ const Recordings = () => {
                               ? "Transcribed"
                               : "Not Transcribed"}
                           </div>
-                        </TableCell>
-                      </TableRow>
+                        </StyledTableCell>
+                      </StyledTableRow>
                     ))}
                   </TableBody>
                 </Table>
@@ -318,7 +350,9 @@ const Recordings = () => {
                       arrow_forward_ios
                     </span>
                   }
-                  pageCount={Math.ceil(filteredRecordings.length / itemsPerPage)}
+                  pageCount={Math.ceil(
+                    filteredRecordings.length / itemsPerPage
+                  )}
                   onPageChange={handlePageChange}
                   containerClassName={Style.pagination}
                   previousLinkClassName={Style.paginationLink}
