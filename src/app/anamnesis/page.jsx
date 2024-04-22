@@ -1,6 +1,7 @@
 "use client";
 
 import Navbar from "@/components/Navbar";
+import { styled } from "@mui/material/styles";
 import FilterItem from "@/components/FilterItem";
 import Style from "./Anamnesis.module.css";
 import { ToastContainer, toast } from "react-toastify";
@@ -17,6 +18,36 @@ import {
   TableSortLabel,
   TableContainer,
 } from "@mui/material";
+import { tableCellClasses } from "@mui/material/TableCell";
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: "#F1F2F7",
+    color: "#000000",
+    fontWeight: "bold",
+    fontSize: 15,
+    fontFamily: "Inter",
+    borderBottom: "2px solid #838383",
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontFamily: "Inter",
+    fontSize: 15,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(even)": {
+    backgroundColor: "#F8F9FD",
+  },
+  "&:nth-of-type(odd)": {
+    backgroundColor: "#ffffff",
+  },
+  // hide last border
+  "& td, & th": {
+    border: 0,
+  },
+}));
+
 
 const headCells = [
   { id: "id", label: "ID" },
@@ -35,7 +66,7 @@ function ATableHead({ order, orderBy, onRequestSort }) {
     <TableHead>
       <TableRow>
         {headCells.map((headCell) => (
-          <TableCell
+          <StyledTableCell
             key={headCell.id}
             sortDirection={orderBy === headCell.id ? order : false}
             className={Style.tableHeading}
@@ -47,7 +78,7 @@ function ATableHead({ order, orderBy, onRequestSort }) {
             >
               {headCell.label}
             </TableSortLabel>
-          </TableCell>
+          </StyledTableCell>
         ))}
       </TableRow>
     </TableHead>
@@ -321,15 +352,15 @@ const Anamnesis = () => {
                   />
                   <TableBody>
                     {displayedAnamneses.map((anamnese) => (
-                      <TableRow key={anamnese.id}>
-                        <TableCell>{anamnese.id}</TableCell>
-                        <TableCell className={Style.anamneseText}>
+                      <StyledTableRow key={anamnese.id}>
+                        <StyledTableCell>{anamnese.id}</StyledTableCell>
+                        <StyledTableCell className={Style.anamneseText}>
                           {anamnese.transcription}
-                        </TableCell>
-                        <TableCell>{anamnese.model}</TableCell>
-                        <TableCell>{anamnese.user}</TableCell>
-                        <TableCell>{formatDate(anamnese.date)}</TableCell>
-                      </TableRow>
+                        </StyledTableCell>
+                        <StyledTableCell>{anamnese.model}</StyledTableCell>
+                        <StyledTableCell>{anamnese.user}</StyledTableCell>
+                        <StyledTableCell>{formatDate(anamnese.date)}</StyledTableCell>
+                      </StyledTableRow>
                     ))}
                   </TableBody>
                 </Table>
