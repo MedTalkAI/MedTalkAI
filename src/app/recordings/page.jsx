@@ -20,6 +20,7 @@ import {
   TableContainer,
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
+import ReactAudioPlayer from "react-audio-player";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -96,6 +97,9 @@ const Recordings = () => {
 
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [selectedUser, setSelectedUser] = useState([]);
+
+  const [selectedRecording, setSelectedRecording] = useState(null);
+  const [audioSrc, setAudioSrc] = useState(null);
 
   const [pageNumber, setPageNumber] = useState(0);
   const itemsPerPage = 10;
@@ -219,6 +223,36 @@ const Recordings = () => {
     pagesVisited + itemsPerPage
   );
 
+  useEffect(() => {
+    if (selectedRecording) {
+      fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/recordings/${selectedRecording.id}/audio`,
+        {
+          headers: {
+            Authorization: `Bearer ${
+              typeof window !== "undefined" && window.localStorage
+                ? localStorage.getItem("access_token")
+                : ""
+            }`,
+          },
+        }
+      )
+        .then((response) => {
+          if (response.ok) {
+            return response.blob();
+          }
+          throw new Error("Network response was not ok.");
+        })
+        .then((blob) => {
+          const audioURL = URL.createObjectURL(blob);
+          setAudioSrc(audioURL);
+        })
+        .catch((error) => {
+          console.error("There was a problem with the fetch operation:", error);
+        });
+    }
+  }, [selectedRecording]);
+
   return (
     <div>
       <Navbar path="/recordings" />
@@ -236,6 +270,7 @@ const Recordings = () => {
           </div>
           {recordingsToBe > 0 && (
             <div className={Style.recordingsTag}>
+              {audioSrc && <ReactAudioPlayer src={audioSrc} controls />}
               <div className={Style.tag}>
                 <span class="material-symbols-outlined">audio_file</span>
                 {recordingsToBe} recordings ready to be transcribed
@@ -299,7 +334,26 @@ const Recordings = () => {
                   />
                   <TableBody>
                     {displayedAnamneses.map((recording) => (
-                      <StyledTableRow key={recording.id}>
+                      <StyledTableRow
+                        key={recording.id}
+                        style={
+                          recording.id == selectedRecording?.id
+                            ? {
+                                background: "#F3F8FF",
+                                border: "2px solid #3B769D",
+                                cursor: "pointer",
+                              }
+                            : { cursor: "pointer" }
+                        }
+                        onClick={() => {
+                          if (recording.id == selectedRecording?.id) {
+                            setSelectedRecording(null);
+                            setAudioSrc(null);
+                          } else {
+                            setSelectedRecording(recording);
+                          }
+                        }}
+                      >
                         <StyledTableCell>
                           {recording.anamnese_id}
                         </StyledTableCell>

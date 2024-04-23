@@ -242,3 +242,48 @@
   line-height: normal;
   letter-spacing: -0.25px;
 }
+
+.buttonCancel {
+  margin-top: 7px;
+  display: flex;
+  width: 100px;
+  height: 40px;
+  padding: 5px 15px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: #FF3B3B;
+  color: #FFF;
+  text-align: center;
+  font-family: 'Raleway';
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  border: none;
+}
+
+.buttonOk {
+  margin-top: 7px;
+  display: flex;
+  width: 100px;
+  height: 40px;
+  padding: 5px 15px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: #3B9B33;
+  color: #FFF;
+  text-align: center;
+  font-family: 'Raleway';
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  border: none;
+
+}

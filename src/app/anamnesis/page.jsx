@@ -17,8 +17,10 @@ import {
   TableCell,
   TableSortLabel,
   TableContainer,
+  Button,
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
+import ReactModal from "react-modal";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -47,7 +49,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
-
 
 const headCells = [
   { id: "id", label: "ID" },
@@ -104,6 +105,9 @@ const Anamnesis = () => {
   const [pageNumber, setPageNumber] = useState(0);
   const itemsPerPage = 10;
   const pagesVisited = pageNumber * itemsPerPage;
+
+  const [uploadModalOpen, setUploadModalOpen] = useState(false);
+  const [file, setFile] = useState(null);
 
   const handlePageChange = ({ selected }) => {
     setPageNumber(selected);
@@ -176,6 +180,10 @@ const Anamnesis = () => {
     fetchData();
     setLoading(false);
   }, []);
+
+  useEffect(() => {
+    console.log(file);
+  }, [file]);
 
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString("en-GB", {
@@ -254,6 +262,34 @@ const Anamnesis = () => {
     pagesVisited + itemsPerPage
   );
 
+  const uploadFile = () => {
+    if (file) {
+      const formData = new FormData();
+      formData.append("anamneses", file);
+
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/anamneses`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+        body: formData,
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to upload file");
+          }
+          // Lógica adicional após o upload bem-sucedido
+          toast.success("Upload realizado com sucesso!");
+          setFile(null);
+          setUploadModalOpen(false);
+        })
+        .catch((error) => {
+          console.error("Upload error:", error);
+          toast.error("Upload error:", error);
+        });
+    }
+  };
+
   return (
     <div>
       <Navbar path="/anamnesis" />
@@ -267,7 +303,12 @@ const Anamnesis = () => {
                 <span class="material-symbols-outlined">bubble_chart</span>
                 Benchmark
               </button>
-              <button className={Style.upload}>
+              <button
+                className={Style.upload}
+                onClick={() => {
+                  setUploadModalOpen(true);
+                }}
+              >
                 <span class="material-symbols-outlined">upload_file</span>
                 Upload Anamnesis
               </button>
@@ -359,7 +400,9 @@ const Anamnesis = () => {
                         </StyledTableCell>
                         <StyledTableCell>{anamnese.model}</StyledTableCell>
                         <StyledTableCell>{anamnese.user}</StyledTableCell>
-                        <StyledTableCell>{formatDate(anamnese.date)}</StyledTableCell>
+                        <StyledTableCell>
+                          {formatDate(anamnese.date)}
+                        </StyledTableCell>
                       </StyledTableRow>
                     ))}
                   </TableBody>
@@ -401,6 +444,89 @@ const Anamnesis = () => {
           )}
         </main>
       </div>
+      <ReactModal
+        isOpen={uploadModalOpen}
+        onRequestClose={() => {
+          setUploadModalOpen(false);
+        }}
+        contentLabel="Confirmação de Atualização"
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          },
+          content: {
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "600px",
+            height: "300px",
+            margin: "auto",
+            borderRadius: "4px",
+            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.3)",
+            backgroundColor: "#fff",
+          },
+        }}
+      >
+        <h2>Upload a Anamnesis File</h2>
+        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+          <div
+            style={{
+              textAlign: "center",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <input
+              accept=".csv"
+              id="inputFile"
+              type="file"
+              style={{ display: "none" }}
+              onChange={(event) => {
+                setFile(event.target.files[0]);
+              }}
+            />
+            <label htmlFor="inputFile">
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <span
+                  style={{ fontSize: "100px", color: "#346C90" }}
+                  class="material-symbols-outlined"
+                >
+                  upload_file
+                </span>
+              </div>
+            </label>
+            {file && <p>{file?.name}</p>}
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              gap: "10px",
+              width: "100%",
+            }}
+          >
+            <button className={Style.buttonOk} onClick={uploadFile}>
+              Upload
+            </button>
+            <button
+              className={Style.buttonCancel}
+              onClick={() => setUploadModalOpen(false)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </ReactModal>
     </div>
   );
 };
