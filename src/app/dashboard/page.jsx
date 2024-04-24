@@ -10,6 +10,7 @@ import Modal from "react-modal";
 
 const Dashboard = () => {
   const [defaultModel, setDefaultModel] = useState(null);
+  const [standardModel, setStandardModel] = useState(null);
   const [models, setModels] = useState([]);
   const [csvContent, setCsvContent] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -39,6 +40,7 @@ const Dashboard = () => {
       })
       .then((data) => {
         console.log(data);
+        setStandardModel(JSON.parse(JSON.stringify(defaultModel)));
         toast.success("Standard model updated successfully");
       })
       .catch((error) => {
@@ -60,33 +62,44 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/models`, {
-      headers: {
-        Authorization: `Bearer ${
-          typeof window !== "undefined" && window.localStorage
-            ? localStorage.getItem("access_token")
-            : ""
-        }`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (models.length === 0) {
-          setModels(data.sort((a, b) => {
-            if (a.standard === b.standard) {
-              return a.name.localeCompare(b.name); // Sort alphabetically by name
-            }
-            return a.standard ? -1 : 1; // Move standard models before non-standard ones
-          }));
-          console.log(data.find((model) => model.standard));
-          setDefaultModel(data.find((model) => model.standard));
-        }
-      });
+    function getModels() {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/models`, {
+        headers: {
+          Authorization: `Bearer ${
+            typeof window !== "undefined" && window.localStorage
+              ? localStorage.getItem("access_token")
+              : ""
+          }`,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (models.length === 0) {
+            setModels(
+              data.sort((a, b) => {
+                if (a.standard === b.standard) {
+                  return a.name.localeCompare(b.name); // Sort alphabetically by name
+                }
+                return a.standard ? -1 : 1; // Move standard models before non-standard ones
+              })
+            );
+            setDefaultModel(data.find((model) => model.standard));
+            setStandardModel(
+              JSON.parse(JSON.stringify(data.find((model) => model.standard)))
+            );
+          }
+        });
 
-    const standard = models.find((model) => model.standard);
-    if (standard) {
-      setDefaultModel(standard);
+      const standard = models.find((model) => model.standard);
+      if (standard) {
+        setDefaultModel(standard);
+      }
     }
+
+    getModels();
+
+    const interval = setInterval(getModels, 120000); // 120000 milissegundos = 2 minutos
+    return () => clearInterval(interval);
   }, [models]);
 
   //já que preciso tratar como blob irei modificar aqui.
@@ -165,6 +178,7 @@ const Dashboard = () => {
                   model={model}
                   onCsvDownloader={saveCsv}
                   className={Style.modelItem}
+                  isStandard={standardModel?.id === model.id}
                 />
               ))}
             </div>

@@ -224,33 +224,43 @@ const Recordings = () => {
   );
 
   useEffect(() => {
-    if (selectedRecording) {
-      fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/recordings/${selectedRecording.id}/audio`,
-        {
-          headers: {
-            Authorization: `Bearer ${
-              typeof window !== "undefined" && window.localStorage
-                ? localStorage.getItem("access_token")
-                : ""
-            }`,
-          },
-        }
-      )
-        .then((response) => {
-          if (response.ok) {
-            return response.blob();
+    function getData() {
+      if (selectedRecording) {
+        fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/recordings/${selectedRecording.id}/audio`,
+          {
+            headers: {
+              Authorization: `Bearer ${
+                typeof window !== "undefined" && window.localStorage
+                  ? localStorage.getItem("access_token")
+                  : ""
+              }`,
+            },
           }
-          throw new Error("Network response was not ok.");
-        })
-        .then((blob) => {
-          const audioURL = URL.createObjectURL(blob);
-          setAudioSrc(audioURL);
-        })
-        .catch((error) => {
-          console.error("There was a problem with the fetch operation:", error);
-        });
+        )
+          .then((response) => {
+            if (response.ok) {
+              return response.blob();
+            }
+            throw new Error("Network response was not ok.");
+          })
+          .then((blob) => {
+            const audioURL = URL.createObjectURL(blob);
+            setAudioSrc(audioURL);
+          })
+          .catch((error) => {
+            console.error(
+              "There was a problem with the fetch operation:",
+              error
+            );
+          });
+      }
     }
+
+    getData();
+
+    const interval = setInterval(getData, 120000); // 120000 milissegundos = 2 minutos
+    return () => clearInterval(interval);
   }, [selectedRecording]);
 
   return (

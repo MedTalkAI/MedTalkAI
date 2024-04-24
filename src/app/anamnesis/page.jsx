@@ -179,6 +179,12 @@ const Anamnesis = () => {
     fetchRecordings();
     fetchData();
     setLoading(false);
+
+    const interval = setInterval(() => {
+      fetchRecordings();
+      fetchData();
+    }, 120000); // 120000 milissegundos = 2 minutos
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -278,7 +284,6 @@ const Anamnesis = () => {
           if (!response.ok) {
             throw new Error("Failed to upload file");
           }
-          // Lógica adicional após o upload bem-sucedido
           toast.success("Upload realizado com sucesso!");
           setFile(null);
           setUploadModalOpen(false);
