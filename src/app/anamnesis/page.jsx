@@ -397,18 +397,24 @@ const Anamnesis = () => {
                     onRequestSort={handleRequestSort}
                   />
                   <TableBody>
-                    {displayedAnamneses.map((anamnese) => (
-                      <StyledTableRow key={anamnese.id}>
-                        <StyledTableCell>{anamnese.id}</StyledTableCell>
-                        <StyledTableCell className={Style.anamneseText}>
-                          {anamnese.transcription}
-                        </StyledTableCell>
-                        <StyledTableCell>{anamnese.model}</StyledTableCell>
-                        <StyledTableCell>{anamnese.user}</StyledTableCell>
-                        <StyledTableCell>
-                          {formatDate(anamnese.date)}
-                        </StyledTableCell>
-                      </StyledTableRow>
+                    {displayedAnamneses.map((anamnese, i) => (
+                      <a
+                        href={`/anamnese/${anamnese.id}`}
+                        key={i}
+                        style={{ textDecoration: "none" }}
+                      >
+                        <StyledTableRow key={anamnese.id}>
+                          <StyledTableCell>{anamnese.id}</StyledTableCell>
+                          <StyledTableCell className={Style.anamneseText}>
+                            {anamnese.transcription}
+                          </StyledTableCell>
+                          <StyledTableCell>{anamnese.model}</StyledTableCell>
+                          <StyledTableCell>{anamnese.user}</StyledTableCell>
+                          <StyledTableCell>
+                            {formatDate(anamnese.date)}
+                          </StyledTableCell>
+                        </StyledTableRow>
+                      </a>
                     ))}
                   </TableBody>
                 </Table>
