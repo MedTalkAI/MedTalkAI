@@ -113,6 +113,10 @@ const Anamnesis = () => {
     setPageNumber(selected);
   };
 
+  const navigateToAnamnese = (anamneseId) => {
+    window.location.href = `/anamnese/${anamneseId}`;
+  };
+
   const generateTranscriptions = async () => {
     try {
       const response = await fetch(
@@ -429,23 +433,20 @@ const Anamnesis = () => {
                   />
                   <TableBody>
                     {displayedAnamneses.map((anamnese, i) => (
-                      <a
-                        href={`/anamnese/${anamnese.id}`}
-                        key={i}
-                        style={{ textDecoration: "none" }}
+                      <StyledTableRow
+                        key={anamnese.id}
+                        onClick={() => navigateToAnamnese(anamnese.id)}
                       >
-                        <StyledTableRow key={anamnese.id}>
-                          <StyledTableCell>{anamnese.id}</StyledTableCell>
-                          <StyledTableCell className={Style.anamneseText}>
-                            {anamnese.transcription}
-                          </StyledTableCell>
-                          <StyledTableCell>{anamnese.model}</StyledTableCell>
-                          <StyledTableCell>{anamnese.user}</StyledTableCell>
-                          <StyledTableCell>
-                            {formatDate(anamnese.date)}
-                          </StyledTableCell>
-                        </StyledTableRow>
-                      </a>
+                        <StyledTableCell>{anamnese.id}</StyledTableCell>
+                        <StyledTableCell className={Style.anamneseText}>
+                          {anamnese.transcription}
+                        </StyledTableCell>
+                        <StyledTableCell>{anamnese.model}</StyledTableCell>
+                        <StyledTableCell>{anamnese.user}</StyledTableCell>
+                        <StyledTableCell>
+                          {formatDate(anamnese.date)}
+                        </StyledTableCell>
+                      </StyledTableRow>
                     ))}
                   </TableBody>
                 </Table>
