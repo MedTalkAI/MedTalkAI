@@ -113,6 +113,34 @@ const Anamnesis = () => {
     setPageNumber(selected);
   };
 
+  const generateTranscriptions = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/recordings`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${
+              typeof window !== "undefined" && window.localStorage
+                ? localStorage.getItem("access_token")
+                : ""
+            }`,
+          },
+        }
+      );
+      if (response.status == 202) {
+        toast.success("Transcriptions are being generated!");
+      } else if (response.status == 404) {
+        toast.success("No recordings to be transcribed");
+      } else {
+        throw new Error("Failed to update correction");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to update correction");
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -325,7 +353,10 @@ const Anamnesis = () => {
                 <span class="material-symbols-outlined">audio_file</span>
                 {recordingsToBe} recordings ready to be transcribed
               </div>
-              <button className={Style.secondaryButton} disabled>
+              <button
+                className={Style.secondaryButton}
+                onClick={generateTranscriptions}
+              >
                 Transcribe
               </button>
             </div>

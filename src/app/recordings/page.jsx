@@ -4,7 +4,7 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Navbar from "@/components/Navbar";
 import Style from "./Recordings.module.css";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
@@ -263,6 +263,35 @@ const Recordings = () => {
     return () => clearInterval(interval);
   }, [selectedRecording]);
 
+  const generateTranscriptions = async () => {
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/recordings`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${
+              typeof window !== "undefined" && window.localStorage
+                ? localStorage.getItem("access_token")
+                : ""
+            }`,
+          },
+        }
+      );
+      if (response.status == 202) {
+        toast.success("Transcriptions are being generated!");
+      } else if (response.status == 404) {
+        toast.success("No recordings to be transcribed");
+      } else {
+        throw new Error("Failed to update correction");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to update correction");
+    }
+  };
+
   return (
     <div>
       <Navbar path="/recordings" />
@@ -272,7 +301,10 @@ const Recordings = () => {
           <div className={Style.head}>
             <h1 className={Style.title}>Recordings</h1>
             <div className={Style.options}>
-              <button className={Style.secondaryButton} disabled>
+              <button
+                className={Style.secondaryButton}
+                onClick={generateTranscriptions}
+              >
                 <span class="material-symbols-outlined">audio_file</span>
                 Generate Transcriptions
               </button>
