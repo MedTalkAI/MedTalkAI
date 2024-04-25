@@ -125,64 +125,71 @@ const RecordedAnamnesis = () => {
     const user = localStorage.getItem("user_type");
     setUserType(user);
 
-    if (user == "intern") {
-      const fetchData = async () => {
-        try {
-          const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/recordings/user`,
-            {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${
-                  typeof window !== "undefined" && window.localStorage
-                    ? localStorage.getItem("access_token")
-                    : ""
-                }`,
-              },
+    function getData() {
+      if (user == "intern") {
+        const fetchData = async () => {
+          try {
+            const response = await fetch(
+              `${process.env.NEXT_PUBLIC_API_URL}/recordings/user`,
+              {
+                method: "GET",
+                headers: {
+                  Authorization: `Bearer ${
+                    typeof window !== "undefined" && window.localStorage
+                      ? localStorage.getItem("access_token")
+                      : ""
+                  }`,
+                },
+              }
+            );
+            if (response.ok) {
+              const transcriptions = await response.json();
+              console.log(transcriptions);
+              setTranscriptions(transcriptions);
+            } else {
+              throw new Error("Failed to fetch transcriptions");
             }
-          );
-          if (response.ok) {
-            const transcriptions = await response.json();
-            console.log(transcriptions);
-            setTranscriptions(transcriptions);
-          } else {
-            throw new Error("Failed to fetch transcriptions");
+          } catch (error) {
+            console.error(error);
           }
-        } catch (error) {
-          console.error(error);
-        }
-      };
-      fetchData();
-    } else {
-      const fetchData = async () => {
-        try {
-          const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/user`,
-            {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${
-                  typeof window !== "undefined" && window.localStorage
-                    ? localStorage.getItem("access_token")
-                    : ""
-                }`,
-              },
+        };
+        fetchData();
+      } else {
+        const fetchData = async () => {
+          try {
+            const response = await fetch(
+              `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/user`,
+              {
+                method: "GET",
+                headers: {
+                  Authorization: `Bearer ${
+                    typeof window !== "undefined" && window.localStorage
+                      ? localStorage.getItem("access_token")
+                      : ""
+                  }`,
+                },
+              }
+            );
+            if (response.ok) {
+              const transcriptions = await response.json();
+              console.log(transcriptions);
+              setTranscriptions(transcriptions);
+            } else {
+              throw new Error("Failed to fetch transcriptions");
             }
-          );
-          if (response.ok) {
-            const transcriptions = await response.json();
-            console.log(transcriptions);
-            setTranscriptions(transcriptions);
-          } else {
-            throw new Error("Failed to fetch transcriptions");
+          } catch (error) {
+            console.error(error);
           }
-        } catch (error) {
-          console.error(error);
-        }
-      };
+        };
 
-      fetchData();
+        fetchData();
+      }
     }
+
+    getData();
+
+    const interval = setInterval(getData, 120000); // 120000 milissegundos = 2 minutos
+    return () => clearInterval(interval);
 
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -397,8 +404,13 @@ const RecordedAnamnesis = () => {
           </div>
           <div className={Style.paginationContainer}>
             <div className={Style.details}>
-              Anamneses {pagesVisited} a {transcriptions.length > 10 ?(pagesVisited + 10 > transcriptions.length ? transcriptions.length : pagesVisited + 10)  : transcriptions.length} de{" "}
-              {transcriptions.length}
+              Anamneses {pagesVisited} a{" "}
+              {transcriptions.length > 10
+                ? pagesVisited + 10 > transcriptions.length
+                  ? transcriptions.length
+                  : pagesVisited + 10
+                : transcriptions.length}{" "}
+              de {transcriptions.length}
             </div>
             <ReactPaginate
               previousLabel={
@@ -454,7 +466,7 @@ const RecordedAnamnesis = () => {
             isEditable={true}
             onSave={handeUpdated}
             transcription_id={selectedTranscription?.anamnese_id}
-            title={'Anamnesis'}
+            title={"Anamnesis"}
           />
         </div>
       </Modal>

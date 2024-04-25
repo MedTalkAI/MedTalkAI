@@ -1,7 +1,7 @@
 import React from "react";
 import Style from "./ModelStatistics.module.css";
 
-const ModelStatistics = ({ model, onCsvDownloader }) => {
+const ModelStatistics = ({ model, onCsvDownloader, isStandard }) => {
   const renderTable = () => {
     if (!model) {
       return <p>Loading...</p>;
@@ -64,7 +64,7 @@ const ModelStatistics = ({ model, onCsvDownloader }) => {
 
   return (
     <div className={Style.container}>
-      <div className={`${Style.model} ${model.standard ? Style.standard : ""}`}>
+      <div className={`${Style.model} ${isStandard ? Style.standard : ""}`}>
         <div style={{ height: "18px" }}>
           {model.standard && (
             <p className={Style.default}>Default Model Used By MedTalk AI</p>
@@ -91,7 +91,9 @@ const ModelStatistics = ({ model, onCsvDownloader }) => {
               alignItems: "center",
             }}
           >
-            <button className={Style.secondaryButton} disabled>Fine-tuning</button>
+            <button className={Style.secondaryButton} disabled>
+              Fine-tuning
+            </button>
           </div>
         </div>
       </div>

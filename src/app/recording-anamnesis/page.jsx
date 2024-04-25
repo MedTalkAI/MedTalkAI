@@ -55,6 +55,9 @@ const RecordingAnamnesis = () => {
     };
 
     fetchData();
+
+    const interval = setInterval(fetchData, 120000); // 120000 milissegundos = 2 minutos
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -218,43 +221,46 @@ const RecordingAnamnesis = () => {
   return (
     <div className={Styles.container}>
       <div className={!isModalOpen && isFixed ? Styles.fixedNavbar : ""}>
-          <Navbar path="/recording-anamnesis" />
+        <Navbar path="/recording-anamnesis" />
       </div>
-        <ToastContainer />
-        <div className={Styles.containerAnamnese}>
-          <h1 className={Styles.title}>Recording Anamneses</h1>
-          <div className={!isModalOpen && isFixed ? Styles.fixedContent : ""}>
-            <p className={Styles.subTitle}>Record Selected Anamnese</p>
-            <div>{anamnesisRecord()}</div>
-          </div>
-          <div className={Styles.anamnesisGroup}>
-            {anamneses && renderizarAnamneses()}
-          </div>
-          <div className={Styles.paginationContainer}>
-            <div className={Styles.details}>
-              Anamneses {pagesVisited} a {anamneses.length > 10 ? (pagesVisited + 10 > anamneses.length ? anamneses.length : pagesVisited + 10) :  anamneses.length} de{" "}
-              {anamneses.length}
-            </div>
-            <ReactPaginate
-              previousLabel={
-                <span class="material-symbols-outlined">
-                  arrow_back_ios_new
-                </span>
-              }
-              nextLabel={
-                <span class="material-symbols-outlined">arrow_forward_ios</span>
-              }
-              pageCount={Math.ceil(anamneses.length / itemsPerPage)}
-              onPageChange={handlePageChange}
-              containerClassName={Styles.pagination}
-              previousLinkClassName={Styles.paginationLink}
-              nextLinkClassName={Styles.paginationLink}
-              disabledClassName={Styles.paginationDisabled}
-              activeClassName={Styles.paginationActive}
-            />
-          </div>
+      <ToastContainer />
+      <div className={Styles.containerAnamnese}>
+        <h1 className={Styles.title}>Recording Anamneses</h1>
+        <div className={!isModalOpen && isFixed ? Styles.fixedContent : ""}>
+          <p className={Styles.subTitle}>Record Selected Anamnese</p>
+          <div>{anamnesisRecord()}</div>
         </div>
-      
+        <div className={Styles.anamnesisGroup}>
+          {anamneses && renderizarAnamneses()}
+        </div>
+        <div className={Styles.paginationContainer}>
+          <div className={Styles.details}>
+            Anamneses {pagesVisited} a{" "}
+            {anamneses.length > 10
+              ? pagesVisited + 10 > anamneses.length
+                ? anamneses.length
+                : pagesVisited + 10
+              : anamneses.length}{" "}
+            de {anamneses.length}
+          </div>
+          <ReactPaginate
+            previousLabel={
+              <span class="material-symbols-outlined">arrow_back_ios_new</span>
+            }
+            nextLabel={
+              <span class="material-symbols-outlined">arrow_forward_ios</span>
+            }
+            pageCount={Math.ceil(anamneses.length / itemsPerPage)}
+            onPageChange={handlePageChange}
+            containerClassName={Styles.pagination}
+            previousLinkClassName={Styles.paginationLink}
+            nextLinkClassName={Styles.paginationLink}
+            disabledClassName={Styles.paginationDisabled}
+            activeClassName={Styles.paginationActive}
+          />
+        </div>
+      </div>
+
       <Modal
         isOpen={isModalOpen}
         onRequestClose={() => {
@@ -289,7 +295,7 @@ const RecordingAnamnesis = () => {
             isEditable={true}
             onSave={handeUpdated}
             transcription_id={selectedAnamnese?.id}
-            title={'Anamnesis'}
+            title={"Anamnesis"}
           />
         </div>
       </Modal>
