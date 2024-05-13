@@ -20,7 +20,7 @@ const RecordingAnamnesis = () => {
   const [isRecorded, setIsRecorded] = useState(false);
   const [isEditAnamnese, setIsEditAnamnese] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [isEdit, setIsEdit] = useState(false);
   const [pageNumber, setPageNumber] = useState(0);
   const itemsPerPage = 10;
   const pagesVisited = pageNumber * itemsPerPage;
@@ -169,12 +169,14 @@ const RecordingAnamnesis = () => {
     setPageNumber(selected);
   };
 
+ 
+
   const renderizarAnamneses = () => {
     const displayedAnamneses = anamneses.slice(
       pagesVisited,
       pagesVisited + itemsPerPage
     );
-
+  
     return (
       <ul className={Styles.ul}>
         <li className={`${Styles.anamneseHeader} ${Styles.header}`}>
@@ -192,28 +194,57 @@ const RecordingAnamnesis = () => {
             key={anamnese.id}
             onClick={() => handleAnamneseClick(anamnese)}
           >
-            <span className={Styles.anamneseId}>{anamnese.id}</span>
-            <span className={Styles.anamneseText}>{anamnese.text}</span>
-            <span className={Styles.anamneseWorks}>
-              {anamnese.text.split(/\s+/).length}
-            </span>
-            {selectedAnamnese?.id === anamnese.id && (
-              <button
-                className={Styles.button}
-                onClick={() => {
-                  setIsFixed(false);
-                  setIsModalOpen(true);
-                }}
-              >
-                <span className="material-symbols-outlined">edit</span>
-                <span className={Styles.textSpanButton}>Edit Anamnesis</span>
-              </button>
-            )}
+              {selectedAnamnese?.id === anamnese.id && isEdit ? (
+               
+                <div className={Styles.conteinerAnamnese}>
+                  <TranscriptionResult
+                    className={Styles.nonEditable}
+                    text={selectedAnamnese?.text}
+                    isEditable={false}
+                  />
+                  <TranscriptionResult
+                    className={Styles.editable}
+                    text={selectedAnamnese?.text}
+                    isEditable={true}
+                    onSave={handeUpdated}
+                    transcription_id={selectedAnamnese?.id}
+                  />
+                </div>
+              ) : (
+              <div className={Styles.conteinerAnamnese}>
+                <span>{anamnese.id}</span>
+                <span className={Styles.anamneseText}>{selectedAnamnese?.id === anamnese.id ? (<TranscriptionResult
+                    className={Styles.nonEditable}
+                    text={selectedAnamnese?.text}
+                    isEditable={false}
+                  />) : (anamnese.text)}
+                  </span>
+                <span className={Styles.anamneseWorks}>
+                  {anamnese.text.split(/\s+/).length}
+                </span>
+                {selectedAnamnese?.id === anamnese.id && (
+                <button
+                  className={Styles.button}
+                  onClick={() => {
+                    setIsEdit(!isEdit); 
+                  }}
+                >
+                  <span className="material-symbols-outlined">edit</span>
+                  <span className={Styles.textSpanButton}>
+                    {isEdit ? "Salvar" : "Editar Anamnesis"}
+                  </span>
+                </button>)}
+              </div>
+                
+              )}
+            
           </li>
         ))}
       </ul>
     );
   };
+  
+
 
   return (
     <div className={Styles.container}>
