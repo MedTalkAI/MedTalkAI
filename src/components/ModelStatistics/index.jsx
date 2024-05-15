@@ -1,17 +1,9 @@
 import React from "react";
 import Style from "./ModelStatistics.module.css";
-import { useRouter } from "next/navigation";
-import { MdDownload } from "react-icons/md";
 
-const ModelStatistics = ({ statistics, onCsvDownloader }) => {
-  const router = useRouter();
-
-  const handlePretrain = () => {
-    router.push(`/pretrain/${statistics.name}`);
-  };
-
+const ModelStatistics = ({ model, onCsvDownloader, isStandard }) => {
   const renderTable = () => {
-    if (!statistics) {
+    if (!model) {
       return <p>Loading...</p>;
     }
 
@@ -21,25 +13,25 @@ const ModelStatistics = ({ statistics, onCsvDownloader }) => {
       {
         metric: "WER",
         values: [
-          statistics?.wer?.mean || "N/A",
-          statistics?.wer?.variance || "N/A",
-          statistics?.wer?.std_deviation || "N/A",
+          model?.wer?.mean || "N/A",
+          model?.wer?.variance || "N/A",
+          model?.wer?.std || "N/A",
         ],
       },
       {
         metric: "BLEU",
         values: [
-          statistics?.bleu?.mean || "N/A",
-          statistics?.bleu?.variance || "N/A",
-          statistics?.bleu?.std_deviation || "N/A",
+          model?.bleu?.mean || "N/A",
+          model?.bleu?.variance || "N/A",
+          model?.bleu?.std || "N/A",
         ],
       },
       {
         metric: "COSINE SIMILARITY",
         values: [
-          statistics?.cosine?.mean || "N/A",
-          statistics?.cosine?.variance || "N/A",
-          statistics?.cosine?.std_deviation || "N/A",
+          model?.cosine?.mean || "N/A",
+          model?.cosine?.variance || "N/A",
+          model?.cosine?.std || "N/A",
         ],
       },
     ];
@@ -71,29 +63,38 @@ const ModelStatistics = ({ statistics, onCsvDownloader }) => {
   };
 
   return (
-    <div>
-      <div className={Style.head}>
-        <h1 className={Style.title}>{statistics.name}</h1>
-      </div>
-
-      <div style={{ overflowX: "auto" }}>{renderTable()}</div>
-      <div className={Style.bottom}>
-        <span>Transcriptions quantity: {statistics?.transcriptions_amt}</span>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            gap: "10px",
-            alignItems: "center",
-          }}
-        >
-          <button onClick={handlePretrain}>Fine-tuning</button>
+    <div className={Style.container}>
+      <div className={`${Style.model} ${isStandard ? Style.standard : ""}`}>
+        <div style={{ height: "18px" }}>
+          {model.standard && (
+            <p className={Style.default}>Default Model Used By MedTalk AI</p>
+          )}
+        </div>
+        <div className={Style.head}>
+          <h1 className={Style.title}>{model.name}</h1>
           <button
-            onClick={() => onCsvDownloader(statistics.id)}
-            className={Style.exportarBenchmark}
+            onClick={() => onCsvDownloader(model.id)}
+            className={Style.download}
           >
-            <MdDownload />
+            <span class="material-symbols-outlined">file_save</span>
           </button>
+        </div>
+
+        <div style={{ overflowX: "auto" }}>{renderTable()}</div>
+        <div className={Style.bottom}>
+          <p>Transcriptions quantity: {model?.transcriptions_amt}</p>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              gap: "10px",
+              alignItems: "center",
+            }}
+          >
+            <button className={Style.secondaryButton} disabled>
+              Fine-tuning
+            </button>
+          </div>
         </div>
       </div>
     </div>

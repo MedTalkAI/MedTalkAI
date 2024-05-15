@@ -1,157 +1,156 @@
 .content {
-    display: flex;
-    flex-direction: row;
-    margin-top: 30px;
-    margin-left: 2%;
-    margin-right: 2%;
-    margin-bottom: 70px;
-    gap: 2%;
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+  margin-left: 2%;
+  margin-right: 2%;
+  margin-bottom: 70px;
+  gap: 2%;
 }
 
 .content main {
-    flex: 3;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
-.benchmarkAndGroupSelect{
-    display: flex;
-    align-items: center;
-    flex-direction: row;
+.benchmarkAndGroupSelect {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
 }
-.exportarBenchmark{
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    height: 35px;
-    justify-content: center;
-    align-items: center;
-    gap: 4px;
-    border-radius: 10px;
-    border: 1px solid #1c5880;
-    background: #01429c;
-    color: #FFF;
-    font-family: Inter;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    letter-spacing: -0.25px;
-    border: #3B769D 1px solid;
-    margin-right: 10px;
-  }
+.exportarBenchmark {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  height: 35px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  border-radius: 10px;
+  border: 1px solid #1c5880;
+  background: #01429c;
+  color: #fff;
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.25px;
+  border: #3b769d 1px solid;
+  margin-right: 10px;
+}
 
 .groupSelect {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
 }
 
 .groupSelect select {
-    width: fit-content;
-    height: 32px;
-    flex-shrink: 0;
-    border-radius: 5px;
-    border: 1px solid #9B9B9B;
-    background: #FFF;
-    color: #3B769D;
-    font-family: Inter;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    letter-spacing: -0.25px;
-    border: #3B769D 1px solid;
+  width: fit-content;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  border: 1px solid #9b9b9b;
+  background: #fff;
+  color: #3b769d;
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.25px;
+  border: #3b769d 1px solid;
 }
 
 .sides {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .content .title {
-    color: #000;
-    font-family: 'Inter';
-    font-size: 40px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    letter-spacing: -0.25px;
+  color: #000;
+  font-family: "Inter";
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.25px;
 }
 
 .updateButton {
-    margin-top: 7px;
-    display: flex;
-    width: fit-content;
-    height: 40px;
-    padding: 5px 15px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    flex-shrink: 0;
-    border-radius: 10px;
-    background: #3B9B33;
-    color: #FFF;
-    text-align: center;
-    font-family: 'Raleway';
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-    border: none;
+  margin-top: 7px;
+  display: flex;
+  width: fit-content;
+  height: 40px;
+  padding: 5px 15px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: #3b9b33;
+  color: #fff;
+  text-align: center;
+  font-family: "Raleway";
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  border: none;
 }
 
 .buttonCancel {
-    margin-top: 7px;
-    display: flex;
-    width: 100px;
-    height: 40px;
-    padding: 5px 15px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    flex-shrink: 0;
-    border-radius: 10px;
-    background: #FF3B3B;
-    color: #FFF;
-    text-align: center;
-    font-family: 'Raleway';
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-    border: none;
+  margin-top: 7px;
+  display: flex;
+  width: 100px;
+  height: 40px;
+  padding: 5px 15px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: #ff3b3b;
+  color: #fff;
+  text-align: center;
+  font-family: "Raleway";
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  border: none;
 }
 
 .buttonOk {
-    margin-top: 7px;
-    display: flex;
-    width: 100px;
-    height: 40px;
-    padding: 5px 15px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    flex-shrink: 0;
-    border-radius: 10px;
-    background: #3B9B33;
-    color: #FFF;
-    text-align: center;
-    font-family: 'Raleway';
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-    border: none;
-
+  margin-top: 7px;
+  display: flex;
+  width: 100px;
+  height: 40px;
+  padding: 5px 15px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: #3b9b33;
+  color: #fff;
+  text-align: center;
+  font-family: "Raleway";
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  border: none;
 }
 
 .modelStatistics {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-auto-rows: minmax(auto, max-content);
-    gap: 120px;
-    /* Adicione o espaçamento desejado */
+  display: flex;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 70px 100px;
+  flex-wrap: wrap;
 }

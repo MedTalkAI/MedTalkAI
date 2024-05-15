@@ -9,6 +9,7 @@ import Modal from "react-modal";
 
 import { useState, useEffect, useRef } from "react";
 import TranscriptionResult from "@/components/TranscriptionResult";
+import ReactPaginate from "react-paginate";
 
 const RecordedAnamnesis = () => {
   const [openDropdown, setOpenDropdown] = useState(false);
@@ -20,6 +21,14 @@ const RecordedAnamnesis = () => {
   const [audioSrc, setAudioSrc] = useState("");
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [userType, setUserType] = useState(null);
+
+  const [pageNumber, setPageNumber] = useState(0);
+  const itemsPerPage = 10;
+  const pagesVisited = pageNumber * itemsPerPage;
+
+  const handlePageChange = ({ selected }) => {
+    setPageNumber(selected);
+  };
 
   const handleDeleteConfirmation = () => {
     setIsDeleteModalOpen(true);
@@ -116,64 +125,71 @@ const RecordedAnamnesis = () => {
     const user = localStorage.getItem("user_type");
     setUserType(user);
 
-    if (user == "intern") {
-      const fetchData = async () => {
-        try {
-          const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/recordings/user`,
-            {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${
-                  typeof window !== "undefined" && window.localStorage
-                    ? localStorage.getItem("access_token")
-                    : ""
-                }`,
-              },
+    function getData() {
+      if (user == "intern") {
+        const fetchData = async () => {
+          try {
+            const response = await fetch(
+              `${process.env.NEXT_PUBLIC_API_URL}/recordings/user`,
+              {
+                method: "GET",
+                headers: {
+                  Authorization: `Bearer ${
+                    typeof window !== "undefined" && window.localStorage
+                      ? localStorage.getItem("access_token")
+                      : ""
+                  }`,
+                },
+              }
+            );
+            if (response.ok) {
+              const transcriptions = await response.json();
+              console.log(transcriptions);
+              setTranscriptions(transcriptions);
+            } else {
+              throw new Error("Failed to fetch transcriptions");
             }
-          );
-          if (response.ok) {
-            const transcriptions = await response.json();
-            console.log(transcriptions);
-            setTranscriptions(transcriptions);
-          } else {
-            throw new Error("Failed to fetch transcriptions");
+          } catch (error) {
+            console.error(error);
           }
-        } catch (error) {
-          console.error(error);
-        }
-      };
-      fetchData();
-    } else {
-      const fetchData = async () => {
-        try {
-          const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/user`,
-            {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${
-                  typeof window !== "undefined" && window.localStorage
-                    ? localStorage.getItem("access_token")
-                    : ""
-                }`,
-              },
+        };
+        fetchData();
+      } else {
+        const fetchData = async () => {
+          try {
+            const response = await fetch(
+              `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/user`,
+              {
+                method: "GET",
+                headers: {
+                  Authorization: `Bearer ${
+                    typeof window !== "undefined" && window.localStorage
+                      ? localStorage.getItem("access_token")
+                      : ""
+                  }`,
+                },
+              }
+            );
+            if (response.ok) {
+              const transcriptions = await response.json();
+              console.log(transcriptions);
+              setTranscriptions(transcriptions);
+            } else {
+              throw new Error("Failed to fetch transcriptions");
             }
-          );
-          if (response.ok) {
-            const transcriptions = await response.json();
-            console.log(transcriptions);
-            setTranscriptions(transcriptions);
-          } else {
-            throw new Error("Failed to fetch transcriptions");
+          } catch (error) {
+            console.error(error);
           }
-        } catch (error) {
-          console.error(error);
-        }
-      };
+        };
 
-      fetchData();
+        fetchData();
+      }
     }
+
+    getData();
+
+    const interval = setInterval(getData, 120000); // 120000 milissegundos = 2 minutos
+    return () => clearInterval(interval);
 
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -250,6 +266,10 @@ const RecordedAnamnesis = () => {
   }, [orderBy]);
 
   const renderizarAnamneses = () => {
+    const displayedAnamneses = transcriptions.slice(
+      pagesVisited,
+      pagesVisited + itemsPerPage
+    );
     return (
       <ul className={Style.ul}>
         <li className={`${Style.anamneseHeader} ${Style.header}`}>
@@ -259,7 +279,7 @@ const RecordedAnamnesis = () => {
             <span>Nº Words</span>
           </span>
         </li>
-        {transcriptions.map((anamnese, index) => (
+        {displayedAnamneses.map((anamnese, index) => (
           <li
             className={`${Style.anamnese} ${
               selectedTranscription?.anamnese_id === anamnese.anamnese_id
@@ -382,6 +402,34 @@ const RecordedAnamnesis = () => {
           <div className={Style.anamnesisGroup}>
             {transcriptions && renderizarAnamneses()}
           </div>
+          <div className={Style.paginationContainer}>
+            <div className={Style.details}>
+              Anamneses {pagesVisited} a{" "}
+              {transcriptions.length > 10
+                ? pagesVisited + 10 > transcriptions.length
+                  ? transcriptions.length
+                  : pagesVisited + 10
+                : transcriptions.length}{" "}
+              de {transcriptions.length}
+            </div>
+            <ReactPaginate
+              previousLabel={
+                <span class="material-symbols-outlined">
+                  arrow_back_ios_new
+                </span>
+              }
+              nextLabel={
+                <span class="material-symbols-outlined">arrow_forward_ios</span>
+              }
+              pageCount={Math.ceil(transcriptions.length / itemsPerPage)}
+              onPageChange={handlePageChange}
+              containerClassName={Style.pagination}
+              previousLinkClassName={Style.paginationLink}
+              nextLinkClassName={Style.paginationLink}
+              disabledClassName={Style.paginationDisabled}
+              activeClassName={Style.paginationActive}
+            />
+          </div>
         </main>
       </div>
       <Modal
@@ -415,13 +463,10 @@ const RecordedAnamnesis = () => {
         <div className={Style.results}>
           <TranscriptionResult
             text={selectedTranscription?.anamnese}
-            isEditable={false}
-          />
-          <TranscriptionResult
-            text={selectedTranscription?.anamnese}
             isEditable={true}
             onSave={handeUpdated}
             transcription_id={selectedTranscription?.anamnese_id}
+            title={"Anamnesis"}
           />
         </div>
       </Modal>
