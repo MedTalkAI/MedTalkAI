@@ -63,14 +63,28 @@ const TranscriptionResult = ({
     }
   }, []);
 
+  function contarQuebrasDeLinha(texto) {
+    // Contador para armazenar o número de quebras de linha
+    let contador = 0;
+    // Loop através de cada caractere do texto
+    for (let i = 0; i < texto.length; i++) {
+        // Se o caractere atual for uma quebra de linha (\n), incrementa o contador
+        if (texto[i] === '\n') {
+            contador++;
+        }
+    }   
+    // Retorna o número de quebras de linha encontradas
+    return contador;
+}
+const numLinhas = contarQuebrasDeLinha(text) + 1;
   return (
     <div className={Style.transcriptionResult}>
       {/**
          @todo: alinhar verticamente o texto quando ele for vazio
-      **/}
+      
       <h1 className={Style.title}>
         {title ? title : (isEditable ? "Corrected Transcription" : "Model Transcription")}
-      </h1>
+      </h1>**/}
       <textarea
         className={`${Style.textArea} ${
           text
@@ -84,8 +98,9 @@ const TranscriptionResult = ({
         onChange={handleTextChange}
         readOnly={isDataSicentist || (isEditable && editableText === null)}
         cols="32"
-        rows="10"
+        rows={numLinhas}
         style={{
+          height: "auto",
           resize: text ? "vertical" : "none",
           textAlign: !editableText ? "center" : "left",
           display: !editableText ? "flex" : "block",

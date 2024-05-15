@@ -417,7 +417,7 @@ const RecordedAnamnesis = () => {
                 <span class="material-symbols-outlined">
                   arrow_back_ios_new
                 </span>
-              }
+              }  
               nextLabel={
                 <span class="material-symbols-outlined">arrow_forward_ios</span>
               }
