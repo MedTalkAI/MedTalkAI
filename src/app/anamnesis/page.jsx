@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
 import ReactModal from "react-modal";
+import CheckAuthExpiration from "@/hooks/CheckAuthExpiration";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -299,6 +300,7 @@ const Anamnesis = () => {
     <div>
       <Navbar path="/anamnesis" />
       <div className={Style.content}>
+        <CheckAuthExpiration />
         <ToastContainer />
         <main>
           <div className={Style.head}>

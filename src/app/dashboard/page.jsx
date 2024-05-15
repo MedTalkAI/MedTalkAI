@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
 import ModelStatistics from "@/components/ModelStatistics";
 import Modal from "react-modal";
+import CheckAuthExpiration from "@/hooks/CheckAuthExpiration";
 
 const Dashboard = () => {
   const [defaultModel, setDefaultModel] = useState(null);
@@ -142,6 +143,7 @@ const Dashboard = () => {
     <div className={Style.Dashboard}>
       <Navbar path="/dashboard" />
       <div className={Style.content}>
+        <CheckAuthExpiration />
         <ToastContainer />
         <main>
           <div className={Style.sides}>

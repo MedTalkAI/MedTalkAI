@@ -8,6 +8,7 @@ import Modal from "react-modal";
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import CheckAuthExpiration from "@/hooks/CheckAuthExpiration";
 
 const MyProfile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -128,6 +129,7 @@ const MyProfile = () => {
     <div>
       <Navbar path="/my-profile" />
       <div className={Style.content}>
+        <CheckAuthExpiration />
         <ToastContainer />
         <main>
           <div className={Style.profile}>

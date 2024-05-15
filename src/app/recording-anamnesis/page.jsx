@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Modal from "react-modal";
 import TranscriptionResult from "@/components/TranscriptionResult";
 import ReactPaginate from "react-paginate";
+import CheckAuthExpiration from "@/hooks/CheckAuthExpiration";
 
 const RecordingAnamnesis = () => {
   const [selectedAnamnese, setSelectedAnamnese] = useState();
@@ -220,6 +221,7 @@ const RecordingAnamnesis = () => {
 
   return (
     <div className={Styles.container}>
+      <CheckAuthExpiration />
       <div className={!isModalOpen && isFixed ? Styles.fixedNavbar : ""}>
         <Navbar path="/recording-anamnesis" />
       </div>
