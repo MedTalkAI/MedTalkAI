@@ -172,15 +172,14 @@ const RecordingAnamnesis = () => {
     setPageNumber(selected);
   };
 
-  
-
- 
 
   const renderizarAnamneses = () => {
+
     const [isEdit, setIsEdit] = useState(null);
     const handleEditButtonClick = (anamnese) => {
-      setIsEdit(anamnese.id); // Definir o ID da anamnese como isEdit ao clicar no botão de edição
+      setIsEdit(anamnese.id);
     };
+
     const displayedAnamneses = anamneses.slice(
       pagesVisited,
       pagesVisited + itemsPerPage

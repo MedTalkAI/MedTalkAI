@@ -2,7 +2,7 @@
 
 import Style from "./TranscriptionResult.module.css";
 import { useState, useEffect } from "react";
-
+import Modal from "react-modal";
 const TranscriptionResult = ({
   text,
   isEditable,
@@ -10,6 +10,8 @@ const TranscriptionResult = ({
   transcription_id,
   title
 }) => {
+  
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [editableText, setEditableText] = useState(text);
   const [isDataSicentist, setIsDataSicentist] = useState(false);
 
@@ -63,17 +65,21 @@ const TranscriptionResult = ({
     }
   }, []);
 
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   function contarQuebrasDeLinha(texto) {
-    // Contador para armazenar o número de quebras de linha
+    
     let contador = 0;
-    // Loop através de cada caractere do texto
     for (let i = 0; i < texto.length; i++) {
-        // Se o caractere atual for uma quebra de linha (\n), incrementa o contador
         if (texto[i] === '\n') {
             contador++;
         }
-    }   
-    // Retorna o número de quebras de linha encontradas
+    }
+    if(contador < 5 && texto != null){
+      contador = 7;
+    }
     return contador;
 }
 const numLinhas = contarQuebrasDeLinha(text) + 1;
@@ -113,11 +119,48 @@ const numLinhas = contarQuebrasDeLinha(text) + 1;
         style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}
       >
         {isDataSicentist == false && isEditable && text && (
-          <button className={Style.btnSaveEdits} onClick={handleSaveEdits}>
+          <button className={Style.btnSaveEdits}  onClick={() => {
+            setIsModalOpen(true);
+          }}>
             Save Corrections
           </button>
         )}
       </div>
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={handleCancel}
+        contentLabel="Confirmação de Atualização"
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          },
+          content: {
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "400px",
+            height: "200px",
+            margin: "auto",
+            borderRadius: "4px",
+            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.3)",
+            backgroundColor: "#fff",
+          },
+        }}
+      >
+        <>
+          <h2>Save Corrections</h2>
+          <p>Are you sure you want to save corrections?</p>
+          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+            <button className={Style.buttonOk} onClick={handleSaveEdits}>
+              Yes
+            </button>
+            <button className={Style.buttonCancel} onClick={handleCancel}>
+              No
+            </button>
+          </div>
+        </>
+      </Modal>
     </div>
   );
 };

@@ -6,7 +6,7 @@
   width: 100%;
 }
 
-.title {
+/**.title {
   color: #000;
   font-family: Raleway;
   font-size: 20px;
@@ -14,7 +14,7 @@
   font-weight: 700;
   line-height: normal;
   letter-spacing: -0.25px;
-}
+}**/
 
 .textArea {
   display: flex;
@@ -24,7 +24,7 @@
   gap: 10px;
   border-radius: 10px;
   color: #000;
-  font-family: Raleway;
+  font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -60,7 +60,7 @@
   border: none;
   color: #fff;
   text-align: center;
-  font-family: Raleway;
+  font-family: inter;
   font-size: 18px;
   font-style: normal;
   font-weight: 600;
@@ -75,6 +75,33 @@
 .transcriptionResult textarea {
   width: -webkit-fill-available;
 }
+
+.buttonCancel, .buttonOk {
+  margin-top: 7px;
+  display: flex;
+  width: 100px;
+  height: 40px;
+  padding: 5px 15px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: #FF3B3B;
+  color: #FFF;
+  text-align: center;
+  font-family: 'Raleway';
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  border: none;
+}
+
+.buttonOk {
+  background: #3B9B33;
+}
+
 
 @media screen and (max-width: 750px) {
   .transcriptionResult {
