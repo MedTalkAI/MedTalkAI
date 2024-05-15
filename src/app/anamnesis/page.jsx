@@ -114,6 +114,38 @@ const Anamnesis = () => {
     setPageNumber(selected);
   };
 
+  const navigateToAnamnese = (anamneseId) => {
+    window.location.href = `/anamnese/${anamneseId}`;
+  };
+
+  const generateTranscriptions = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/recordings`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${
+              typeof window !== "undefined" && window.localStorage
+                ? localStorage.getItem("access_token")
+                : ""
+            }`,
+          },
+        }
+      );
+      if (response.status == 202) {
+        toast.success("Transcriptions are being generated!");
+      } else if (response.status == 404) {
+        toast.success("No recordings to be transcribed");
+      } else {
+        throw new Error("Failed to update correction");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to update correction");
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -327,7 +359,10 @@ const Anamnesis = () => {
                 <span class="material-symbols-outlined">audio_file</span>
                 {recordingsToBe} recordings ready to be transcribed
               </div>
-              <button className={Style.secondaryButton} disabled>
+              <button
+                className={Style.secondaryButton}
+                onClick={generateTranscriptions}
+              >
                 Transcribe
               </button>
             </div>
@@ -400,23 +435,20 @@ const Anamnesis = () => {
                   />
                   <TableBody>
                     {displayedAnamneses.map((anamnese, i) => (
-                      <a
-                        href={`/anamnese/${anamnese.id}`}
-                        key={i}
-                        style={{ textDecoration: "none" }}
+                      <StyledTableRow
+                        key={anamnese.id}
+                        onClick={() => navigateToAnamnese(anamnese.id)}
                       >
-                        <StyledTableRow key={anamnese.id}>
-                          <StyledTableCell>{anamnese.id}</StyledTableCell>
-                          <StyledTableCell className={Style.anamneseText}>
-                            {anamnese.transcription}
-                          </StyledTableCell>
-                          <StyledTableCell>{anamnese.model}</StyledTableCell>
-                          <StyledTableCell>{anamnese.user}</StyledTableCell>
-                          <StyledTableCell>
-                            {formatDate(anamnese.date)}
-                          </StyledTableCell>
-                        </StyledTableRow>
-                      </a>
+                        <StyledTableCell>{anamnese.id}</StyledTableCell>
+                        <StyledTableCell className={Style.anamneseText}>
+                          {anamnese.transcription}
+                        </StyledTableCell>
+                        <StyledTableCell>{anamnese.model}</StyledTableCell>
+                        <StyledTableCell>{anamnese.user}</StyledTableCell>
+                        <StyledTableCell>
+                          {formatDate(anamnese.date)}
+                        </StyledTableCell>
+                      </StyledTableRow>
                     ))}
                   </TableBody>
                 </Table>
