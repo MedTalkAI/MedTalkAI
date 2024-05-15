@@ -64,7 +64,7 @@ const RecordingAnamnesis = () => {
     console.log(selectedAnamnese);
   }, [selectedAnamnese]);
 
-  const handeUpdated = (editableText) => {
+  const handleUpdated = (editableText) => {
     console.log("editableText");
     console.log(editableText);
     const aux_anamneses = JSON.parse(JSON.stringify(anamneses));
@@ -79,7 +79,7 @@ const RecordingAnamnesis = () => {
     setSelectedAnamnese(null);
     toast.success("Anamnesis updated successfully!");
   };
-
+/**
   const handleCorrection = async () => {
     try {
       console.log(selectedAnamnese.text);
@@ -113,6 +113,7 @@ const RecordingAnamnesis = () => {
       console.error(error);
     }
   };
+ */
 
   const handleTranscribe = (anamneseRecorded) => {
     setAnamneses(
@@ -202,48 +203,54 @@ const RecordingAnamnesis = () => {
             key={anamnese.id}
             onClick={() => handleAnamneseClick(anamnese)}
           >
-              {selectedAnamnese?.id === anamnese.id && isEdit=== anamnese.id ? (
-               
+              {selectedAnamnese?.id === anamnese.id && isEdit === anamnese.id ? (
                 <div className={Styles.conteinerAnamnese}>
                   <TranscriptionResult
                     className={Styles.editable}
                     text={selectedAnamnese?.text}
                     isEditable={true}
-                    onSave={handeUpdated}
+                    onSave={handleUpdated}
                     transcription_id={selectedAnamnese?.id}
                   />
                 </div>
               ) : (
-              <div className={Styles.conteinerAnamnese}>
-                <span>{anamnese.id}</span>
-                <span className={Styles.anamneseText}>
+                  <>
                   {selectedAnamnese?.id === anamnese.id ? (
-                  <TranscriptionResult
-                    className={Styles.nonEditable}
-                    text={selectedAnamnese?.text}
-                    isEditable={false}
-                  />
+                    <div className={Styles.conteinerSelectedAnamnese}>
+                      <TranscriptionResult
+                        className={Styles.nonEditable}
+                        text={selectedAnamnese?.text}
+                        isEditable={false}
+                      />
+                      {selectedAnamnese?.id === anamnese.id && (
+                        <div
+                          style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}
+                        >
+                          <button
+                            className={Styles.button}
+                            onClick={() => handleEditButtonClick(anamnese)}
+                          >
+                            <span className="material-symbols-outlined">edit</span>
+                            <span className={Styles.textSpanButton}>
+                              Editar Anamnesis
+                            </span>
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   ) : (
-                    anamnese.text
+                    <div className={Styles.conteinerAnamnese}>
+                      <span>{anamnese.id}</span>
+                      <span className={Styles.anamneseText}>{anamnese.text}</span>
+                      <span className={Styles.anamneseWorks}>
+                        {anamnese.text.split(/\s+/).length}
+                      </span>
+                    </div>
                   )}
-                </span>
-                <span className={Styles.anamneseWorks}>
-                  {anamnese.text.split(/\s+/).length}
-                </span>
-                {selectedAnamnese?.id === anamnese.id && (
-                <button
-                  className={Styles.button}
-                  onClick={() => handleEditButtonClick(anamnese)}
-                >
-                  <span className="material-symbols-outlined">edit</span>
-                  <span className={Styles.textSpanButton}>
-                    {isEdit ? "Salvar" : "Editar Anamnesis"}
-                  </span>
-                </button>)}
-              </div>
+                </>
                 
               )}
-            
+
           </li>
         ))}
       </ul>

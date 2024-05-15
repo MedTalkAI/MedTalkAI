@@ -4,11 +4,17 @@
   background: white;
 }
 
-.containerAnamnese {
+.containerAnamnese, .conteinerSelectedAnamnese{
   margin-top: 15px;
   margin-left: 2%;
   margin-right: 2%;
-  margin-bottom: 70px;
+}
+.conteinerSelectedAnamnese{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
 }
 
 .content main {
