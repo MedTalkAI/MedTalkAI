@@ -9,6 +9,9 @@ import "react-toastify/dist/ReactToastify.css";
 import Modal from "react-modal";
 import TranscriptionResult from "@/components/TranscriptionResult";
 import ReactPaginate from "react-paginate";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+
+
 
 const RecordingAnamnesis = () => {
   const [selectedAnamnese, setSelectedAnamnese] = useState();
@@ -185,7 +188,82 @@ const RecordingAnamnesis = () => {
       pagesVisited,
       pagesVisited + itemsPerPage
     );
-  
+
+    return(
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell className={`${Styles.anamneseHeader} ${Styles.header}`}>Nº Anamnesis</TableCell>
+              <TableCell className={`${Styles.anamneseHeader} ${Styles.header}`}>Anamnesis</TableCell>
+              <TableCell className={`${Styles.anamneseHeader} ${Styles.header}`}>Nº Words</TableCell>
+              
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {displayedAnamneses.map((anamnese, index) => (
+              <TableRow
+                  key={anamnese.id}
+                  className={`${Styles.anamnese} ${
+                    selectedAnamnese?.id === anamnese.id ? Styles.selected : ""
+                  } ${index % 2 === 0 ? Styles.anamneseEven : Styles.anamneseOdd}`}
+                  onClick={() => handleAnamneseClick(anamnese)}
+                >
+                  <TableCell>{anamnese.id}</TableCell>
+                  {selectedAnamnese?.id === anamnese.id && isEdit === anamnese.id ? (
+                    <TableCell>
+                      <TranscriptionResult
+                        className={Styles.editable}
+                        text={selectedAnamnese?.text}
+                        isEditable={true}
+                        onSave={handleUpdated}
+                        transcription_id={selectedAnamnese?.id}
+                      />
+                    </TableCell>
+                  ):(
+                    <>
+                      {selectedAnamnese?.id === anamnese.id ? (
+                        <TableCell>
+                          <TranscriptionResult
+                            className={Styles.nonEditable}
+                            text={selectedAnamnese?.text}
+                            isEditable={false}
+                          />
+                          {selectedAnamnese?.id === anamnese.id && (
+                            <div
+                              style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}
+                            >
+                              <button
+                                className={Styles.button}
+                                onClick={() => handleEditButtonClick(anamnese)}
+                              >
+                                <span className="material-symbols-outlined">edit</span>
+                                <span className={Styles.textSpanButton}>
+                                  Editar Anamnesis
+                                </span>
+                              </button>
+                            </div>
+                          )}
+                        </TableCell>
+                      ):(
+                          <>
+                            
+                            <TableCell>{anamnese.text}</TableCell>
+                            
+                          </>
+                      )
+                    } 
+                  </>            
+                )}
+                <TableCell>{anamnese.text.split(/\s+/).length}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+          
+    );
+  /**
     return (
       <ul className={Styles.ul}>
         <li className={`${Styles.anamneseHeader} ${Styles.header}`}>
@@ -254,8 +332,8 @@ const RecordingAnamnesis = () => {
           </li>
         ))}
       </ul>
-    );
-  };
+    );*/
+  }; 
   
 
 
