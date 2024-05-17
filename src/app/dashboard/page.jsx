@@ -103,6 +103,34 @@ const Dashboard = () => {
     return () => clearInterval(interval);
   }, [models]);
 
+  function handleRecalculateMetrics() {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/models/recalculate`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${
+          typeof window !== "undefined" && window.localStorage
+            ? localStorage.getItem("access_token")
+            : ""
+        }`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to recalculate metrics");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setModels(data);
+        toast.success("Metrics recalculated successfully");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        toast.error("Error recalculating metrics");
+      });
+  }
+
   //já que preciso tratar como blob irei modificar aqui.
   function saveCsv(id) {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/models/${id}/csv`, {
@@ -149,6 +177,13 @@ const Dashboard = () => {
           <div className={Style.sides}>
             <h1 className={Style.title}>Model Dashboard</h1>
             <div className={Style.benchmarkAndGroupSelect}>
+              <button
+                className={Style.benchmark}
+                onClick={handleRecalculateMetrics}
+              >
+                <span class="material-symbols-outlined">analytics</span>
+                Recalculate Metrics
+              </button>
               <div className={Style.groupSelect}>
                 <h2>Default Model</h2>
                 {models.length > 0 && (

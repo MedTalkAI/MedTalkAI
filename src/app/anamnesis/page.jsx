@@ -328,6 +328,24 @@ const Anamnesis = () => {
     }
   };
 
+  function handleBenckmark() {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/transcriptions/benchmark`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+      body: JSON.stringify({}),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        toast.success(data.message);
+      })
+      .catch((error) => {
+        toast.error("An error occurred.");
+      });
+  }
+
   return (
     <div>
       <Navbar path="/anamnesis" />
@@ -338,7 +356,7 @@ const Anamnesis = () => {
           <div className={Style.head}>
             <h1 className={Style.title}>Anamnesis</h1>
             <div className={Style.options}>
-              <button className={Style.benchmark} disabled>
+              <button onClick={handleBenckmark} className={Style.benchmark}>
                 <span class="material-symbols-outlined">bubble_chart</span>
                 Benchmark
               </button>
