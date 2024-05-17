@@ -8,6 +8,7 @@ import ReactAudioPlayer from "react-audio-player";
 import TranscriptionResult from "@/components/TranscriptionResult";
 import Metrics from "@/components/Metrics";
 import AnamneseChart from "@/components/AnamneseChart";
+import CheckAuthExpiration from "@/hooks/CheckAuthExpiration";
 
 const Anamnese = () => {
   const { id } = useParams();
@@ -93,11 +94,12 @@ const Anamnese = () => {
   return (
     <div>
       <Navbar />
+      <CheckAuthExpiration />
       <div className={Style.anamnese}>
-      <div className={Style.buttonVoltar}>
-        <a href="\anamnesis">Anamnese </a>
-        <p> &lt; Anamnese {id}</p>
-      </div>
+        <div className={Style.buttonVoltar}>
+          <a href="\anamnesis">Anamnese </a>
+          <p> &lt; Anamnese {id}</p>
+        </div>
         <h1 className={Style.title}>Anamnese {id}</h1>
         <div className={Style.controls}>
           <ReactAudioPlayer src={audioSrc} controls />

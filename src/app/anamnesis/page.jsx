@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
 import ReactModal from "react-modal";
+import CheckAuthExpiration from "@/hooks/CheckAuthExpiration";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -327,16 +328,35 @@ const Anamnesis = () => {
     }
   };
 
+  function handleBenckmark() {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/transcriptions/benchmark`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+      body: JSON.stringify({}),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        toast.success(data.message);
+      })
+      .catch((error) => {
+        toast.error("An error occurred.");
+      });
+  }
+
   return (
     <div>
       <Navbar path="/anamnesis" />
       <div className={Style.content}>
+        <CheckAuthExpiration />
         <ToastContainer />
         <main>
           <div className={Style.head}>
             <h1 className={Style.title}>Anamnesis</h1>
             <div className={Style.options}>
-              <button className={Style.benchmark} disabled>
+              <button onClick={handleBenckmark} className={Style.benchmark}>
                 <span class="material-symbols-outlined">bubble_chart</span>
                 Benchmark
               </button>

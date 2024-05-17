@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
 import ReactAudioPlayer from "react-audio-player";
+import CheckAuthExpiration from "@/hooks/CheckAuthExpiration";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -296,6 +297,7 @@ const Recordings = () => {
     <div>
       <Navbar path="/recordings" />
       <div className={Style.content}>
+        <CheckAuthExpiration />
         <ToastContainer />
         <main>
           <div className={Style.head}>
