@@ -193,11 +193,10 @@ const RecordingAnamnesis = () => {
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
-            <TableRow>
-              <TableCell className={`${Styles.anamneseHeader} ${Styles.header}`}>Nº Anamnesis</TableCell>
-              <TableCell className={`${Styles.anamneseHeader} ${Styles.header}`}>Anamnesis</TableCell>
-              <TableCell className={`${Styles.anamneseHeader} ${Styles.header}`}>Nº Words</TableCell>
-              
+            <TableRow className={`${Styles.anamneseHeader} ${Styles.header}`}>
+              <TableCell className={`${Styles.anamneseId}`}>Nº Anamnesis</TableCell>
+              <TableCell className={`${Styles.anamneseText}`}>Anamnesis</TableCell>
+              <TableCell className={`${Styles.anamneseWorks }`}>Nº Words</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -209,9 +208,9 @@ const RecordingAnamnesis = () => {
                   } ${index % 2 === 0 ? Styles.anamneseEven : Styles.anamneseOdd}`}
                   onClick={() => handleAnamneseClick(anamnese)}
                 >
-                  <TableCell>{anamnese.id}</TableCell>
+                  <TableCell className={`${Styles.anamneseId}`}>{anamnese.id}</TableCell>
                   {selectedAnamnese?.id === anamnese.id && isEdit === anamnese.id ? (
-                    <TableCell>
+                    <TableCell className={`${Styles.anamneseText}`}>
                       <TranscriptionResult
                         className={Styles.editable}
                         text={selectedAnamnese?.text}
@@ -223,7 +222,7 @@ const RecordingAnamnesis = () => {
                   ):(
                     <>
                       {selectedAnamnese?.id === anamnese.id ? (
-                        <TableCell>
+                        <TableCell className={`${Styles.anamneseText}`}>
                           <TranscriptionResult
                             className={Styles.nonEditable}
                             text={selectedAnamnese?.text}
@@ -248,14 +247,14 @@ const RecordingAnamnesis = () => {
                       ):(
                           <>
                             
-                            <TableCell>{anamnese.text}</TableCell>
+                            <TableCell className={`${Styles.anamneseText}`}>{anamnese.text}</TableCell>
                             
                           </>
                       )
                     } 
                   </>            
                 )}
-                <TableCell>{anamnese.text.split(/\s+/).length}</TableCell>
+                <TableCell className={`${Styles.anamneseWorks }`}>{anamnese.text.split(/\s+/).length}</TableCell>
               </TableRow>
             ))}
           </TableBody>

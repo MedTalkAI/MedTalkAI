@@ -38,13 +38,13 @@
 }
 
 .textAreaFixed {
-  border: 1px solid #6485b2;
+  border: none;
   text-align: start;
   background: #f3f8ff;
 }
 
 .textAreaEditable {
-  border: 1px solid #6bb264;
+  border: 1px solid #6485b2;
   text-align: start;
   background: #f4fff3;
 }
