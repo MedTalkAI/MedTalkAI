@@ -196,14 +196,16 @@ const RecordingAnamnesis = () => {
             <TableRow className={`${Styles.anamneseHeader} ${Styles.header}`}>
               <TableCell className={`${Styles.anamneseId}`}>Nº Anamnesis</TableCell>
               <TableCell className={`${Styles.anamneseText}`}>Anamnesis</TableCell>
-              <TableCell className={`${Styles.anamneseWorks }`}>Nº Words</TableCell>
+              <TableCell className={`${Styles.anamneseWorks}`}>Nº Words</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {displayedAnamneses.map((anamnese, index) => (
               <TableRow
+                  className={`${Styles.anamnese} ${
+                    selectedAnamnese?.id === anamnese.id ? Styles.selected : ""
+                  } ${index % 2 === 0 ? Styles.anamneseEven : Styles.anamneseOdd}`}
                   key={anamnese.id}
-                  className={`${Styles.anamnese} ${index % 2 === 0 ? Styles.anamneseEven : Styles.anamneseOdd}`}
                   onClick={() => handleAnamneseClick(anamnese)}
                 >
                   <TableCell className={`${Styles.anamneseId}`}>{anamnese.id}</TableCell>
