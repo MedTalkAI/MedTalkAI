@@ -102,7 +102,7 @@ const numLinhas = contarQuebrasDeLinha(text) + 1;
         name=""
         value={editableText || "No transcription performed"}
         onChange={handleTextChange}
-        readOnly={isDataSicentist || (isEditable && editableText === null)}
+        readOnly={isDataSicentist || !(isEditable || editableText === null)}
         cols="32"
         rows={numLinhas}
         style={{
