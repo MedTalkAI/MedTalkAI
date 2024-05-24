@@ -8,9 +8,9 @@ const TranscriptionResult = ({
   isEditable,
   onSave,
   transcription_id,
-  title
+  title,
+  setModal,
 }) => {
-  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editableText, setEditableText] = useState(text);
   const [isDataSicentist, setIsDataSicentist] = useState(false);
@@ -65,24 +65,27 @@ const TranscriptionResult = ({
     }
   }, []);
 
+  useEffect(() => {
+    setModal(isModalOpen);
+  }, [isModalOpen]);
+
   const handleCancel = () => {
     setIsModalOpen(false);
   };
 
   function contarQuebrasDeLinha(texto) {
-    
     let contador = 0;
     for (let i = 0; i < texto.length; i++) {
-        if (texto[i] === '\n') {
-            contador++;
-        }
+      if (texto[i] === "\n") {
+        contador++;
+      }
     }
-    if(contador < 5 && texto != null){
+    if (contador < 5 && texto != null) {
       contador = 7;
     }
     return contador;
-}
-const numLinhas = contarQuebrasDeLinha(text) + 1;
+  }
+  const numLinhas = contarQuebrasDeLinha(text) + 1;
   return (
     <div className={Style.transcriptionResult}>
       {/**
@@ -119,9 +122,12 @@ const numLinhas = contarQuebrasDeLinha(text) + 1;
         style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}
       >
         {isDataSicentist == false && isEditable && text && (
-          <button className={Style.btnSaveEdits}  onClick={() => {
-            setIsModalOpen(true);
-          }}>
+          <button
+            className={Style.btnSaveEdits}
+            onClick={() => {
+              setIsModalOpen(true);
+            }}
+          >
             Save Corrections
           </button>
         )}
