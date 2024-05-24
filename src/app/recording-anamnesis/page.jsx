@@ -184,7 +184,7 @@ const RecordingAnamnesis = () => {
     setPageNumber(selected);
   };
 
-  const renderizarAnamneses = () => {
+  const RenderizarAnamneses = () => {
     const [isEdit, setIsEdit] = useState(null);
     const handleEditButtonClick = (anamnese) => {
       setIsEdit(anamnese.id);
@@ -381,7 +381,7 @@ const RecordingAnamnesis = () => {
           <div>{anamnesisRecord()}</div>
         </div>
         <div className={Styles.anamnesisGroup}>
-          {anamneses && renderizarAnamneses()}
+          {anamneses && <RenderizarAnamneses />}
         </div>
         <div className={Styles.paginationContainer}>
           <div className={Styles.details}>
