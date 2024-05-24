@@ -11,7 +11,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
-    "@mui/material": "^5.15.15",
+    "@mui/material": "^5.15.17",
     "@mui/x-data-grid": "^7.3.0",
     "chart.js": "^4.4.2",
     "eslint": "8.56.0",
@@ -19,7 +19,7 @@
     "jwt-decode": "^4.0.0",
     "material-symbols": "^0.17.2",
     "next": "^14.0.4",
-    "node": "^21.7.2",
+    "node": "^21.7.3",
     "pcm-util": "^3.0.0",
     "react": "18.2.0",
     "react-audio-player": "^0.17.0",
