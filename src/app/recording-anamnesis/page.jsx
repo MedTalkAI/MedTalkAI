@@ -19,6 +19,8 @@ import {
   Paper,
 } from "@mui/material";
 
+import CheckAuthExpiration from "@/hooks/CheckAuthExpiration";
+
 const RecordingAnamnesis = () => {
   const [selectedAnamnese, setSelectedAnamnese] = useState();
   const [transcription, setTranscription] = useState();
@@ -182,7 +184,7 @@ const RecordingAnamnesis = () => {
     setPageNumber(selected);
   };
 
-  const renderizarAnamneses = () => {
+  const RenderizarAnamneses = () => {
     const [isEdit, setIsEdit] = useState(null);
     const handleEditButtonClick = (anamnese) => {
       setIsEdit(anamnese.id);
@@ -367,6 +369,7 @@ const RecordingAnamnesis = () => {
 
   return (
     <div className={Styles.container}>
+      <CheckAuthExpiration />
       <div className={!isModalOpen && isFixed ? Styles.fixedNavbar : ""}>
         <Navbar path="/recording-anamnesis" />
       </div>
@@ -378,7 +381,7 @@ const RecordingAnamnesis = () => {
           <div>{anamnesisRecord()}</div>
         </div>
         <div className={Styles.anamnesisGroup}>
-          {anamneses && renderizarAnamneses()}
+          {anamneses && <RenderizarAnamneses />}
         </div>
         <div className={Styles.paginationContainer}>
           <div className={Styles.details}>
