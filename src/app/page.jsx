@@ -39,8 +39,12 @@ export default function Home() {
         const data = await response.json();
         if (typeof window !== "undefined" && window.localStorage)
           localStorage.setItem("access_token", data.access_token);
-
+        console.log(JSON.stringify(jwtDecode(data.access_token)));
         const user = jwtDecode(data.access_token).sub;
+        const exp = jwtDecode(data.access_token).exp;
+        const expirationDate = new Date(exp * 1000);
+        if (typeof window !== "undefined" && window.localStorage)
+          localStorage.setItem("expiration_date", expirationDate);
 
         if (typeof window !== "undefined" && window.localStorage)
           localStorage.setItem("user", JSON.stringify(user));

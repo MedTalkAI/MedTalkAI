@@ -10,6 +10,7 @@ import AudioRecorderComponent from "@/components/AudioRecorderComponent";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CheckAuthExpiration from "@/hooks/CheckAuthExpiration";
 
 const Transcription = () => {
   let doctor = false;
@@ -91,6 +92,8 @@ const Transcription = () => {
 
   return (
     <div className={Style.transcription}>
+      <CheckAuthExpiration />
+
       <Navbar path="/transcription" />
       <div className={Style.content}>
         <ToastContainer />

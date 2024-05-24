@@ -10,6 +10,7 @@ import Modal from "react-modal";
 import { useState, useEffect, useRef } from "react";
 import TranscriptionResult from "@/components/TranscriptionResult";
 import ReactPaginate from "react-paginate";
+import CheckAuthExpiration from "@/hooks/CheckAuthExpiration";
 
 const RecordedAnamnesis = () => {
   const [openDropdown, setOpenDropdown] = useState(false);
@@ -315,6 +316,7 @@ const RecordedAnamnesis = () => {
     <div>
       <Navbar path="/recorded-anamnesis" />
       <div className={Style.content}>
+        <CheckAuthExpiration />
         <ToastContainer />
         <main>
           <h1 className={Style.title}>Recorded</h1>

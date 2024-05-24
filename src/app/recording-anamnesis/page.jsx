@@ -19,6 +19,8 @@ import {
   Paper,
 } from "@mui/material";
 
+import CheckAuthExpiration from "@/hooks/CheckAuthExpiration";
+
 const RecordingAnamnesis = () => {
   const [selectedAnamnese, setSelectedAnamnese] = useState();
   const [transcription, setTranscription] = useState();
@@ -367,6 +369,7 @@ const RecordingAnamnesis = () => {
 
   return (
     <div className={Styles.container}>
+      <CheckAuthExpiration />
       <div className={!isModalOpen && isFixed ? Styles.fixedNavbar : ""}>
         <Navbar path="/recording-anamnesis" />
       </div>

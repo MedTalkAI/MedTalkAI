@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Modal from "react-modal";
 
 import { useState, useEffect, useRef } from "react";
+import CheckAuthExpiration from "@/hooks/CheckAuthExpiration";
 
 const MyAnamnesis = () => {
   const [openDropdown, setOpenDropdown] = useState(false);
@@ -246,6 +247,7 @@ const MyAnamnesis = () => {
     <div>
       <Navbar path="/my-anamnesis" />
       <div className={Style.content}>
+        <CheckAuthExpiration />
         <ToastContainer />
         <main>
           <h1 className={Style.title}>My Anamnesis</h1>
