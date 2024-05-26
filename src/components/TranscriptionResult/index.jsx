@@ -8,8 +8,7 @@ const TranscriptionResult = ({
   isEditable,
   onSave,
   transcription_id,
-  title,
-  setModal,
+  
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editableText, setEditableText] = useState(text);
@@ -65,9 +64,7 @@ const TranscriptionResult = ({
     }
   }, []);
 
-  useEffect(() => {
-    setModal(isModalOpen);
-  }, [isModalOpen]);
+  
 
   const handleCancel = () => {
     setIsModalOpen(false);
