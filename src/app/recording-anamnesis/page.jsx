@@ -32,6 +32,7 @@ const RecordingAnamnesis = () => {
   const [isEditAnamnese, setIsEditAnamnese] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isButtonAux, setIsButtonAux] = useState(-1);
+  const [isEdit, setIsEdit] = useState(null);
 
   const [pageNumber, setPageNumber] = useState(0);
   const itemsPerPage = 10;
@@ -178,7 +179,7 @@ const RecordingAnamnesis = () => {
   };
 
   const handleAnamneseClick = (anamnese) => {
-    if(isModalOpen && anamnese.id != isButtonAux){
+    if (isModalOpen && anamnese.id != isButtonAux) {
       setIsModalOpen(false);
     }
     setSelectedAnamnese(anamnese);
@@ -189,10 +190,8 @@ const RecordingAnamnesis = () => {
   };
 
   const RenderizarAnamneses = () => {
-    const [isEdit, setIsEdit] = useState(null);
-    
     const handleEditButtonClick = (anamnese) => {
-      setIsButtonAux(anamnese.id)
+      setIsButtonAux(anamnese.id);
       setIsModalOpen(true);
       setIsEdit(anamnese.id);
     };
