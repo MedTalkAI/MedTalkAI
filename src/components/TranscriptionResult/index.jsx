@@ -82,7 +82,14 @@ const TranscriptionResult = ({
     }
     return contador;
   }
-  const numLinhas = contarQuebrasDeLinha(text) + 1;
+  const numLinhas = () =>{ 
+    
+    if(text != null){ 
+      return contarQuebrasDeLinha(text) + 1
+    }
+    return;
+  
+  };
   return (
     <div className={Style.transcriptionResult}>
       {/**
