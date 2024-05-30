@@ -233,7 +233,10 @@ const RecordingAnamnesis = () => {
                 </TableCell>
                 {selectedAnamnese?.id === anamnese.id &&
                 isEdit === anamnese.id ? (
-                  <TableCell className={`${Styles.anamneseText}`}>
+                  <TableCell
+                    className={`${Styles.anamneseText}`}
+                    style={{ paddingInline: "10px" }}
+                  >
                     <TranscriptionResult
                       className={Styles.editable}
                       text={selectedAnamnese?.text}
