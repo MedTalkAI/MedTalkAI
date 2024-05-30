@@ -8,7 +8,7 @@ const TranscriptionResult = ({
   isEditable,
   onSave,
   transcription_id,
-  
+
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editableText, setEditableText] = useState(text);
@@ -72,17 +72,20 @@ const TranscriptionResult = ({
 
   function contarQuebrasDeLinha(texto) {
     let contador = 0;
-    for (let i = 0; i < texto.length; i++) {
-      if (texto[i] === "\n") {
-        contador++;
+    if( texto != null){
+      for (let i = 0; i < texto.length; i++) {
+        if (texto[i] === "\n") {
+          contador++;
+        }
       }
-    }
-    if (contador < 5 && texto != null) {
-      contador = 7;
+      if (contador < 5 ){
+        contador = 7;
+      }
     }
     return contador;
   }
-  const numLinhas = contarQuebrasDeLinha(text) + 1;
+  const numLinhas =  contarQuebrasDeLinha(text) + 1;
+
   return (
     <div className={Style.transcriptionResult}>
       {/**
