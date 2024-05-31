@@ -202,24 +202,26 @@
 }
 
 /* CODIGO DA TABELA*/
-.ul {
-  padding-inline-start: 0;
-}
-
 .anamnese {
   align-items: center;
   cursor: pointer;
   display: flex;
   flex-direction: row;
-  padding: 10px 30px;
+  padding: 10px 0px;
   background: #fff;
   font-size: 1rem;
 }
-
+.conteinerAnamnese{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
 .anamneseHeader {
   display: flex;
   flex-direction: row;
-  padding: 10px 30px;
+  padding: 10px 0px;
   background: #f1f2f7;
   font-size: 15px;
   font-weight: 600;
@@ -234,36 +236,39 @@
 }
 
 .anamneseId {
-  width: 107px;
-  margin-right: 32px;
+  border: none;
+  width: 150px;
   text-align: center;
 }
 
 .anamneseText {
+  border: none;
   max-height: 4em;
-  /* Ajuste o valor conforme necessário para limitar o número de linhas */
+    /* Ajuste o valor conforme necessário para limitar o número de linhas */
   overflow: hidden;
+  width: 100%;
   display: -webkit-box;
-  white-space: pre-wrap;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   line-height: 1.3em;
   font-size: 1rem;
-  width: 610px;
-  margin-right: 23px;
-  margin-left: 23px;
   text-overflow: ellipsis;
 }
 
+.anamneseTextSpan {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 4.5em; /* Approximate height for 3 lines, adjust if needed */
+}
+
 .anamneseWorks {
+  border: none;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 107px;
-  margin-right: 23px;
-  margin-left: 23px;
+  width: 100px;
   text-align: center;
-  padding-right: 10%;
 }
 
 .anamneseHeader .anamneseWorks {
@@ -282,15 +287,15 @@
 
 .button {
   display: flex;
-  height: 40px;
-  font-size: 1rem;
-  border: none;
-  width: 178px;
-  background-color: #3aa351;
-  color: #fff;
-  border-radius: 5px;
-  align-items: center;
-  justify-content: center;
+    height: 40px;
+    font-size: 1rem;
+    border: none;
+    width: 178px;
+    background-color: #3AA351;
+    color: #FFF;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
 }
 
 .button span {

@@ -415,7 +415,6 @@ const RecordingAnamnesis = () => {
           />
         </div>
       </div>
-      /
       {/**
       <Modal
         isOpen={isModalOpen}
