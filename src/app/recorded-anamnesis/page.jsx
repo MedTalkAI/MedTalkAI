@@ -43,7 +43,7 @@ const RecordedAnamnesis = () => {
     setIsDeleteModalOpen(true);
   };
 
-  
+
 
   const handleConfirmDelete = async () => {
     try {
@@ -52,11 +52,10 @@ const RecordedAnamnesis = () => {
         {
           method: "DELETE",
           headers: {
-            Authorization: `Bearer ${
-              typeof window !== "undefined" && window.localStorage
+            Authorization: `Bearer ${typeof window !== "undefined" && window.localStorage
                 ? localStorage.getItem("access_token")
                 : ""
-            }`,
+              }`,
           },
         }
       );
@@ -108,11 +107,10 @@ const RecordedAnamnesis = () => {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${
-              typeof window !== "undefined" && window.localStorage
+            Authorization: `Bearer ${typeof window !== "undefined" && window.localStorage
                 ? localStorage.getItem("access_token")
                 : ""
-            }`,
+              }`,
           },
           body: formData,
         }
@@ -141,11 +139,10 @@ const RecordedAnamnesis = () => {
               {
                 method: "GET",
                 headers: {
-                  Authorization: `Bearer ${
-                    typeof window !== "undefined" && window.localStorage
+                  Authorization: `Bearer ${typeof window !== "undefined" && window.localStorage
                       ? localStorage.getItem("access_token")
                       : ""
-                  }`,
+                    }`,
                 },
               }
             );
@@ -169,11 +166,10 @@ const RecordedAnamnesis = () => {
               {
                 method: "GET",
                 headers: {
-                  Authorization: `Bearer ${
-                    typeof window !== "undefined" && window.localStorage
+                  Authorization: `Bearer ${typeof window !== "undefined" && window.localStorage
                       ? localStorage.getItem("access_token")
                       : ""
-                  }`,
+                    }`,
                 },
               }
             );
@@ -216,11 +212,10 @@ const RecordedAnamnesis = () => {
         `${process.env.NEXT_PUBLIC_API_URL}/recordings/${selectedTranscription.id}/audio`,
         {
           headers: {
-            Authorization: `Bearer ${
-              typeof window !== "undefined" && window.localStorage
+            Authorization: `Bearer ${typeof window !== "undefined" && window.localStorage
                 ? localStorage.getItem("access_token")
                 : ""
-            }`,
+              }`,
           },
         }
       )
@@ -285,104 +280,11 @@ const RecordedAnamnesis = () => {
     setIsEdit(anamnese.id);
   };
 
-  const renderizarAnamneses = () => {
-    const displayedAnamneses = transcriptions.slice(
-      pagesVisited,
-      pagesVisited + itemsPerPage
-    );
-    return (
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow className={`${Style.anamneseHeader} ${Style.header}`}>
-              <TableCell className={`${Style.anamneseId}`}>
-                Nº Anamnesis
-              </TableCell>
-              <TableCell className={`${Style.anamneseText}`}>
-                Anamnesis
-              </TableCell>
-              <TableCell className={`${Style.anamneseWorks}`}>
-                Nº Words
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {displayedAnamneses.map((anamnese, index) => (
-              <TableRow
-                className={`${Style.anamnese} ${
-                  selectedAnamnese?.id === anamnese.id ? Style.selected : ""
-                } ${
-                  index % 2 === 0 ? Style.anamneseEven : Style.anamneseOdd
-                }`}
-                key={anamnese.id}
-                onClick={() => handleAnamneseClick(anamnese)}
-              >
-                <TableCell className={`${Style.anamneseId}`}>
-                  {anamnese.id}
-                </TableCell>
-                {selectedAnamnese?.id === anamnese.id &&
-                isEdit === anamnese.id ? (
-                  <TableCell className={`${Style.anamneseText}`}>
-                    <TranscriptionResult
-                      className={Style.editable}
-                      text={selectedAnamnese?.text}
-                      isEditable={true}
-                      onSave={handleUpdated}
-                      transcription_id={selectedAnamnese?.id}
-                    />
-                  </TableCell>
-                ) : (
-                  <>
-                    {selectedAnamnese?.id === anamnese.id ? (
-                      <TableCell className={`${Style.anamneseText}`}>
-                        <TranscriptionResult
-                          className={Style.nonEditable}
-                          text={selectedAnamnese?.text}
-                          isEditable={false}
-                        />
-                        {selectedAnamnese?.id === anamnese.id && (
-                          <div
-                            style={{
-                              width: "100%",
-                              display: "flex",
-                              justifyContent: "flex-end",
-                            }}
-                          >
-                            <button
-                              className={Style.button}
-                              onClick={() => handleEditButtonClick(anamnese)}
-                            >
-                              <span className="material-symbols-outlined">
-                                edit
-                              </span>
-                              <span className={Style.textSpanButton}>
-                                Editar Anamnesis
-                              </span>
-                            </button>
-                          </div>
-                        )}
-                      </TableCell>
-                    ) : (
-                      <>
-                        <TableCell className={`${Style.anamneseText}`}>
-                          <span className={Style.anamneseTextSpan}>
-                            {anamnese.text}
-                          </span>
-                        </TableCell>
-                      </>
-                    )}
-                  </>
-                )}
-                <TableCell className={`${Style.anamneseWorks}`}>
-                  {anamnese.text.split(/\s+/).length}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    );
-  };
+
+  const displayedAnamneses = transcriptions.slice(
+    pagesVisited,
+    pagesVisited + itemsPerPage
+  );
 
   return (
     <div>
@@ -405,7 +307,7 @@ const RecordedAnamnesis = () => {
                 >
                   <ReactAudioPlayer src={audioSrc} controls />
                   {userType !== "intern" && (
-                    <button className={Style.updateButton} onClick={() => {}}>
+                    <button className={Style.updateButton} onClick={() => { }}>
                       Update Correction
                     </button>
                   )}
@@ -474,7 +376,97 @@ const RecordedAnamnesis = () => {
             </div>
           </div>
           <div className={Style.anamnesisGroup}>
-            {transcriptions && renderizarAnamneses()}
+            {transcriptions && <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow className={`${Styles.anamneseHeader} ${Styles.header}`}>
+                    <TableCell className={`${Styles.anamneseId}`}>
+                      Nº Anamnesis
+                    </TableCell>
+                    <TableCell className={`${Styles.anamneseText}`}>
+                      Anamnesis
+                    </TableCell>
+                    <TableCell className={`${Styles.anamneseWorks}`}>
+                      Nº Words
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {displayedAnamneses.map((anamnese, index) => (
+                    <TableRow
+                      className={`${Styles.anamnese} ${selectedAnamnese?.id === anamnese.id ? Styles.selected : ""
+                        } ${index % 2 === 0 ? Styles.anamneseEven : Styles.anamneseOdd
+                        }`}
+                      key={anamnese.id}
+                      onClick={() => handleAnamneseClick(anamnese)}
+                    >
+                      <TableCell className={`${Styles.anamneseId}`}>
+                        {anamnese.id}
+                      </TableCell>
+                      {selectedAnamnese?.id === anamnese.id &&
+                        isEdit === anamnese.id ? (
+                        <TableCell
+                          className={`${Styles.anamneseText}`}
+                          style={{ paddingInline: "10px" }}
+                        >
+                          <TranscriptionResult
+                            className={Styles.editable}
+                            text={selectedAnamnese?.text}
+                            isEditable={true}
+                            onSave={handleUpdated}
+                            transcription_id={selectedAnamnese?.id}
+                          />
+                        </TableCell>
+                      ) : (
+                        <>
+                          {selectedAnamnese?.id === anamnese.id ? (
+                            <TableCell className={`${Styles.anamneseText}`}>
+                              <TranscriptionResult
+                                className={Styles.nonEditable}
+                                text={selectedAnamnese?.text}
+                                isEditable={false}
+                              />
+                              {selectedAnamnese?.id === anamnese.id && (
+                                <div
+                                  style={{
+                                    width: "100%",
+                                    display: "flex",
+                                    justifyContent: "flex-end",
+                                  }}
+                                >
+                                  <button
+                                    className={Styles.button}
+                                    onClick={() => handleEditButtonClick(anamnese)}
+                                  >
+                                    <span className="material-symbols-outlined">
+                                      edit
+                                    </span>
+                                    <span className={Styles.textSpanButton}>
+                                      Edit Anamnesis
+                                    </span>
+                                  </button>
+                                </div>
+                              )}
+                            </TableCell>
+                          ) : (
+                            <>
+                              <TableCell className={`${Styles.anamneseText}`}>
+                                <span className={Styles.anamneseTextSpan}>
+                                  {anamnese.text}
+                                </span>
+                              </TableCell>
+                            </>
+                          )}
+                        </>
+                      )}
+                      <TableCell className={`${Styles.anamneseWorks}`}>
+                        {anamnese.text.split(/\s+/).length}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>}
           </div>
           <div className={Style.paginationContainer}>
             <div className={Style.details}>
@@ -491,7 +483,7 @@ const RecordedAnamnesis = () => {
                 <span class="material-symbols-outlined">
                   arrow_back_ios_new
                 </span>
-              }  
+              }
               nextLabel={
                 <span class="material-symbols-outlined">arrow_forward_ios</span>
               }

@@ -92,10 +92,7 @@
   margin-left: 10px;
 }
 
-.ul {
-  padding-inline-start: 0;
-  font-family:Inter;
-}
+
 
 .anamnese {
   align-items: center;
@@ -131,12 +128,14 @@
 }
 
 .anamneseId {
+  font-size: 16px;
   border: none;
   width: 150px;
   text-align: center;
 }
 
 .anamneseText {
+  font-size: 16px;
   border: none;
   max-height: 4em;
     /* Ajuste o valor conforme necessário para limitar o número de linhas */
@@ -151,6 +150,7 @@
 }
 
 .anamneseTextSpan {
+  font-size: 16px;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -160,6 +160,7 @@
 }
 
 .anamneseWorks {
+  font-size: 16px;
   border: none;
   display: flex;
   width: 100px;
@@ -186,7 +187,7 @@
     font-size: 1rem;
     border: none;
     width: 178px;
-    background-color: #3AA351;
+    background-color: #6e8a9d;
     color: #FFF;
     border-radius: 5px;
     align-items: center;
