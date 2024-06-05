@@ -322,7 +322,7 @@ const RecordedAnamnesis = () => {
                 </div>
               ) : (
                 <div className={Style.info}>
-                  <span class="material-symbols-outlined">info</span>
+                  <span className="material-symbols-outlined">info</span>
                   <p>
                     You can select any anamnese, listen its audio and update its
                     correction
@@ -338,10 +338,10 @@ const RecordedAnamnesis = () => {
                 >
                   <p>Order by {orderBy}</p>
                   {!openDropdown && (
-                    <span class="material-symbols-outlined">expand_more</span>
+                    <span className="material-symbols-outlined">expand_more</span>
                   )}
                   {openDropdown && (
-                    <span class="material-symbols-outlined">expand_less</span>
+                    <span className="material-symbols-outlined">expand_less</span>
                   )}
                 </div>
                 {openDropdown && (
@@ -494,12 +494,12 @@ const RecordedAnamnesis = () => {
             </div>
             <ReactPaginate
               previousLabel={
-                <span class="material-symbols-outlined">
+                <span className="material-symbols-outlined">
                   arrow_back_ios_new
                 </span>
               }
               nextLabel={
-                <span class="material-symbols-outlined">arrow_forward_ios</span>
+                <span className="material-symbols-outlined">arrow_forward_ios</span>
               }
               pageCount={Math.ceil(transcriptions.length / itemsPerPage)}
               onPageChange={handlePageChange}
