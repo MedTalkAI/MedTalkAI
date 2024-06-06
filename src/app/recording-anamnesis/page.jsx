@@ -330,10 +330,10 @@ const RecordingAnamnesis = () => {
           </div>
           <ReactPaginate
             previousLabel={
-              <span class="material-symbols-outlined">arrow_back_ios_new</span>
+              <span className="material-symbols-outlined">arrow_back_ios_new</span>
             }
             nextLabel={
-              <span class="material-symbols-outlined">arrow_forward_ios</span>
+              <span className="material-symbols-outlined">arrow_forward_ios</span>
             }
             pageCount={Math.ceil(anamneses.length / itemsPerPage)}
             onPageChange={handlePageChange}
