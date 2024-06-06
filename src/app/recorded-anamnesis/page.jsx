@@ -21,6 +21,7 @@ import ReactPaginate from "react-paginate";
 import CheckAuthExpiration from "@/hooks/CheckAuthExpiration";
 
 const RecordedAnamnesis = () => {
+  const [isButtonAux, setIsButtonAux] = useState(-1);
   const [isEdit, setIsEdit] = useState(null);
   const [selectedAnamnese, setSelectedAnamnese] = useState();
   const [openDropdown, setOpenDropdown] = useState(false);
@@ -126,6 +127,22 @@ const RecordedAnamnesis = () => {
       console.error(error);
       toast.error("Failed to update correction");
     }
+  };
+
+  const handleUpdated = (editableText) => {
+    console.log("editableText");
+    console.log(editableText);
+    const aux_anamneses = JSON.parse(JSON.stringify(anamneses));
+    const updatedAnamneses = aux_anamneses.map((anamnese) => {
+      if (anamnese.id === selectedAnamnese.id) {
+        anamnese.text = editableText;
+      }
+      return anamnese;
+    });
+    setAnamneses(updatedAnamneses);
+    setIsModalOpen(false);
+    setSelectedAnamnese(null);
+    toast.success("Anamnesis updated successfully!");
   };
 
   useEffect(() => {
@@ -424,10 +441,10 @@ const RecordedAnamnesis = () => {
                           >
                             <TranscriptionResult
                               className={Style.editable}
-                              text={selectedAnamnese?.text}
+                              text={selectedAnamnese?.anamnese}
                               isEditable={true}
                               onSave={handleUpdated}
-                              transcription_id={selectedAnamnese?.id}
+                              transcription_id={selectedAnamnese?.anamnese_id}
                             />
                           </TableCell>
                         ) : (
@@ -436,7 +453,7 @@ const RecordedAnamnesis = () => {
                               <TableCell className={`${Style.anamneseText}`}>
                                 <TranscriptionResult
                                   className={Style.nonEditable}
-                                  text={selectedAnamnese?.text}
+                                  text={selectedAnamnese?.anamnese}
                                   isEditable={false}
                                 />
                                 {selectedAnamnese?.id === anamnese.id && (

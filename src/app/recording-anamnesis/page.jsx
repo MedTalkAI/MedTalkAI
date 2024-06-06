@@ -91,7 +91,7 @@ const RecordingAnamnesis = () => {
     setSelectedAnamnese(null);
     toast.success("Anamnesis updated successfully!");
   };
-  /**
+  
   const handleCorrection = async () => {
     try {
       console.log(selectedAnamnese.text);
@@ -125,7 +125,7 @@ const RecordingAnamnesis = () => {
       console.error(error);
     }
   };
- */
+ 
 
   const handleTranscribe = (anamneseRecorded) => {
     setAnamneses(
@@ -200,17 +200,6 @@ const RecordingAnamnesis = () => {
     pagesVisited,
     pagesVisited + itemsPerPage
   );
-
-
-
-
-
-  useEffect(() => {
-    console.log("isModalOpen");
-    console.log(isModalOpen);
-    console.log("isFixed");
-    console.log(isFixed);
-  }, [isModalOpen]);
 
   return (
     <div className={Styles.container}>
