@@ -28,7 +28,6 @@ const AudioRecorderComponent = ({
   const [model, setModel] = useState("Wav2Vec 2.0 + lm5");
 
   const addAudioElement = (blob) => {
-    // console.log(blob);
     const url = URL.createObjectURL(blob);
     setAudioUrl(url);
     const name =

@@ -13,8 +13,6 @@ const CheckAuthExpiration = () => {
                 if (expirationDate) {
                     const currentTime = new Date().getTime();
                     const expirationTime = new Date(expirationDate).getTime();
-                    console.log("Testando se o token expirou")
-                    console.log(currentTime, expirationTime)
 
                     if (currentTime > expirationTime) {
                         localStorage.removeItem('access_token');

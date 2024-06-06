@@ -39,14 +39,12 @@ const Transcription = () => {
     setModelTranscription(result);
     setModel(model);
     setTranscription_id(id);
-    console.log(encodeURIComponent(model, "utf-8"));
   };
 
   const handleCorrection = async (correctedText, resultMetrics) => {
     try {
       setCorrectedTranscription(correctedText);
       setMetrics(resultMetrics);
-      console.log(correctedText, resultMetrics);
 
       let name = username + " " + new Date().toLocaleString();
       let date = new Date().toLocaleString();

@@ -8,7 +8,6 @@ const TranscriptionResult = ({
   isEditable,
   onSave,
   transcription_id,
-
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editableText, setEditableText] = useState(text);
@@ -19,7 +18,6 @@ const TranscriptionResult = ({
   };
 
   const handleSaveEdits = async () => {
-    console.log("save edits");
     try {
       let model_transcription = text;
       let correct_transcription = editableText;
@@ -45,7 +43,6 @@ const TranscriptionResult = ({
       );
 
       const result = await response.json();
-      console.log(result);
 
       onSave(correct_transcription);
     } catch (error) {
@@ -64,27 +61,25 @@ const TranscriptionResult = ({
     }
   }, []);
 
-  
-
   const handleCancel = () => {
     setIsModalOpen(false);
   };
 
   function contarQuebrasDeLinha(texto) {
     let contador = 0;
-    if( texto != null){
+    if (texto != null) {
       for (let i = 0; i < texto.length; i++) {
         if (texto[i] === "\n") {
           contador++;
         }
       }
-      if (contador < 5 ){
+      if (contador < 5) {
         contador = 7;
       }
     }
     return contador;
   }
-  const numLinhas =  contarQuebrasDeLinha(text) + 1;
+  const numLinhas = contarQuebrasDeLinha(text) + 1;
 
   return (
     <div className={Style.transcriptionResult}>

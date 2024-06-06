@@ -164,7 +164,6 @@ const Anamnesis = () => {
         );
         if (response.ok) {
           const transcriptions = await response.json();
-          console.log(transcriptions);
           setTranscriptions(transcriptions);
           setUsers(
             transcriptions
@@ -220,9 +219,7 @@ const Anamnesis = () => {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    console.log(file);
-  }, [file]);
+  useEffect(() => {}, [file]);
 
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString("en-GB", {

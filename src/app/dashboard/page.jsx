@@ -40,7 +40,6 @@ const Dashboard = () => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         setStandardModel(JSON.parse(JSON.stringify(defaultModel)));
         toast.success("Standard model updated successfully");
       })
@@ -121,7 +120,6 @@ const Dashboard = () => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         setModels(data);
         toast.success("Metrics recalculated successfully");
       })

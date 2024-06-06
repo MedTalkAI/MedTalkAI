@@ -136,7 +136,6 @@ const MyAnamnesis = () => {
           );
           if (response.ok) {
             const transcriptions = await response.json();
-            console.log(transcriptions);
             setTranscriptions(transcriptions);
           } else {
             throw new Error("Failed to fetch transcriptions");
@@ -164,7 +163,6 @@ const MyAnamnesis = () => {
           );
           if (response.ok) {
             const transcriptions = await response.json();
-            console.log(transcriptions);
             setTranscriptions(transcriptions);
           } else {
             throw new Error("Failed to fetch transcriptions");
@@ -191,7 +189,6 @@ const MyAnamnesis = () => {
 
   useEffect(() => {
     if (selectedTranscription) {
-      console.log(selectedTranscription);
       setEditableText(selectedTranscription.latest_correction);
       textareaRef.current.focus();
 

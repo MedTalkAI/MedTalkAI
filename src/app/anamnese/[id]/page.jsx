@@ -38,7 +38,6 @@ const Anamnese = () => {
 
         if (response.ok) {
           const data = await response.json();
-          console.log(data);
           setTranscription(data);
           setCorrections(data.corrections);
           // Extracting data for chart
@@ -85,11 +84,6 @@ const Anamnese = () => {
         console.error("There was a problem with the fetch operation:", error);
       });
   }, [id]);
-
-  useEffect(() => {
-    console.log("transcription");
-    console.log(transcription);
-  }, [transcription]);
 
   return (
     <div>

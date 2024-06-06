@@ -48,10 +48,11 @@ const RecordingAnamnesis = () => {
         const response = await fetch(url, {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${typeof window !== "undefined" && window.localStorage
+            Authorization: `Bearer ${
+              typeof window !== "undefined" && window.localStorage
                 ? localStorage.getItem("access_token")
                 : ""
-              }`,
+            }`,
           },
         });
 
@@ -72,13 +73,7 @@ const RecordingAnamnesis = () => {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    console.log(selectedAnamnese);
-  }, [selectedAnamnese]);
-
   const handleUpdated = (editableText) => {
-    console.log("editableText");
-    console.log(editableText);
     const aux_anamneses = JSON.parse(JSON.stringify(anamneses));
     const updatedAnamneses = aux_anamneses.map((anamnese) => {
       if (anamnese.id === selectedAnamnese.id) {
@@ -89,43 +84,10 @@ const RecordingAnamnesis = () => {
     setAnamneses(updatedAnamneses);
     setIsModalOpen(false);
     setSelectedAnamnese(null);
+    setIsEdit(false);
+    setIsButtonAux(false);
     toast.success("Anamnesis updated successfully!");
   };
-  
-  const handleCorrection = async () => {
-    try {
-      console.log(selectedAnamnese.text);
-      console.log(model);
-      console.log(transcriptionId);
-
-      const formData = new FormData();
-      formData.append("correction", selectedAnamnese.text);
-
-      formData.append("model", model);
-      if (transcriptionId && selectedAnamnese.text && model)
-        await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/corrections/${transcriptionId}`,
-          {
-            method: "POST",
-            body: formData,
-            headers: {
-              Authorization: `Bearer ${
-                typeof window !== "undefined" && window.localStorage
-                  ? localStorage.getItem("access_token")
-                  : ""
-              }`,
-            },
-          }
-        );
-
-      toast.success("Anamnesis saved successfully!");
-      setCorrectedTranscription(null);
-      setSelectedAnamnese(null);
-    } catch (error) {
-      console.error(error);
-    }
-  };
- 
 
   const handleTranscribe = (anamneseRecorded) => {
     setAnamneses(
@@ -215,97 +177,109 @@ const RecordingAnamnesis = () => {
           <div>{anamnesisRecord()}</div>
         </div>
         <div className={Styles.anamnesisGroup}>
-          {anamneses && <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow className={`${Styles.anamneseHeader} ${Styles.header}`}>
-                  <TableCell className={`${Styles.anamneseId}`}>
-                    Nº Anamnesis
-                  </TableCell>
-                  <TableCell className={`${Styles.anamneseText}`}>
-                    Anamnesis
-                  </TableCell>
-                  <TableCell className={`${Styles.anamneseWorks}`}>
-                    Nº Words
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {displayedAnamneses.map((anamnese, index) => (
+          {anamneses && (
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
                   <TableRow
-                    className={`${Styles.anamnese} ${selectedAnamnese?.id === anamnese.id ? Styles.selected : ""
-                      } ${index % 2 === 0 ? Styles.anamneseEven : Styles.anamneseOdd
-                      }`}
-                    key={anamnese.id}
-                    onClick={() => handleAnamneseClick(anamnese)}
+                    className={`${Styles.anamneseHeader} ${Styles.header}`}
                   >
                     <TableCell className={`${Styles.anamneseId}`}>
-                      {anamnese.id}
+                      Nº Anamnesis
                     </TableCell>
-                    {selectedAnamnese?.id === anamnese.id &&
-                      isEdit === anamnese.id ? (
-                      <TableCell
-                        className={`${Styles.anamneseText}`}
-                        style={{ paddingInline: "10px" }}
-                      >
-                        <TranscriptionResult
-                          className={Styles.editable}
-                          text={selectedAnamnese?.text}
-                          isEditable={true}
-                          onSave={handleUpdated}
-                          transcription_id={selectedAnamnese?.id}
-                        />
-                      </TableCell>
-                    ) : (
-                      <>
-                        {selectedAnamnese?.id === anamnese.id ? (
-                          <TableCell className={`${Styles.anamneseText}`}>
-                            <TranscriptionResult
-                              className={Styles.nonEditable}
-                              text={selectedAnamnese?.text}
-                              isEditable={false}
-                            />
-                            {selectedAnamnese?.id === anamnese.id && (
-                              <div
-                                style={{
-                                  width: "100%",
-                                  display: "flex",
-                                  justifyContent: "flex-end",
-                                }}
-                              >
-                                <button
-                                  className={Styles.button}
-                                  onClick={() => handleEditButtonClick(anamnese)}
-                                >
-                                  <span className="material-symbols-outlined">
-                                    edit
-                                  </span>
-                                  <span className={Styles.textSpanButton}>
-                                    Edit Anamnesis
-                                  </span>
-                                </button>
-                              </div>
-                            )}
-                          </TableCell>
-                        ) : (
-                          <>
-                            <TableCell className={`${Styles.anamneseText}`}>
-                              <span className={Styles.anamneseTextSpan}>
-                                {anamnese.text}
-                              </span>
-                            </TableCell>
-                          </>
-                        )}
-                      </>
-                    )}
+                    <TableCell className={`${Styles.anamneseText}`}>
+                      Anamnesis
+                    </TableCell>
                     <TableCell className={`${Styles.anamneseWorks}`}>
-                      {anamnese.text.split(/\s+/).length}
+                      Nº Words
                     </TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>}
+                </TableHead>
+                <TableBody>
+                  {displayedAnamneses.map((anamnese, index) => (
+                    <TableRow
+                      className={`${Styles.anamnese} ${
+                        selectedAnamnese?.id === anamnese.id
+                          ? Styles.selected
+                          : ""
+                      } ${
+                        index % 2 === 0
+                          ? Styles.anamneseEven
+                          : Styles.anamneseOdd
+                      }`}
+                      key={anamnese.id}
+                      onClick={() => handleAnamneseClick(anamnese)}
+                    >
+                      <TableCell className={`${Styles.anamneseId}`}>
+                        {anamnese.id}
+                      </TableCell>
+                      {selectedAnamnese?.id === anamnese.id &&
+                      isEdit === anamnese.id ? (
+                        <TableCell
+                          className={`${Styles.anamneseText}`}
+                          style={{ paddingInline: "10px" }}
+                        >
+                          <TranscriptionResult
+                            className={Styles.editable}
+                            text={selectedAnamnese?.text}
+                            isEditable={true}
+                            onSave={handleUpdated}
+                            transcription_id={selectedAnamnese?.id}
+                          />
+                        </TableCell>
+                      ) : (
+                        <>
+                          {selectedAnamnese?.id === anamnese.id ? (
+                            <TableCell className={`${Styles.anamneseText}`}>
+                              <TranscriptionResult
+                                className={Styles.nonEditable}
+                                text={selectedAnamnese?.text}
+                                isEditable={false}
+                              />
+                              {selectedAnamnese?.id === anamnese.id && (
+                                <div
+                                  style={{
+                                    width: "100%",
+                                    display: "flex",
+                                    justifyContent: "flex-end",
+                                  }}
+                                >
+                                  <button
+                                    className={Styles.button}
+                                    onClick={() =>
+                                      handleEditButtonClick(anamnese)
+                                    }
+                                  >
+                                    <span className="material-symbols-outlined">
+                                      edit
+                                    </span>
+                                    <span className={Styles.textSpanButton}>
+                                      Edit Anamnesis
+                                    </span>
+                                  </button>
+                                </div>
+                              )}
+                            </TableCell>
+                          ) : (
+                            <>
+                              <TableCell className={`${Styles.anamneseText}`}>
+                                <span className={Styles.anamneseTextSpan}>
+                                  {anamnese.text}
+                                </span>
+                              </TableCell>
+                            </>
+                          )}
+                        </>
+                      )}
+                      <TableCell className={`${Styles.anamneseWorks}`}>
+                        {anamnese.text.split(/\s+/).length}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
         </div>
         <div className={Styles.paginationContainer}>
           <div className={Styles.details}>
@@ -319,10 +293,14 @@ const RecordingAnamnesis = () => {
           </div>
           <ReactPaginate
             previousLabel={
-              <span className="material-symbols-outlined">arrow_back_ios_new</span>
+              <span className="material-symbols-outlined">
+                arrow_back_ios_new
+              </span>
             }
             nextLabel={
-              <span className="material-symbols-outlined">arrow_forward_ios</span>
+              <span className="material-symbols-outlined">
+                arrow_forward_ios
+              </span>
             }
             pageCount={Math.ceil(anamneses.length / itemsPerPage)}
             onPageChange={handlePageChange}

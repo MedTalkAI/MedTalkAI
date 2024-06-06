@@ -21,12 +21,11 @@ import ReactPaginate from "react-paginate";
 import CheckAuthExpiration from "@/hooks/CheckAuthExpiration";
 
 const RecordedAnamnesis = () => {
-  const [isButtonAux, setIsButtonAux] = useState(-1);
-  const [isEdit, setIsEdit] = useState(null);
-  const [selectedAnamnese, setSelectedAnamnese] = useState();
   const [openDropdown, setOpenDropdown] = useState(false);
   const [orderBy, setOrderBy] = useState("");
   const [transcriptions, setTranscriptions] = useState([]);
+  const [isEdit, setIsEdit] = useState();
+  const [isButtonAux, setIsButtonAux] = useState();
   const [selectedTranscription, setSelectedTranscription] = useState(null);
   const [editableText, setEditableText] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,6 +43,22 @@ const RecordedAnamnesis = () => {
 
   const handleDeleteConfirmation = () => {
     setIsDeleteModalOpen(true);
+  };
+
+  const handleUpdated = (corrected) => {
+    const aux_anamneses = JSON.parse(JSON.stringify(transcriptions));
+    const updatedAnamneses = aux_anamneses.map((anamnese) => {
+      if (anamnese.anamnese_id === selectedTranscription.anamnese_id) {
+        anamnese.anamnese = corrected;
+      }
+      return anamnese;
+    });
+    setTranscriptions(updatedAnamneses);
+    setIsModalOpen(false);
+    setSelectedTranscription(null);
+    setIsEdit(false);
+    setIsButtonAux(false);
+    toast.success("Anamnesis updated successfully!");
   };
 
   const handleConfirmDelete = async () => {
@@ -107,7 +122,7 @@ const RecordedAnamnesis = () => {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/anamneses/${selectedTranscription.anamnese_id}`,
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             Authorization: `Bearer ${
               typeof window !== "undefined" && window.localStorage
@@ -127,22 +142,6 @@ const RecordedAnamnesis = () => {
       console.error(error);
       toast.error("Failed to update correction");
     }
-  };
-
-  const handleUpdated = (editableText) => {
-    console.log("editableText");
-    console.log(editableText);
-    const aux_anamneses = JSON.parse(JSON.stringify(anamneses));
-    const updatedAnamneses = aux_anamneses.map((anamnese) => {
-      if (anamnese.id === selectedAnamnese.id) {
-        anamnese.text = editableText;
-      }
-      return anamnese;
-    });
-    setAnamneses(updatedAnamneses);
-    setIsModalOpen(false);
-    setSelectedAnamnese(null);
-    toast.success("Anamnesis updated successfully!");
   };
 
   useEffect(() => {
@@ -168,7 +167,6 @@ const RecordedAnamnesis = () => {
             );
             if (response.ok) {
               const transcriptions = await response.json();
-              console.log(transcriptions);
               setTranscriptions(transcriptions);
             } else {
               throw new Error("Failed to fetch transcriptions");
@@ -196,7 +194,6 @@ const RecordedAnamnesis = () => {
             );
             if (response.ok) {
               const transcriptions = await response.json();
-              console.log(transcriptions);
               setTranscriptions(transcriptions);
             } else {
               throw new Error("Failed to fetch transcriptions");
@@ -293,7 +290,7 @@ const RecordedAnamnesis = () => {
     if (isModalOpen && anamnese.id != isButtonAux) {
       setIsModalOpen(false);
     }
-    setSelectedAnamnese(anamnese);
+    setSelectedTranscription(anamnese);
   };
 
   const handleEditButtonClick = (anamnese) => {
@@ -341,7 +338,7 @@ const RecordedAnamnesis = () => {
                 </div>
               ) : (
                 <div className={Style.info}>
-                  <span className="material-symbols-outlined">info</span>
+                  <span class="material-symbols-outlined">info</span>
                   <p>
                     You can select any anamnese, listen its audio and update its
                     correction
@@ -357,10 +354,10 @@ const RecordedAnamnesis = () => {
                 >
                   <p>Order by {orderBy}</p>
                   {!openDropdown && (
-                    <span className="material-symbols-outlined">expand_more</span>
+                    <span class="material-symbols-outlined">expand_more</span>
                   )}
                   {openDropdown && (
-                    <span className="material-symbols-outlined">expand_less</span>
+                    <span class="material-symbols-outlined">expand_less</span>
                   )}
                 </div>
                 {openDropdown && (
@@ -419,7 +416,7 @@ const RecordedAnamnesis = () => {
                     {displayedAnamneses.map((anamnese, index) => (
                       <TableRow
                         className={`${Style.anamnese} ${
-                          selectedAnamnese?.id === anamnese.id
+                          selectedTranscription?.id === anamnese.id
                             ? Style.selected
                             : ""
                         } ${
@@ -433,7 +430,7 @@ const RecordedAnamnesis = () => {
                         <TableCell className={`${Style.anamneseId}`}>
                           {anamnese.id}
                         </TableCell>
-                        {selectedAnamnese?.id === anamnese.id &&
+                        {selectedTranscription?.id === anamnese.id &&
                         isEdit === anamnese.id ? (
                           <TableCell
                             className={`${Style.anamneseText}`}
@@ -441,22 +438,24 @@ const RecordedAnamnesis = () => {
                           >
                             <TranscriptionResult
                               className={Style.editable}
-                              text={selectedAnamnese?.anamnese}
+                              text={selectedTranscription?.anamnese}
                               isEditable={true}
                               onSave={handleUpdated}
-                              transcription_id={selectedAnamnese?.anamnese_id}
+                              transcription_id={
+                                selectedTranscription?.anamnese_id
+                              }
                             />
                           </TableCell>
                         ) : (
                           <>
-                            {selectedAnamnese?.id === anamnese.id ? (
+                            {selectedTranscription?.id === anamnese.id ? (
                               <TableCell className={`${Style.anamneseText}`}>
                                 <TranscriptionResult
                                   className={Style.nonEditable}
-                                  text={selectedAnamnese?.anamnese}
+                                  text={selectedTranscription?.anamnese}
                                   isEditable={false}
                                 />
-                                {selectedAnamnese?.id === anamnese.id && (
+                                {selectedTranscription?.id === anamnese.id && (
                                   <div
                                     style={{
                                       width: "100%",
@@ -492,7 +491,7 @@ const RecordedAnamnesis = () => {
                           </>
                         )}
                         <TableCell className={`${Style.anamneseWorks}`}>
-                          {(anamnese.anamnese?.split(/\s+/).length)}
+                          {anamnese.anamnese.split(/\s+/).length}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -513,12 +512,12 @@ const RecordedAnamnesis = () => {
             </div>
             <ReactPaginate
               previousLabel={
-                <span className="material-symbols-outlined">
+                <span class="material-symbols-outlined">
                   arrow_back_ios_new
                 </span>
               }
               nextLabel={
-                <span className="material-symbols-outlined">arrow_forward_ios</span>
+                <span class="material-symbols-outlined">arrow_forward_ios</span>
               }
               pageCount={Math.ceil(transcriptions.length / itemsPerPage)}
               onPageChange={handlePageChange}
