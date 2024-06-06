@@ -72,13 +72,10 @@ const RecordingAnamnesis = () => {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    console.log(selectedAnamnese);
-  }, [selectedAnamnese]);
+  
 
   const handleUpdated = (editableText) => {
-    console.log("editableText");
-    console.log(editableText);
+    
     const aux_anamneses = JSON.parse(JSON.stringify(anamneses));
     const updatedAnamneses = aux_anamneses.map((anamnese) => {
       if (anamnese.id === selectedAnamnese.id) {
@@ -91,41 +88,7 @@ const RecordingAnamnesis = () => {
     setSelectedAnamnese(null);
     toast.success("Anamnesis updated successfully!");
   };
-  /**
-  const handleCorrection = async () => {
-    try {
-      console.log(selectedAnamnese.text);
-      console.log(model);
-      console.log(transcriptionId);
-
-      const formData = new FormData();
-      formData.append("correction", selectedAnamnese.text);
-
-      formData.append("model", model);
-      if (transcriptionId && selectedAnamnese.text && model)
-        await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/corrections/${transcriptionId}`,
-          {
-            method: "POST",
-            body: formData,
-            headers: {
-              Authorization: `Bearer ${
-                typeof window !== "undefined" && window.localStorage
-                  ? localStorage.getItem("access_token")
-                  : ""
-              }`,
-            },
-          }
-        );
-
-      toast.success("Anamnesis saved successfully!");
-      setCorrectedTranscription(null);
-      setSelectedAnamnese(null);
-    } catch (error) {
-      console.error(error);
-    }
-  };
- */
+  
 
   const handleTranscribe = (anamneseRecorded) => {
     setAnamneses(
@@ -205,12 +168,7 @@ const RecordingAnamnesis = () => {
 
 
 
-  useEffect(() => {
-    console.log("isModalOpen");
-    console.log(isModalOpen);
-    console.log("isFixed");
-    console.log(isFixed);
-  }, [isModalOpen]);
+ 
 
   return (
     <div className={Styles.container}>
@@ -243,7 +201,7 @@ const RecordingAnamnesis = () => {
               </TableHead>
               <TableBody>
                 {displayedAnamneses.map((anamnese, index) => (
-                  <TableRow
+                  anamnese && anamnese.text ? (<TableRow
                     className={`${Styles.anamnese} ${selectedAnamnese?.id === anamnese.id ? Styles.selected : ""
                       } ${index % 2 === 0 ? Styles.anamneseEven : Styles.anamneseOdd
                       }`}
@@ -312,7 +270,7 @@ const RecordingAnamnesis = () => {
                     <TableCell className={`${Styles.anamneseWorks}`}>
                       {anamnese.text.split(/\s+/).length}
                     </TableCell>
-                  </TableRow>
+                  </TableRow>) : null
                 ))}
               </TableBody>
             </Table>
