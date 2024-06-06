@@ -399,7 +399,7 @@ const RecordedAnamnesis = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {displayedAnamneses.map((anamnese, index) => ( anamnese && anamnese.text ? (
+                    {displayedAnamneses.map((anamnese, index) => (
                       <TableRow
                         className={`${Style.anamnese} ${
                           selectedAnamnese?.id === anamnese.id
@@ -467,7 +467,7 @@ const RecordedAnamnesis = () => {
                               <>
                                 <TableCell className={`${Style.anamneseText}`}>
                                   <span className={Style.anamneseTextSpan}>
-                                    {anamnese.text}
+                                    {anamnese.anamnese}
                                   </span>
                                 </TableCell>
                               </>
@@ -475,9 +475,9 @@ const RecordedAnamnesis = () => {
                           </>
                         )}
                         <TableCell className={`${Style.anamneseWorks}`}>
-                          {(anamnese.text.split(/\s+/).length)}
+                          {(anamnese.anamnese?.split(/\s+/).length)}
                         </TableCell>
-                      </TableRow>):(null)
+                      </TableRow>
                     ))}
                   </TableBody>
                 </Table>
