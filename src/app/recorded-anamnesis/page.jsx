@@ -21,6 +21,8 @@ import ReactPaginate from "react-paginate";
 import CheckAuthExpiration from "@/hooks/CheckAuthExpiration";
 
 const RecordedAnamnesis = () => {
+  const [isEdit, setIsEdit] = useState(null);
+  const [selectedAnamnese, setSelectedAnamnese] = useState();
   const [openDropdown, setOpenDropdown] = useState(false);
   const [orderBy, setOrderBy] = useState("");
   const [transcriptions, setTranscriptions] = useState([]);
@@ -397,7 +399,7 @@ const RecordedAnamnesis = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {displayedAnamneses.map((anamnese, index) => (
+                    {displayedAnamneses.map((anamnese, index) => ( anamnese && anamnese.text ? (
                       <TableRow
                         className={`${Style.anamnese} ${
                           selectedAnamnese?.id === anamnese.id
@@ -473,9 +475,9 @@ const RecordedAnamnesis = () => {
                           </>
                         )}
                         <TableCell className={`${Style.anamneseWorks}`}>
-                          {anamnese.text.split(/\s+/).length}
+                          {(anamnese.text.split(/\s+/).length)}
                         </TableCell>
-                      </TableRow>
+                      </TableRow>):(null)
                     ))}
                   </TableBody>
                 </Table>
