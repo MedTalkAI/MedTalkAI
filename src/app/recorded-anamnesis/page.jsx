@@ -428,7 +428,7 @@ const RecordedAnamnesis = () => {
                         onClick={() => handleAnamneseClick(anamnese)}
                       >
                         <TableCell className={`${Style.anamneseId}`}>
-                          {anamnese.id}
+                          {anamnese.anamnese_id}
                         </TableCell>
                         {selectedTranscription?.id === anamnese.id &&
                         isEdit === anamnese.id ? (
