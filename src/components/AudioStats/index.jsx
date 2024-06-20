@@ -2,49 +2,49 @@ import React, { use, useEffect, useState } from "react";
 import Style from "./AudioStats.module.css";
 
 const calculateStats = (data) => {
-    const werValues = data.map(d => parseFloat(d.wer));
-    const cosineValues = data.map(d => parseFloat(d.cosine));
-    const bleuValues = data.map(d => parseFloat(d.bleu));
-  
-    const mean = (values) => values.reduce((a, b) => a + b, 0) / values.length;
-    const variance = (values) => {
-      const avg = mean(values);
-      return mean(values.map(val => (val - avg) ** 2));
-    };
-    const std = (values) => Math.sqrt(variance(values));
-  
-    return {
-      wer: {
-        mean: mean(werValues),
-        std: std(werValues),
-        variance: variance(werValues),
-      },
-      cosine: {
-        mean: mean(cosineValues),
-        std: std(cosineValues),
-        variance: variance(cosineValues),
-      },
-      bleu: {
-        mean: mean(bleuValues),
-        std: std(bleuValues),
-        variance: variance(bleuValues),
-      },
-    };
+  const werValues = data.map((d) => parseFloat(d.wer));
+  const cosineValues = data.map((d) => parseFloat(d.cosine));
+  const bleuValues = data.map((d) => parseFloat(d.bleu));
+
+  const mean = (values) => values.reduce((a, b) => a + b, 0) / values.length;
+  const variance = (values) => {
+    const avg = mean(values);
+    return mean(values.map((val) => (val - avg) ** 2));
   };
+  const std = (values) => Math.sqrt(variance(values));
+
+  return {
+    wer: {
+      mean: mean(werValues),
+      std: std(werValues),
+      variance: variance(werValues),
+    },
+    cosine: {
+      mean: mean(cosineValues),
+      std: std(cosineValues),
+      variance: variance(cosineValues),
+    },
+    bleu: {
+      mean: mean(bleuValues),
+      std: std(bleuValues),
+      variance: variance(bleuValues),
+    },
+  };
+};
 
 const AudioStats = ({ data }) => {
   const [stats, setStats] = useState();
 
   useEffect(() => {
     if (data.length > 1) {
-        const calculatedStats = calculateStats(data);
-        setStats(calculatedStats);
-      }
+      const calculatedStats = calculateStats(data);
+      setStats(calculatedStats);
+    }
   }, [data]);
 
   return (
     <div className={Style.audioStats}>
-      <h3>Audio Evaluation Stats</h3>
+      <h3>Recording Evaluation Stats</h3>
       {stats && (
         <div className={Style.stats}>
           <div>

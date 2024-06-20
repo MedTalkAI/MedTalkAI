@@ -64,15 +64,14 @@ function ATableHead() {
   );
 }
 
-const SimpleTable = ({ data, current }) => {
-
+const SimpleTable = ({ data, current, title }) => {
   const navigateToAnamnese = (anamneseId) => {
     window.location.href = `/anamnese/${anamneseId}`;
   };
 
   return (
     <div className={Style.table}>
-      <h3>Transcriptions from other models</h3>
+      <h3>{title ? title : "Transcriptions from other models"}</h3>
       {data.length <= 1 && (
         <div className={Style.error}>
           <p>No transcriptions from other models</p>
@@ -86,9 +85,14 @@ const SimpleTable = ({ data, current }) => {
               {data
                 .filter((row) => String(row.id) !== String(current))
                 .map((row) => (
-                  <StyledTableRow key={row.id} onClick={() => navigateToAnamnese(row.id)}>
+                  <StyledTableRow
+                    key={row.id}
+                    onClick={() => navigateToAnamnese(row.id)}
+                  >
                     <StyledTableCell>{row.transcription}</StyledTableCell>
-                    <StyledTableCell style={{ whiteSpace: "nowrap" }}>{row.model}</StyledTableCell>
+                    <StyledTableCell style={{ whiteSpace: "nowrap" }}>
+                      {row.model}
+                    </StyledTableCell>
                   </StyledTableRow>
                 ))}
             </TableBody>

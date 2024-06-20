@@ -2,7 +2,7 @@ import { Chart } from "chart.js/auto";
 import { useEffect, useRef, useState } from "react";
 import Style from "./AnamneseChart.module.css";
 
-const AnamneseChart = ({ dataSets }) => {
+const AnamneseChart = ({ dataSets, title }) => {
   const chartRef = useRef();
   const [refreshKey, setRefreshKey] = useState(0);
 
@@ -62,7 +62,7 @@ const AnamneseChart = ({ dataSets }) => {
   return (
     <div className={Style.chart}>
       <div className={Style.head}>
-        <h2>Comparassion with other models</h2>
+        <h2>{title ? title : "Comparassion with other models"}</h2>
         <button onClick={handleRefreshColors} disabled={dataSets.length <= 1}>
           <span className="material-symbols-outlined">palette</span>
           Switch Colors
