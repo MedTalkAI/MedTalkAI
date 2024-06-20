@@ -5,6 +5,58 @@
     margin-bottom: 70px;
 }
 
+.head {
+    margin-top: 50px;
+}
+
+.head h1, .head p {
+    margin: 0;
+}
+
+.head h1 {
+    margin-top: 8px;
+    margin-bottom: 16px;
+}
+
+.head span {
+    color: #777777;
+    font-size: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.metadata_cont {
+    display: inline-flex;
+    align-items: flex-start;
+    align-content: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.metadata {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #000;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+letter-spacing: -0.25px;
+}
+
+.metadata span {
+    color: #3B779E;
+    font-size: 24px;
+}
+
+.controls {
+    margin-top: 34px;
+    margin-bottom: 60px;
+}
+
 .anamnese main {
     display: flex;
     flex-direction: column;

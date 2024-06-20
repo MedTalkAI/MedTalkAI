@@ -85,42 +85,83 @@ const Anamnese = () => {
       });
   }, [id]);
 
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+  };
+
+  /**
+   @todo: Add radar chart: https://www.chartjs.org/docs/latest/charts/radar.html
+  **/
+
   return (
     <div>
       <Navbar />
       <CheckAuthExpiration />
       <div className={Style.anamnese}>
-        <div className={Style.buttonVoltar}>
-          <a href="\anamnesis">Anamnese </a>
-          <p> &lt; Anamnese {id}</p>
-        </div>
-        <h1 className={Style.title}>Anamnese {id}</h1>
-        <div className={Style.controls}>
-          <ReactAudioPlayer src={audioSrc} controls />
-        </div>
-        <div className={Style.content}>
-          <div className={Style.texts}>
-            <TranscriptionResult
-              isEditable={false}
-              text={transcription?.transcription}
-            />
-            <TranscriptionResult
-              isEditable={true}
-              text={transcription?.latest_correction}
-            />
+        <div className={Style.head}>
+          <div className={Style.buttonVoltar}>
+            <a href="\anamnesis">Transcriptions</a>
+            <span className="material-symbols-outlined">arrow_back_ios</span>
+            <p>Transcription {id}</p>
           </div>
-          <div className={Style.metrics}>
-            {transcription && (
-              <Metrics
-                bleu={parseFloat(transcription.bleu)}
-                cosine={parseFloat(transcription.cosine)}
-                kappa={parseFloat(transcription.kappa)}
-                transcription={transcription.transcription}
-                wer={parseFloat(transcription.wer)}
-              />
-            )}
-            {transcription && (
-              <>
+          <h1 className={Style.title}>Anamnese {id}</h1>
+        </div>
+        {transcription && (
+          <>
+            <div className={Style.audio}>
+              <div className={Style.metadata_cont}>
+                <div className={Style.metadata}>
+                  <span className="material-symbols-outlined">audio_file</span>
+                  <p>Recorded at {formatDate(transcription.date)}</p>
+                </div>
+                <div className={Style.metadata}>
+                  <span className="material-symbols-outlined">
+                    bubble_chart
+                  </span>
+                  <p>Transcribed by {transcription.model}</p>
+                </div>
+                <div className={Style.metadata}>
+                  <span className="material-symbols-outlined">
+                    record_voice_over
+                  </span>
+                  <p>Recorded by {transcription.user}</p>
+                </div>
+                {transcription.anamnese_id && (
+                  <div className={Style.metadata}>
+                    <span className="material-symbols-outlined">
+                      description
+                    </span>
+                    <p>Provided by Hapvida</p>
+                  </div>
+                )}
+              </div>
+              <div className={Style.controls}>
+                <ReactAudioPlayer src={audioSrc} controls />
+              </div>
+            </div>
+            <div className={Style.content}>
+              <div className={Style.texts}>
+                <TranscriptionResult
+                  isEditable={false}
+                  text={transcription?.transcription}
+                />
+                <TranscriptionResult
+                  isEditable={true}
+                  text={transcription?.latest_correction}
+                />
+              </div>
+              <div className={Style.metrics}>
+                <Metrics
+                  bleu={parseFloat(transcription.bleu)}
+                  cosine={parseFloat(transcription.cosine)}
+                  kappa={parseFloat(transcription.kappa)}
+                  transcription={transcription.transcription}
+                  wer={parseFloat(transcription.wer)}
+                />
                 <div className={Style.selection}>
                   <h3>Historic Metrics: </h3>
                   <select
@@ -139,10 +180,10 @@ const Anamnese = () => {
                   labels={labels}
                   metric={metric}
                 />
-              </>
-            )}
-          </div>
-        </div>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
