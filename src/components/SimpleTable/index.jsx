@@ -39,6 +39,10 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "& td, & th": {
     border: 0,
   },
+  "&:hover": {
+    cursor: "pointer",
+    backgroundColor: "#f1f2f7",
+  },
 }));
 
 const headCells = [
@@ -61,6 +65,11 @@ function ATableHead() {
 }
 
 const SimpleTable = ({ data, current }) => {
+
+  const navigateToAnamnese = (anamneseId) => {
+    window.location.href = `/anamnese/${anamneseId}`;
+  };
+
   return (
     <div className={Style.table}>
       <h3>Transcriptions from other models</h3>
@@ -77,9 +86,9 @@ const SimpleTable = ({ data, current }) => {
               {data
                 .filter((row) => String(row.id) !== String(current))
                 .map((row) => (
-                  <StyledTableRow key={row.id}>
+                  <StyledTableRow key={row.id} onClick={() => navigateToAnamnese(row.id)}>
                     <StyledTableCell>{row.transcription}</StyledTableCell>
-                    <StyledTableCell>{row.model}</StyledTableCell>
+                    <StyledTableCell style={{ whiteSpace: "nowrap" }}>{row.model}</StyledTableCell>
                   </StyledTableRow>
                 ))}
             </TableBody>

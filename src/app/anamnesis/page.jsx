@@ -49,6 +49,10 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "& td, & th": {
     border: 0,
   },
+  "&:hover": {
+    cursor: "pointer",
+    backgroundColor: "#f1f2f7",
+  },
 }));
 
 const headCells = [
@@ -459,7 +463,7 @@ const Anamnesis = () => {
                         <StyledTableCell className={Style.anamneseText}>
                           {anamnese.transcription}
                         </StyledTableCell>
-                        <StyledTableCell>{anamnese.model}</StyledTableCell>
+                        <StyledTableCell style={{ whiteSpace: "nowrap" }}>{anamnese.model}</StyledTableCell>
                         <StyledTableCell>{parseFloat(anamnese.wer).toFixed(2)}</StyledTableCell>
                         <StyledTableCell>{anamnese.user}</StyledTableCell>
                         <StyledTableCell>

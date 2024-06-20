@@ -131,7 +131,9 @@ const Anamnese = () => {
       <div className={Style.anamnese}>
         <div className={Style.head}>
           <div className={Style.buttonVoltar}>
-            <a href="\anamnesis">Transcriptions</a>
+            <a href="\anamnesis" style={{ textDecoration: "none" }}>
+              Transcriptions
+            </a>
             <span className="material-symbols-outlined">arrow_back_ios</span>
             <p>Transcription {id}</p>
           </div>
