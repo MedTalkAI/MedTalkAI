@@ -55,6 +55,7 @@ const headCells = [
   { id: "id", label: "ID" },
   { id: "transcription", label: "Transcription" },
   { id: "model", label: "Model" },
+  { id: "wer", label: "WER" },
   { id: "user", label: "User" },
   { id: "date", label: "Date" },
 ];
@@ -351,7 +352,7 @@ const Anamnesis = () => {
         <ToastContainer />
         <main>
           <div className={Style.head}>
-            <h1 className={Style.title}>Anamnesis</h1>
+            <h1 className={Style.title}>Transcriptions</h1>
             <div className={Style.options}>
               <button onClick={handleBenckmark} className={Style.benchmark}>
                 <span class="material-symbols-outlined">bubble_chart</span>
@@ -459,6 +460,7 @@ const Anamnesis = () => {
                           {anamnese.transcription}
                         </StyledTableCell>
                         <StyledTableCell>{anamnese.model}</StyledTableCell>
+                        <StyledTableCell>{parseFloat(anamnese.wer).toFixed(2)}</StyledTableCell>
                         <StyledTableCell>{anamnese.user}</StyledTableCell>
                         <StyledTableCell>
                           {formatDate(anamnese.date)}
