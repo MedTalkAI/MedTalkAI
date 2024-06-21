@@ -32,13 +32,12 @@ const Transcription = () => {
   const [correctedTranscription, setCorrectedTranscription] = useState(null);
   const [model, setModel] = useState("Wav2Vec 2.0 + lm5");
   const [transcription_id, setTranscription_id] = useState(null);
-
+  const [isRecorded, setIsRecorded] = useState(false);
   const [metrics, setMetrics] = useState(null);
 
-  const handleTrascribe = (model, result, id) => {
-    setModelTranscription(result);
-    setModel(model);
-    setTranscription_id(id);
+  const handleTrascribe = (data) => {
+    setTranscription_id(data.id);
+    setModelTranscription(data.transcription); //transcrição do modelo
   };
 
   const handleCorrection = async (correctedText, resultMetrics) => {
@@ -68,18 +67,29 @@ const Transcription = () => {
         {
           method: "POST",
           body: formData,
+          headers: {
+            Authorization: `Bearer ${
+              typeof window !== "undefined" && window.localStorage
+                ? localStorage.getItem("access_token")
+                : ""
+            }`,
+          },
         }
-      );
+      );/*
       await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/metrics/model/${encodeURIComponent(
-          model,
-          "utf-8"
-        )}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/models/recalculate ${encodeURIComponent(model,"utf-8")}`,
         {
           method: "POST",
+          headers: {
+            Authorization: `Bearer ${
+              typeof window !== "undefined" && window.localStorage
+                ? localStorage.getItem("access_token")
+                : ""
+            }`,
+          },
         }
       );
-
+      */
       toast.success("Anamnesis saved successfully!");
       setCorrectedTranscription(null);
       setModelTranscription(null);
@@ -100,6 +110,7 @@ const Transcription = () => {
           <div className={Style.controls}>
             <AudioRecorderComponent
               onTrascribe={handleTrascribe}
+              onIsRecorded={setIsRecorded}
               toastedErrror={toastedErrror}
             />
           </div>
