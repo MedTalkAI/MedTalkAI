@@ -30,66 +30,40 @@ const Transcription = () => {
 
   const [modelTranscription, setModelTranscription] = useState(null);
   const [correctedTranscription, setCorrectedTranscription] = useState(null);
-  const [model, setModel] = useState("Wav2Vec 2.0 + lm5");
   const [transcription_id, setTranscription_id] = useState(null);
-  const [isRecorded, setIsRecorded] = useState(false);
+
   const [metrics, setMetrics] = useState(null);
 
-  const handleTrascribe = (data) => {
-    setTranscription_id(data.id);
-    setModelTranscription(data.transcription); //transcrição do modelo
+  const handleTrascribe = (model, result, id) => {
+    setModelTranscription(result);
+    setModel(model);
+    setTranscription_id(id);
   };
 
-  const handleCorrection = async (correctedText, resultMetrics) => {
+  const handleCorrection = async (correctedText) => {
     try {
       setCorrectedTranscription(correctedText);
-      setMetrics(resultMetrics);
-
-      let name = username + " " + new Date().toLocaleString();
-      let date = new Date().toLocaleString();
 
       const formData = new FormData();
-      formData.append("name", name);
-      formData.append("date", date);
-      formData.append("model_transcription", modelTranscription);
-      formData.append("corrected_transcription", correctedText);
-      formData.append("wer", Number(metrics?.metrics?.wer.toFixed(2)));
-      formData.append("bleu", Number(metrics?.metrics?.bleu.toFixed(2)));
-      formData.append(
-        "cosine",
-        Number(metrics?.metrics.cosine_similarity.toFixed(2))
-      );
-      formData.append("model", model);
-      formData.append("user", username);
+      formData.append("correction", correctedText);
 
       await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/corrections/${transcription_id}`,
         {
           method: "POST",
           body: formData,
-          headers: {
-            Authorization: `Bearer ${
-              typeof window !== "undefined" && window.localStorage
-                ? localStorage.getItem("access_token")
-                : ""
-            }`,
-          },
-        }
-      );/*
-      await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/models/recalculate ${encodeURIComponent(model,"utf-8")}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${
-              typeof window !== "undefined" && window.localStorage
-                ? localStorage.getItem("access_token")
-                : ""
-            }`,
-          },
         }
       );
-      */
+      await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/metrics/model/${encodeURIComponent(
+          model,
+          "utf-8"
+        )}`,
+        {
+          method: "POST",
+        }
+      );
+
       toast.success("Anamnesis saved successfully!");
       setCorrectedTranscription(null);
       setModelTranscription(null);
@@ -123,24 +97,6 @@ const Transcription = () => {
               transcription_id={transcription_id}
             />
           </div>
-          {!doctor == true && (
-            <div className={Style.metricsContainer}>
-              <div className={Style.metrics}>
-                <Metrics
-                  transcription={modelTranscription}
-                  wer={metrics?.metrics.wer}
-                  bleu={metrics?.metrics.bleu}
-                  cosine={metrics?.metrics.cosine_similarity}
-                  kappa={"-"}
-                />
-              </div>
-              {correctedTranscription && (
-                <div className={Style.model}>
-                  <ModelStatistics model={model} />
-                </div>
-              )}
-            </div>
-          )}
         </main>
       </div>
     </div>

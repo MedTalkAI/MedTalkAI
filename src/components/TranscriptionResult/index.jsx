@@ -13,6 +13,22 @@ const TranscriptionResult = ({
   const [editableText, setEditableText] = useState(text);
   const [isDataSicentist, setIsDataSicentist] = useState(false);
 
+  let doctor = false;
+  let intern = false;
+
+  useEffect(() => {
+    const user_type =
+      typeof window !== "undefined" && window.localStorage
+        ? localStorage.getItem("user_type")
+        : "";
+    if (user_type) {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      doctor = user_type === "doctor";
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      intern = user_type === "intern";
+    }
+  }, []);
+
   const handleTextChange = (e) => {
     setEditableText(e.target.value);
   };
@@ -25,26 +41,28 @@ const TranscriptionResult = ({
       const formData = new FormData();
       formData.append("text", correct_transcription);
 
-      // Submit FormData via fetch
-      const token =
-        typeof window !== "undefined" && window.localStorage
-          ? localStorage.getItem("access_token")
-          : null;
+      if (intern) {
+        const token =
+          typeof window !== "undefined" && window.localStorage
+            ? localStorage.getItem("access_token")
+            : null;
 
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/anamneses/${transcription_id}`,
-        {
-          method: "PUT",
-          body: formData,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/anamneses/${transcription_id}`,
+          {
+            method: "PUT",
+            body: formData,
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-      const result = await response.json();
+        const result = await response.json();
+      }
 
       onSave(correct_transcription);
+      setIsModalOpen(false);
     } catch (error) {
       console.error("Error:", error);
     }

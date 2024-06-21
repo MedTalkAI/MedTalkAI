@@ -1,55 +1,47 @@
 import { Chart } from "chart.js/auto";
-import { useEffect, useRef } from "react";
-import "./AnamneseChart.module.css";
+import { useEffect, useRef, useState } from "react";
+import Style from "./AnamneseChart.module.css";
 
-const AnamneseChart = ({ dataSets, labels, metric = "wer" }) => {
+const AnamneseChart = ({ dataSets, title }) => {
   const chartRef = useRef();
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
-    if (
-      chartRef &&
-      chartRef.current &&
-      dataSets.length > 0 &&
-      labels.length > 0
-    ) {
+    if (chartRef && chartRef.current && dataSets.length > 0) {
       const data = {
-        labels: labels,
-        datasets: [
-          {
-            label: metric,
-            data: dataSets.map((data) => data[metric]),
+        labels: ["WER", "Cosine", "BLEU"],
+        datasets: dataSets.map((dataSet) => {
+          const r = Math.floor(Math.random() * 256);
+          const g = Math.floor(Math.random() * 256);
+          const b = Math.floor(Math.random() * 256);
+
+          return {
+            label: dataSet.model,
+            data: [dataSet.wer, dataSet.cosine, dataSet.bleu],
             fill: true,
-            borderColor: "rgb(58, 118, 157)",
-            backgroundColor: "rgba(58, 118, 157, 0.1)", // Set the background color with opacity
-            tension: 0.1,
-          },
-        ],
+            borderColor: `rgb(${r}, ${g}, ${b})`,
+            backgroundColor: `rgba(${r}, ${g}, ${b}, 0.1)`,
+            pointBackgroundColor: `rgb(${r}, ${g}, ${b})`,
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: `rgb(${r}, ${g}, ${b})`,
+            pointHitRadius: 5,
+            pointRadius: 5,
+          };
+        }),
       };
 
       const myChart = new Chart(chartRef.current, {
-        type: "line",
+        type: "radar",
         data: data,
         options: {
-          plugins: {
-            tooltip: {
-              callbacks: {
-                label: function (context) {
-                  const dataIndex = context.dataIndex;
-                  const datasetIndex = context.datasetIndex;
-                  const correction = dataSets[dataIndex];
-
-                  let label = `Correction: ${correction.correction}\n`;
-                  label += `${metric.toUpperCase()}: ${correction[metric]}\n`;
-
-                  return label;
-                },
-              },
-            },
-          },
           scales: {
-            y: {
-              min: 0, // Define o valor mínimo do eixo y
-              max: 1, // Define o valor máximo do eixo y
+            r: {
+              angleLines: {
+                display: false,
+              },
+              suggestedMin: 0,
+              suggestedMax: 1,
             },
           },
           legend: {
@@ -58,14 +50,30 @@ const AnamneseChart = ({ dataSets, labels, metric = "wer" }) => {
         },
       });
 
-      // Retorna a função de limpeza ao desmontar o componente
       return () => myChart.destroy();
     }
-  }, [chartRef, dataSets, labels, metric]);
+  }, [chartRef, dataSets, refreshKey]);
+
+
+  const handleRefreshColors = () => {
+    setRefreshKey((prevKey) => prevKey + 1);
+  };
 
   return (
-    <div className="chart">
-      <canvas ref={chartRef}></canvas>
+    <div className={Style.chart}>
+      <div className={Style.head}>
+        <h2>{title ? title : "Comparassion with other models"}</h2>
+        <button onClick={handleRefreshColors} disabled={dataSets.length <= 1}>
+          <span className="material-symbols-outlined">palette</span>
+          Switch Colors
+        </button>
+      </div>
+      {dataSets.length > 1 && <canvas ref={chartRef}></canvas>}
+      {dataSets.length <= 1 && (
+        <div className={Style.error}>
+          <p>No transcriptions from other models</p>
+        </div>
+      )}
     </div>
   );
 };

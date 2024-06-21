@@ -69,7 +69,9 @@ const AudioRecorderComponent = ({
 
       // Submit FormData via fetch
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/${intern ? "recordings" : "transcriptions"}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/${
+          intern ? "recordings" : "transcriptions"
+        }`,
         {
           method: "POST",
           body: formData,

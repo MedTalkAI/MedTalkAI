@@ -49,6 +49,10 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "& td, & th": {
     border: 0,
   },
+  "&:hover": {
+    cursor: "pointer",
+    backgroundColor: "#f1f2f7",
+  },
 }));
 
 const headCells = [
@@ -265,7 +269,6 @@ const Recordings = () => {
   }, [selectedRecording]);
 
   const generateTranscriptions = async () => {
-
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/recordings`,
@@ -291,6 +294,10 @@ const Recordings = () => {
       console.error(error);
       toast.error("Failed to update correction");
     }
+  };
+
+  const navigateToRecording = (id) => {
+    window.location.href = `/recordings/${id}`;
   };
 
   return (
@@ -390,7 +397,9 @@ const Recordings = () => {
                             : { cursor: "pointer" }
                         }
                         onClick={() => {
-                          if (recording.id == selectedRecording?.id) {
+                          if (recording.status) {
+                            navigateToRecording(recording.id);
+                          } else if (recording.id == selectedRecording?.id) {
                             setSelectedRecording(null);
                             setAudioSrc(null);
                           } else {

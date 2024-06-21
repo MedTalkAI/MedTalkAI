@@ -51,6 +51,10 @@
   background: #f4fff3;
 }
 
+.doctorTextArea {
+  background-color: #3B9B33;
+}
+
 .btnSaveEdits {
   display: flex;
   height: 40px;
