@@ -31,7 +31,7 @@ const Transcription = () => {
   const [modelTranscription, setModelTranscription] = useState(null);
   const [correctedTranscription, setCorrectedTranscription] = useState(null);
   const [transcription_id, setTranscription_id] = useState(null);
-
+  const [isRecorded, setIsRecorded] = useState(false);
   const [metrics, setMetrics] = useState(null);
 
   const handleTrascribe = (model, result, id) => {

@@ -32,17 +32,15 @@ const MyAnamnesis = () => {
   const handleConfirmDelete = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/${
-          userType == "intern" ? "bolsista/" : ""
+        `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/${userType == "intern" ? "bolsista/" : ""
         }${selectedTranscription.id}`,
         {
           method: "DELETE",
           headers: {
-            Authorization: `Bearer ${
-              typeof window !== "undefined" && window.localStorage
+            Authorization: `Bearer ${typeof window !== "undefined" && window.localStorage
                 ? localStorage.getItem("access_token")
                 : ""
-            }`,
+              }`,
           },
         }
       );
@@ -94,11 +92,10 @@ const MyAnamnesis = () => {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${
-              typeof window !== "undefined" && window.localStorage
+            Authorization: `Bearer ${typeof window !== "undefined" && window.localStorage
                 ? localStorage.getItem("access_token")
                 : ""
-            }`,
+              }`,
           },
           body: formData,
         }
@@ -126,11 +123,10 @@ const MyAnamnesis = () => {
             {
               method: "GET",
               headers: {
-                Authorization: `Bearer ${
-                  typeof window !== "undefined" && window.localStorage
+                Authorization: `Bearer ${typeof window !== "undefined" && window.localStorage
                     ? localStorage.getItem("access_token")
                     : ""
-                }`,
+                  }`,
               },
             }
           );
@@ -153,11 +149,10 @@ const MyAnamnesis = () => {
             {
               method: "GET",
               headers: {
-                Authorization: `Bearer ${
-                  typeof window !== "undefined" && window.localStorage
+                Authorization: `Bearer ${typeof window !== "undefined" && window.localStorage
                     ? localStorage.getItem("access_token")
                     : ""
-                }`,
+                  }`,
               },
             }
           );
@@ -189,20 +184,18 @@ const MyAnamnesis = () => {
 
   useEffect(() => {
     if (selectedTranscription) {
-      setEditableText(selectedTranscription.latest_correction);
+      setEditableText(selectedTranscription.transcription);
       textareaRef.current.focus();
 
       fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/${
-          userType == "intern" ? "bolsista" : "audio"
+        `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/${userType == "intern" ? "bolsista" : "audio"
         }/${selectedTranscription.id}${userType == "intern" ? "/audio" : ""}`,
         {
           headers: {
-            Authorization: `Bearer ${
-              typeof window !== "undefined" && window.localStorage
+            Authorization: `Bearer ${typeof window !== "undefined" && window.localStorage
                 ? localStorage.getItem("access_token")
                 : ""
-            }`,
+              }`,
           },
         }
       )
@@ -333,7 +326,62 @@ const MyAnamnesis = () => {
             </div>
           </div>
           <div className={Style.anamnesisGroup}>
-            {transcriptions.map((transcription, index) => (
+            {
+              transcriptions.map((transcription, index) => (
+                <div
+                  className={
+                    Style.anamnese +
+                    (selectedTranscription === transcription
+                      ? " " + Style.selectedTranscription
+                      : "")
+                  }
+                  key={index}
+                  onClick={() => {
+                    console.log("Selected Transcription ID: ", transcription.id); // Debugging log
+                    setSelectedTranscription(transcription);
+                  }}
+                >
+                  {selectedTranscription === transcription ? (
+                    <textarea
+                      ref={textareaRef}
+                      value={
+                        userType == "intern"
+                          ? transcription.anamnese_id
+                          : editableText
+                      }
+                      onChange={
+                        userType == "intern"
+                          ? () => { }
+                          : (e) => {
+                            console.log("Textarea Value: ", e.target.value); // Debugging log
+                            setEditableText(e.target.value);
+                          }
+                      }
+                      contentEditable={userType == "intern" ? false : true}
+                    ></textarea>
+                  ) : (
+                    <>
+                      <p>
+                        {userType == "intern"
+                          ? transcription.anamnese_id
+                          : transcription.transcription}
+                      </p>
+                      <div className={Style.data}>
+                        <span>
+                          {new Date(
+                            userType == "intern"
+                              ? transcription.recorded_at
+                              : transcription.date
+                          ).toLocaleDateString("en-GB")}
+                        </span>
+                      </div>
+                    </>
+                  )}
+                </div>
+              ))
+            
+
+            /* transcriptions.map((transcription, index) => (
               <div
                 className={
                   Style.anamnese +
@@ -382,7 +430,7 @@ const MyAnamnesis = () => {
                   </>
                 )}
               </div>
-            ))}
+            ))*/}
           </div>
         </main>
       </div>
