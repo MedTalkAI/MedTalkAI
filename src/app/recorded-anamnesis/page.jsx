@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import { styled } from "@mui/material/styles";
 import Style from "./RecordedAnamnesis.module.css";
 import { ToastContainer, toast } from "react-toastify";
+import ReactLoading from "react-loading";
 import ReactAudioPlayer from "react-audio-player";
 import "react-toastify/dist/ReactToastify.css";
 import Modal from "react-modal";
@@ -95,7 +96,8 @@ function RTableHead({ order, orderBy, onRequestSort }) {
 }
 
 const RecordedAnamnesis = () => {
-  const [order, setOrder] = useState("asc");
+  const [order, setOrder] = useState("desc");
+  const [error, setError] = useState(null);
   const [orderBy, setOrderBy] = useState("date");
   const [transcriptions, setTranscriptions] = useState([]);
   const [isEdit, setIsEdit] = useState();
@@ -255,10 +257,12 @@ const RecordedAnamnesis = () => {
               setLoading(false);
             } else {
               setLoading(false);
+              setError("Failed to load transcriptions");
               throw new Error("Failed to fetch transcriptions");
             }
           } catch (error) {
             setLoading(false);
+            setError("Failed to load transcriptions");
             console.error(error);
           }
         };
@@ -281,11 +285,21 @@ const RecordedAnamnesis = () => {
             );
             if (response.ok) {
               const transcriptions = await response.json();
-              setTranscriptions(transcriptions);
+              const processedData = transcriptions.map((anamnese) => ({
+                ...anamnese,
+                words: anamnese.anamnese.split(/\s+/).length,
+              }));
+              setTranscriptions(
+                processedData.sort(
+                  (a, b) => new Date(b.recorded_at) - new Date(a.recorded_at)
+                )
+              );
             } else {
+              setError("Failed to load transcriptions");
               throw new Error("Failed to fetch transcriptions");
             }
           } catch (error) {
+            setError("Failed to load transcriptions");
             console.error(error);
           }
         };
@@ -467,130 +481,169 @@ const RecordedAnamnesis = () => {
               )}
             </div>
           </div>
-          <div className={Style.anamnesisGroup}>
-            {transcriptions && (
-              <TableContainer component={Paper}>
-                <Table>
-                  <RTableHead
-                    order={order}
-                    orderBy={orderBy}
-                    onRequestSort={handleRequestSort}
-                  />
-                  <TableBody>
-                    {displayedAnamneses.map((anamnese, index) => (
-                      <StyledTableRow
-                        className={`${
-                          selectedTranscription?.id === anamnese.id
-                            ? Style.selected
-                            : ""
-                        }`}
-                        key={anamnese.id}
-                        onClick={() => handleAnamneseClick(anamnese)}
-                        style={
-                          selectedTranscription?.id === anamnese.id
-                            ? { backgroundColor: "#f1f2f7" }
-                            : {}
-                        }
-                      >
-                        <StyledTableCell>
-                          {anamnese.anamnese_id}
-                        </StyledTableCell>
-                        {selectedTranscription?.id === anamnese.id &&
-                        isEdit === anamnese.id ? (
-                          <StyledTableCell style={{ paddingInline: "10px" }}>
-                            <TranscriptionResult
-                              className={Style.editable}
-                              text={selectedTranscription?.anamnese}
-                              isEditable={true}
-                              onSave={handleUpdated}
-                              transcription_id={
-                                selectedTranscription?.anamnese_id
-                              }
-                            />
-                          </StyledTableCell>
-                        ) : (
-                          <>
-                            {selectedTranscription?.id === anamnese.id ? (
-                              <StyledTableCell>
+          {loading && (
+            <div className={Style.loading}>
+              <ReactLoading
+                type="spinningBubbles"
+                color="#001D3B"
+                height={"100px"}
+                width={"100px"}
+              />
+              <p>Loading...</p>
+            </div>
+          )}
+          {!loading && transcriptions.length == 0 && (
+            <div className={Style.error}>
+              <p>
+                No recordings found by you.
+                <br />
+                <br />
+                Please record an anamnesis first.
+              </p>
+            </div>
+          )}
+          {!loading && error && (
+            <div className={Style.error}>
+              <p>{error}</p>
+            </div>
+          )}
+          {!loading && transcriptions.length != 0 && (
+            <>
+              <div className={Style.anamnesisGroup}>
+                {transcriptions && (
+                  <TableContainer component={Paper}>
+                    <Table>
+                      <RTableHead
+                        order={order}
+                        orderBy={orderBy}
+                        onRequestSort={handleRequestSort}
+                      />
+                      <TableBody>
+                        {displayedAnamneses.map((anamnese, index) => (
+                          <StyledTableRow
+                            className={`${
+                              selectedTranscription?.id === anamnese.id
+                                ? Style.selected
+                                : ""
+                            }`}
+                            key={anamnese.id}
+                            onClick={() => handleAnamneseClick(anamnese)}
+                            style={
+                              selectedTranscription?.id === anamnese.id
+                                ? { backgroundColor: "#f1f2f7" }
+                                : {}
+                            }
+                          >
+                            <StyledTableCell>
+                              {anamnese.anamnese_id}
+                            </StyledTableCell>
+                            {selectedTranscription?.id === anamnese.id &&
+                            isEdit === anamnese.id ? (
+                              <StyledTableCell
+                                style={{ paddingInline: "10px" }}
+                              >
                                 <TranscriptionResult
-                                  className={Style.nonEditable}
+                                  className={Style.editable}
                                   text={selectedTranscription?.anamnese}
-                                  isEditable={false}
+                                  isEditable={true}
+                                  onSave={handleUpdated}
+                                  transcription_id={
+                                    selectedTranscription?.anamnese_id
+                                  }
                                 />
-                                {selectedTranscription?.id === anamnese.id && (
-                                  <div
-                                    style={{
-                                      width: "100%",
-                                      display: "flex",
-                                      justifyContent: "flex-end",
-                                    }}
-                                  >
-                                    <button
-                                      className={Style.button}
-                                      onClick={() =>
-                                        handleEditButtonClick(anamnese)
-                                      }
-                                    >
-                                      <span className="material-symbols-outlined">
-                                        edit
-                                      </span>
-                                      <span className={Style.textSpanButton}>
-                                        Edit Anamnesis
-                                      </span>
-                                    </button>
-                                  </div>
-                                )}
                               </StyledTableCell>
                             ) : (
                               <>
-                                <StyledTableCell>
-                                  <span className={Style.anamneseTextSpan}>
-                                    {anamnese.anamnese}
-                                  </span>
-                                </StyledTableCell>
+                                {selectedTranscription?.id === anamnese.id ? (
+                                  <StyledTableCell>
+                                    <TranscriptionResult
+                                      className={Style.nonEditable}
+                                      text={selectedTranscription?.anamnese}
+                                      isEditable={false}
+                                    />
+                                    {selectedTranscription?.id ===
+                                      anamnese.id && (
+                                      <div
+                                        style={{
+                                          width: "100%",
+                                          display: "flex",
+                                          justifyContent: "flex-end",
+                                        }}
+                                      >
+                                        <button
+                                          className={Style.button}
+                                          onClick={() =>
+                                            handleEditButtonClick(anamnese)
+                                          }
+                                        >
+                                          <span className="material-symbols-outlined">
+                                            edit
+                                          </span>
+                                          <span
+                                            className={Style.textSpanButton}
+                                          >
+                                            Edit Anamnesis
+                                          </span>
+                                        </button>
+                                      </div>
+                                    )}
+                                  </StyledTableCell>
+                                ) : (
+                                  <>
+                                    <StyledTableCell>
+                                      <span className={Style.anamneseTextSpan}>
+                                        {anamnese.anamnese}
+                                      </span>
+                                    </StyledTableCell>
+                                  </>
+                                )}
                               </>
                             )}
-                          </>
-                        )}
-                        <StyledTableCell>{anamnese.words}</StyledTableCell>
-                        <StyledTableCell>
-                          {new Date(anamnese.recorded_at).toLocaleDateString()}
-                        </StyledTableCell>
-                      </StyledTableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            )}
-          </div>
-          <div className={Style.paginationContainer}>
-            <div className={Style.details}>
-              Anamneses {pagesVisited} a{" "}
-              {transcriptions.length > 10
-                ? pagesVisited + 10 > transcriptions.length
-                  ? transcriptions.length
-                  : pagesVisited + 10
-                : transcriptions.length}{" "}
-              de {transcriptions.length}
-            </div>
-            <ReactPaginate
-              previousLabel={
-                <span class="material-symbols-outlined">
-                  arrow_back_ios_new
-                </span>
-              }
-              nextLabel={
-                <span class="material-symbols-outlined">arrow_forward_ios</span>
-              }
-              pageCount={Math.ceil(transcriptions.length / itemsPerPage)}
-              onPageChange={handlePageChange}
-              containerClassName={Style.pagination}
-              previousLinkClassName={Style.paginationLink}
-              nextLinkClassName={Style.paginationLink}
-              disabledClassName={Style.paginationDisabled}
-              activeClassName={Style.paginationActive}
-            />
-          </div>
+                            <StyledTableCell>{anamnese.words}</StyledTableCell>
+                            <StyledTableCell>
+                              {new Date(
+                                anamnese.recorded_at
+                              ).toLocaleDateString()}
+                            </StyledTableCell>
+                          </StyledTableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                )}
+              </div>
+              <div className={Style.paginationContainer}>
+                <div className={Style.details}>
+                  Anamneses {pagesVisited} a{" "}
+                  {transcriptions.length > 10
+                    ? pagesVisited + 10 > transcriptions.length
+                      ? transcriptions.length
+                      : pagesVisited + 10
+                    : transcriptions.length}{" "}
+                  de {transcriptions.length}
+                </div>
+                <ReactPaginate
+                  previousLabel={
+                    <span class="material-symbols-outlined">
+                      arrow_back_ios_new
+                    </span>
+                  }
+                  nextLabel={
+                    <span class="material-symbols-outlined">
+                      arrow_forward_ios
+                    </span>
+                  }
+                  pageCount={Math.ceil(transcriptions.length / itemsPerPage)}
+                  onPageChange={handlePageChange}
+                  containerClassName={Style.pagination}
+                  previousLinkClassName={Style.paginationLink}
+                  nextLinkClassName={Style.paginationLink}
+                  disabledClassName={Style.paginationDisabled}
+                  activeClassName={Style.paginationActive}
+                />
+              </div>
+            </>
+          )}
         </main>
       </div>
       <Modal
