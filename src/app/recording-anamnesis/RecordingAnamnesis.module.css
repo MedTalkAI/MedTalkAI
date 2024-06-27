@@ -19,6 +19,9 @@
   width: 100%;
 }
 
+.tableHeading {
+  white-space: nowrap;
+}
 .content main {
   display: flex;
   flex-direction: column;

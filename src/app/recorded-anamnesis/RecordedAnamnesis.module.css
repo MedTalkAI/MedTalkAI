@@ -25,6 +25,10 @@
   height: 150px;
 }
 
+.tableHeading {
+  white-space: nowrap;
+}
+
 .info {
   display: flex;
   width: fit-content;

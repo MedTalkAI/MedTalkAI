@@ -1,6 +1,7 @@
 "use client";
 
 import Navbar from "@/components/Navbar";
+import { styled } from "@mui/material/styles";
 import Style from "./RecordedAnamnesis.module.css";
 import { ToastContainer, toast } from "react-toastify";
 import ReactAudioPlayer from "react-audio-player";
@@ -10,23 +11,98 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableSortLabel,
   TableContainer,
   TableHead,
   TableRow,
   Paper,
 } from "@mui/material";
+import { tableCellClasses } from "@mui/material/TableCell";
 import { useState, useEffect, useRef } from "react";
 import TranscriptionResult from "@/components/TranscriptionResult";
 import ReactPaginate from "react-paginate";
 import CheckAuthExpiration from "@/hooks/CheckAuthExpiration";
 
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: "#F1F2F7",
+    color: "#000000",
+    fontWeight: "bold",
+    fontSize: 15,
+    fontFamily: "Inter",
+    borderBottom: "2px solid #838383",
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontFamily: "Inter",
+    fontSize: 15,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(even)": {
+    backgroundColor: "#F8F9FD",
+  },
+  "&:nth-of-type(odd)": {
+    backgroundColor: "#ffffff",
+  },
+  // hide last border
+  "& td, & th": {
+    border: 0,
+  },
+  "&:hover": {
+    cursor: "pointer",
+    backgroundColor: "#f1f2f7",
+  },
+}));
+
+const headCells = [
+  { id: "id", label: "Nº Anamnesis" },
+  { id: "anamnese", label: "Anamnesis" },
+  { id: "words", label: "Nº Words" },
+  { id: "date", label: "Recorded At" },
+];
+
+function RTableHead({ order, orderBy, onRequestSort }) {
+  const createSortHandler = (property) => (event) => {
+    onRequestSort(event, property);
+  };
+
+  return (
+    <TableHead>
+      <TableRow>
+        {headCells.map((headCell) => (
+          <StyledTableCell
+            key={headCell.id}
+            sortDirection={orderBy === headCell.id ? order : false}
+            className={Style.tableHeading}
+          >
+            {["id", "words", "date"].includes(headCell.id) ? (
+              <TableSortLabel
+                active={orderBy === headCell.id}
+                direction={orderBy === headCell.id ? order : "asc"}
+                onClick={createSortHandler(headCell.id)}
+              >
+                {headCell.label}
+              </TableSortLabel>
+            ) : (
+              headCell.label
+            )}
+          </StyledTableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+  );
+}
+
 const RecordedAnamnesis = () => {
-  const [openDropdown, setOpenDropdown] = useState(false);
-  const [orderBy, setOrderBy] = useState("");
+  const [order, setOrder] = useState("asc");
+  const [orderBy, setOrderBy] = useState("date");
   const [transcriptions, setTranscriptions] = useState([]);
   const [isEdit, setIsEdit] = useState();
   const [isButtonAux, setIsButtonAux] = useState();
   const [selectedTranscription, setSelectedTranscription] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isFixed, setIsFixed] = useState(false);
   const [editableText, setEditableText] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [audioSrc, setAudioSrc] = useState("");
@@ -167,11 +243,22 @@ const RecordedAnamnesis = () => {
             );
             if (response.ok) {
               const transcriptions = await response.json();
-              setTranscriptions(transcriptions);
+              const processedData = transcriptions.map((anamnese) => ({
+                ...anamnese,
+                words: anamnese.anamnese.split(/\s+/).length,
+              }));
+              setTranscriptions(
+                processedData.sort(
+                  (a, b) => new Date(b.recorded_at) - new Date(a.recorded_at)
+                )
+              );
+              setLoading(false);
             } else {
+              setLoading(false);
               throw new Error("Failed to fetch transcriptions");
             }
           } catch (error) {
+            setLoading(false);
             console.error(error);
           }
         };
@@ -211,17 +298,6 @@ const RecordedAnamnesis = () => {
 
     const interval = setInterval(getData, 120000); // 120000 milissegundos = 2 minutos
     return () => clearInterval(interval);
-
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setOpenDropdown(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
   }, []);
 
   useEffect(() => {
@@ -268,24 +344,6 @@ const RecordedAnamnesis = () => {
     toast.success("Anamnesis updated successfully!");
   };
 
-  useEffect(() => {
-    if (orderBy === "last") {
-      setTranscriptions((prevTranscriptions) => {
-        return prevTranscriptions.sort((a, b) => {
-          return new Date(b.date) - new Date(a.date);
-        });
-      });
-    } else if (orderBy === "oldest") {
-      setTranscriptions((prevTranscriptions) => {
-        return prevTranscriptions.sort((a, b) => {
-          return new Date(a.date) - new Date(b.date);
-        });
-      });
-    } else {
-    }
-    setOpenDropdown(false);
-  }, [orderBy]);
-
   const handleAnamneseClick = (anamnese) => {
     if (isModalOpen && anamnese.id != isButtonAux) {
       setIsModalOpen(false);
@@ -299,7 +357,69 @@ const RecordedAnamnesis = () => {
     setIsEdit(anamnese.id);
   };
 
-  const displayedAnamneses = transcriptions.slice(
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
+  const descendingComparator = (a, b, orderBy) => {
+    if (orderBy === "words") {
+      return b[orderBy] - a[orderBy];
+    } else if (orderBy === "date") {
+      return new Date(b.recorded_at) - new Date(a.recorded_at);
+    } else {
+      if (b[orderBy] < a[orderBy]) return -1;
+      if (b[orderBy] > a[orderBy]) return 1;
+      return 0;
+    }
+  };
+
+  const getComparator = (order, orderBy) => {
+    return order === "desc"
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+  };
+
+  const stableSort = (array, comparator) => {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) {
+        return order;
+      }
+      return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
+  };
+
+  const sortedRecordings = stableSort(
+    transcriptions,
+    getComparator(order, orderBy)
+  );
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      if (scrollTop > 0) {
+        if (!isModalOpen) {
+          setIsFixed(true);
+        }
+      } else {
+        setIsFixed(false);
+      }
+    };
+
+    if (typeof window !== "undefined") {
+      window.addEventListener("scroll", handleScroll);
+
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, []);
+
+  const displayedAnamneses = sortedRecordings.slice(
     pagesVisited,
     pagesVisited + itemsPerPage
   );
@@ -345,97 +465,39 @@ const RecordedAnamnesis = () => {
                   </p>
                 </div>
               )}
-              <div className={Style.dropdown} ref={dropdownRef}>
-                <div
-                  className={Style.select}
-                  onClick={() => {
-                    setOpenDropdown(!openDropdown);
-                  }}
-                >
-                  <p>Order by {orderBy}</p>
-                  {!openDropdown && (
-                    <span class="material-symbols-outlined">expand_more</span>
-                  )}
-                  {openDropdown && (
-                    <span class="material-symbols-outlined">expand_less</span>
-                  )}
-                </div>
-                {openDropdown && (
-                  <div className={Style.menu}>
-                    {orderBy != "" && (
-                      <div
-                        className={Style.item}
-                        onClick={() => {
-                          setOrderBy("");
-                        }}
-                      >
-                        Default
-                      </div>
-                    )}
-                    <div
-                      className={Style.item}
-                      onClick={() => {
-                        setOrderBy("last");
-                      }}
-                    >
-                      Last
-                    </div>
-                    <div
-                      className={Style.item}
-                      onClick={() => {
-                        setOrderBy("oldest");
-                      }}
-                    >
-                      Oldest
-                    </div>
-                  </div>
-                )}
-              </div>
             </div>
           </div>
           <div className={Style.anamnesisGroup}>
             {transcriptions && (
               <TableContainer component={Paper}>
                 <Table>
-                  <TableHead>
-                    <TableRow
-                      className={`${Style.anamneseHeader} ${Style.header}`}
-                    >
-                      <TableCell className={`${Style.anamneseId}`}>
-                        Nº Anamnesis
-                      </TableCell>
-                      <TableCell className={`${Style.anamneseText}`}>
-                        Anamnesis
-                      </TableCell>
-                      <TableCell className={`${Style.anamneseWorks}`}>
-                        Nº Words
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
+                  <RTableHead
+                    order={order}
+                    orderBy={orderBy}
+                    onRequestSort={handleRequestSort}
+                  />
                   <TableBody>
                     {displayedAnamneses.map((anamnese, index) => (
-                      <TableRow
-                        className={`${Style.anamnese} ${
+                      <StyledTableRow
+                        className={`${
                           selectedTranscription?.id === anamnese.id
                             ? Style.selected
                             : ""
-                        } ${
-                          index % 2 === 0
-                            ? Style.anamneseEven
-                            : Style.anamneseOdd
                         }`}
                         key={anamnese.id}
                         onClick={() => handleAnamneseClick(anamnese)}
+                        style={
+                          selectedTranscription?.id === anamnese.id
+                            ? { backgroundColor: "#f1f2f7" }
+                            : {}
+                        }
                       >
-                        <TableCell className={`${Style.anamneseId}`}>
+                        <StyledTableCell>
                           {anamnese.anamnese_id}
-                        </TableCell>
+                        </StyledTableCell>
                         {selectedTranscription?.id === anamnese.id &&
                         isEdit === anamnese.id ? (
-                          <TableCell
-                            className={`${Style.anamneseText}`}
-                            style={{ paddingInline: "10px" }}
-                          >
+                          <StyledTableCell style={{ paddingInline: "10px" }}>
                             <TranscriptionResult
                               className={Style.editable}
                               text={selectedTranscription?.anamnese}
@@ -445,11 +507,11 @@ const RecordedAnamnesis = () => {
                                 selectedTranscription?.anamnese_id
                               }
                             />
-                          </TableCell>
+                          </StyledTableCell>
                         ) : (
                           <>
                             {selectedTranscription?.id === anamnese.id ? (
-                              <TableCell className={`${Style.anamneseText}`}>
+                              <StyledTableCell>
                                 <TranscriptionResult
                                   className={Style.nonEditable}
                                   text={selectedTranscription?.anamnese}
@@ -478,22 +540,23 @@ const RecordedAnamnesis = () => {
                                     </button>
                                   </div>
                                 )}
-                              </TableCell>
+                              </StyledTableCell>
                             ) : (
                               <>
-                                <TableCell className={`${Style.anamneseText}`}>
+                                <StyledTableCell>
                                   <span className={Style.anamneseTextSpan}>
                                     {anamnese.anamnese}
                                   </span>
-                                </TableCell>
+                                </StyledTableCell>
                               </>
                             )}
                           </>
                         )}
-                        <TableCell className={`${Style.anamneseWorks}`}>
-                          {anamnese.anamnese.split(/\s+/).length}
-                        </TableCell>
-                      </TableRow>
+                        <StyledTableCell>{anamnese.words}</StyledTableCell>
+                        <StyledTableCell>
+                          {new Date(anamnese.recorded_at).toLocaleDateString()}
+                        </StyledTableCell>
+                      </StyledTableRow>
                     ))}
                   </TableBody>
                 </Table>

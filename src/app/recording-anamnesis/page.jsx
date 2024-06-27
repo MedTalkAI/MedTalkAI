@@ -7,7 +7,6 @@ import AudioRecorderComponent from "@/components/AudioRecorderComponent/index.js
 import Navbar from "@/components/Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Modal from "react-modal";
 import TranscriptionResult from "@/components/TranscriptionResult";
 import ReactPaginate from "react-paginate";
 import {
@@ -186,7 +185,7 @@ const RecordingAnamnesis = () => {
   };
 
   const descendingComparator = (a, b, orderBy) => {
-    if (orderBy === 'words') {
+    if (orderBy === "words") {
       return b[orderBy] - a[orderBy];
     } else {
       if (b[orderBy] < a[orderBy]) return -1;
@@ -194,13 +193,12 @@ const RecordingAnamnesis = () => {
       return 0;
     }
   };
-  
+
   const getComparator = (order, orderBy) => {
     return order === "desc"
       ? (a, b) => descendingComparator(a, b, orderBy)
       : (a, b) => -descendingComparator(a, b, orderBy);
   };
-  
 
   const stableSort = (array, comparator) => {
     const stabilizedThis = array.map((el, index) => [el, index]);
@@ -316,7 +314,7 @@ const RecordingAnamnesis = () => {
                       style={
                         selectedAnamnese?.id === anamnese.id
                           ? { backgroundColor: "#f1f2f7" }
-                          : { backgroundColor: "#ffffff" }
+                          : {}
                       }
                     >
                       <StyledTableCell>{anamnese.id}</StyledTableCell>
