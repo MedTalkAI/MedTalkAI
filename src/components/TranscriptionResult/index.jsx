@@ -1,5 +1,5 @@
 "use client";
- 
+
 import Style from "./TranscriptionResult.module.css";
 import { useState, useEffect } from "react";
 import Modal from "react-modal";
