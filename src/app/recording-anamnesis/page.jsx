@@ -398,7 +398,7 @@ const RecordingAnamnesis = () => {
                               ) : (
                                 <>
                                   <StyledTableCell>
-                                    <span>{anamnese.text}</span>
+                                    <span className={Styles.anamneseTextSpan}>{anamnese.text}</span>
                                   </StyledTableCell>
                                 </>
                               )}
