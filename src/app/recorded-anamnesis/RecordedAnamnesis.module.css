@@ -25,6 +25,29 @@
   height: 150px;
 }
 
+.tableHeading {
+  white-space: nowrap;
+}
+
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-direction: column;
+  height: 60vh;
+  text-align: center;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-direction: column;
+  height: 75vh;
+}
+
 .info {
   display: flex;
   width: fit-content;
