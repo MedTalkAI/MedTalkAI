@@ -1,31 +1,29 @@
 "use client";
 
+import React from "react";
+import Navbar from "@/components/Navbar";
+import CheckAuthExpiration from "@/hooks/CheckAuthExpiration";
 import { useParams } from "next/navigation";
-import Navbar from "../../../components/Navbar";
 import { useState, useEffect } from "react";
 import ReactLoading from "react-loading";
-import Style from "./Anamnese.module.css";
 import ReactAudioPlayer from "react-audio-player";
-import TranscriptionResult from "@/components/TranscriptionResult";
-import Metrics from "@/components/Metrics";
 import AnamneseChart from "@/components/AnamneseChart";
-import CheckAuthExpiration from "@/hooks/CheckAuthExpiration";
 import SimpleTable from "@/components/SimpleTable";
 import AudioStats from "@/components/AudioStats";
+import Style from "./Recording.module.css";
 
-const Anamnese = () => {
+export default function Recording() {
   const { id } = useParams();
-  const [transcription, setTranscription] = useState(null);
+  const [recordingInfo, setRecordingInfo] = useState(null);
   const [audioSrc, setAudioSrc] = useState("");
   const [loading, setLoading] = useState(true);
-  const [transcriptionsFromOtherModels, setTranscriptionsFromOtherModels] =
-    useState([]);
+  const [transcriptions, setTranscriptions] = useState([]);
 
   useEffect(() => {
     const fetchTranscription = async () => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/${id}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/recordings/${id}`,
           {
             method: "GET",
             headers: {
@@ -40,8 +38,7 @@ const Anamnese = () => {
 
         if (response.ok) {
           const data = await response.json();
-          setTranscription(data);
-          // Extracting data for chart
+          setRecordingInfo(data);
         } else {
           throw new Error("Failed to fetch transcription");
         }
@@ -52,7 +49,7 @@ const Anamnese = () => {
 
     fetchTranscription();
 
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/transcriptions/audio/${id}`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/recordings/${id}/audio`, {
       headers: {
         Authorization: `Bearer ${
           typeof window !== "undefined" && window.localStorage
@@ -78,11 +75,11 @@ const Anamnese = () => {
   }, [id]);
 
   useEffect(() => {
-    if (transcription) {
+    if (recordingInfo) {
       const fetchTranscriptionFromOtherModels = async () => {
         try {
           const formData = new FormData();
-          formData.append("audio_src", transcription.audio_src);
+          formData.append("audio_src", recordingInfo.audio_path);
 
           const response = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/transcriptions/audio`,
@@ -99,7 +96,7 @@ const Anamnese = () => {
 
           if (response.ok) {
             const data = await response.json();
-            setTranscriptionsFromOtherModels(data);
+            setTranscriptions(data);
           } else {
             throw new Error("Failed to fetch transcription");
           }
@@ -110,7 +107,7 @@ const Anamnese = () => {
 
       fetchTranscriptionFromOtherModels();
     }
-  }, [transcription]);
+  }, [recordingInfo]);
 
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString("en-GB", {
@@ -122,18 +119,18 @@ const Anamnese = () => {
 
   return (
     <div>
-      <Navbar path={"/anamnesis"} />
+      <Navbar path="/recordings" />
       <CheckAuthExpiration />
-      <div className={Style.anamnese}>
+      <div className={Style.content}>
         <div className={Style.head}>
           <div className={Style.buttonVoltar}>
-            <a href="\anamnesis" style={{ textDecoration: "none" }}>
-              Transcriptions
+            <a href="\recordings" style={{ textDecoration: "none" }}>
+              Recordings
             </a>
             <span className="material-symbols-outlined">arrow_back_ios</span>
-            <p>Transcription {id}</p>
+            <p>Recording {id}</p>
           </div>
-          <h1 className={Style.title}>Transcription {id}</h1>
+          <h1 className={Style.title}>Recording {id}</h1>
         </div>
         {loading && (
           <div className={Style.loading}>
@@ -146,84 +143,55 @@ const Anamnese = () => {
             <p>Loading...</p>
           </div>
         )}
-        {transcription && !loading && (
+        {recordingInfo && (
           <>
             <div className={Style.audio}>
               <div className={Style.metadata_cont}>
                 <div className={Style.metadata}>
                   <span className="material-symbols-outlined">audio_file</span>
-                  <p>Recorded at {formatDate(transcription.date)}</p>
-                </div>
-                <div className={Style.metadata}>
-                  <span className="material-symbols-outlined">
-                    bubble_chart
-                  </span>
-                  <p>Transcribed by {transcription.model}</p>
+                  <p>Recorded at {formatDate(recordingInfo.recorded_at)}</p>
                 </div>
                 <div className={Style.metadata}>
                   <span className="material-symbols-outlined">
                     record_voice_over
                   </span>
-                  <p>Recorded by {transcription.user}</p>
+                  <p>Recorded by {recordingInfo.user}</p>
                 </div>
-                {transcription.anamnese_id && (
-                  <div className={Style.metadata}>
-                    <span className="material-symbols-outlined">
-                      description
-                    </span>
-                    <p>Provided by Hapvida</p>
-                  </div>
-                )}
+                <div className={Style.metadata}>
+                  <span className="material-symbols-outlined">description</span>
+                  <p>Anamnesis nº {recordingInfo.anamnese_id}</p>
+                </div>
               </div>
               <div className={Style.controls}>
                 <ReactAudioPlayer src={audioSrc} controls />
-                <span>{transcription.audio_src}</span>
+                <span>{recordingInfo.audio_path}</span>
               </div>
             </div>
-            <div className={Style.content}>
-              <div className={Style.texts}>
-                <div className={Style.transcription}>
-                  <h3>Model Transcript</h3>
-                  <div className={Style.model}>
-                    {transcription?.transcription}
-                  </div>
-                </div>
-                <div className={Style.transcription}>
-                  <h3>Correct Transcript</h3>
-                  <div className={Style.correct}>
-                    {transcription?.latest_correction}
-                  </div>
-                </div>
+            <div className="anamnese">
+              <div className={Style.transcription}>
+                <h3>Original Text</h3>
+                <div className={Style.correct}>{recordingInfo?.anamnese}</div>
               </div>
               <div className={Style.evaluation}>
                 <div className={Style.metrics}>
-                  <Metrics
-                    bleu={parseFloat(transcription.bleu)}
-                    cosine={parseFloat(transcription.cosine)}
-                    transcription={transcription.transcription}
-                    wer={parseFloat(transcription.wer)}
+                  <AnamneseChart
+                    dataSets={transcriptions}
+                    title={"Metrics from this recording"}
                   />
-                  <AnamneseChart dataSets={transcriptionsFromOtherModels} />
                 </div>
                 <div className={Style.other}>
                   <SimpleTable
-                    data={transcriptionsFromOtherModels}
+                    data={transcriptions}
                     current={id}
+                    title={"Transcriptions"}
                   />
-                  <AudioStats data={transcriptionsFromOtherModels} />
+                  <AudioStats data={transcriptions} />
                 </div>
               </div>
             </div>
           </>
         )}
-        {!transcription && !loading && (
-          <div className={Style.error}>
-            <p>Failed to fetch transcription</p>
-          </div>
-        )}
       </div>
     </div>
   );
-};
-
-export default Anamnese;
+}

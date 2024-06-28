@@ -105,7 +105,6 @@ const MyProfile = () => {
     if (typeof window !== "undefined" && window.localStorage) {
       const storagedUser = JSON.parse(localStorage.getItem("user"));
       setUser(storagedUser);
-      console.log(storagedUser.username);
       fetch(`${process.env.NEXT_PUBLIC_API_URL}/user`, {
         headers: {
           "Content-Type": "application/json",

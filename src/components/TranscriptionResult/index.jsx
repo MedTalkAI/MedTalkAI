@@ -8,18 +8,42 @@ const TranscriptionResult = ({
   isEditable,
   onSave,
   transcription_id,
-
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editableText, setEditableText] = useState(text);
   const [isDataSicentist, setIsDataSicentist] = useState(false);
+
+  let doctor = false;
+  let intern = false;
+
+  useEffect(() => {
+    const user_type =
+      typeof window !== "undefined" && window.localStorage
+        ? localStorage.getItem("user_type")
+        : "";
+    if (user_type) {
+      doctor = user_type == "doctor";
+      intern = user_type == "intern";
+    }
+  }, []);
 
   const handleTextChange = (e) => {
     setEditableText(e.target.value);
   };
 
   const handleSaveEdits = async () => {
-    console.log("save edits");
+    let intern = false;
+    let doctor = false;
+
+    const user_type =
+      typeof window !== "undefined" && window.localStorage
+        ? localStorage.getItem("user_type")
+        : "";
+    if (user_type) {
+      doctor = user_type == "doctor";
+      intern = user_type == "intern";
+    }
+
     try {
       let model_transcription = text;
       let correct_transcription = editableText;
@@ -27,27 +51,29 @@ const TranscriptionResult = ({
       const formData = new FormData();
       formData.append("text", correct_transcription);
 
-      // Submit FormData via fetch
-      const token =
-        typeof window !== "undefined" && window.localStorage
-          ? localStorage.getItem("access_token")
-          : null;
+      if (intern) {
+        console.log("intern");
+        const token =
+          typeof window !== "undefined" && window.localStorage
+            ? localStorage.getItem("access_token")
+            : null;
 
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/anamneses/${transcription_id}`,
-        {
-          method: "PUT",
-          body: formData,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/anamneses/${transcription_id}`,
+          {
+            method: "PUT",
+            body: formData,
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-      const result = await response.json();
-      console.log(result);
+        const result = await response.json();
+      }
 
       onSave(correct_transcription);
+      setIsModalOpen(false);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -64,27 +90,25 @@ const TranscriptionResult = ({
     }
   }, []);
 
-  
-
   const handleCancel = () => {
     setIsModalOpen(false);
   };
 
   function contarQuebrasDeLinha(texto) {
     let contador = 0;
-    if( texto != null){
+    if (texto != null) {
       for (let i = 0; i < texto.length; i++) {
         if (texto[i] === "\n") {
           contador++;
         }
       }
-      if (contador < 5 ){
+      if (contador < 5) {
         contador = 7;
       }
     }
     return contador;
   }
-  const numLinhas =  contarQuebrasDeLinha(text) + 1;
+  const numLinhas = contarQuebrasDeLinha(text) + 1;
 
   return (
     <div className={Style.transcriptionResult}>

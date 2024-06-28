@@ -28,7 +28,6 @@ const AudioRecorderComponent = ({
   const [model, setModel] = useState("Wav2Vec 2.0 + lm5");
 
   const addAudioElement = (blob) => {
-    // console.log(blob);
     const url = URL.createObjectURL(blob);
     setAudioUrl(url);
     const name =
@@ -52,7 +51,6 @@ const AudioRecorderComponent = ({
   // Function to handle transcription
   const handleTranscribe = async () => {
     setLoading(true);
-
     try {
       // Fetch and convert audio
       const audioBlob = await fetchAndConvertAudio(audioUrl);
@@ -71,7 +69,9 @@ const AudioRecorderComponent = ({
 
       // Submit FormData via fetch
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/recordings`,
+        `${process.env.NEXT_PUBLIC_API_URL}/${
+          intern ? "recordings" : "transcriptions"
+        }`,
         {
           method: "POST",
           body: formData,
@@ -118,20 +118,7 @@ const AudioRecorderComponent = ({
             <audio controls src={audioUrl} />
           </div>
         )}
-        {!doctor && !intern && (
-          <select onChange={(e) => setModel(e.target.value)} value={model}>
-            <option value="" disabled>
-              Select a model
-            </option>
-            <option value="Wav2Vec 2.0">Wav2Vec 2.0</option>
-            <option value="HuBert">HuBert</option>
-            <option value="Whisper">Whisper</option>
-            <option value="Wav2Vec 2.0 + lm5">Wav2Vec 2.0 + lm5</option>
-            <option value="Wav2Vec 2.0 Fine-tuned">
-              Wav2Vec 2.0 Fine-tuned
-            </option>
-          </select>
-        )}
+        
         <button
           disabled={model === "" || !audioUrl || loading}
           onClick={handleTranscribe}
