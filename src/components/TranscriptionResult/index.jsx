@@ -22,10 +22,8 @@ const TranscriptionResult = ({
         ? localStorage.getItem("user_type")
         : "";
     if (user_type) {
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      doctor = user_type === "doctor";
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      intern = user_type === "intern";
+      doctor = user_type == "doctor";
+      intern = user_type == "intern";
     }
   }, []);
 
@@ -34,6 +32,18 @@ const TranscriptionResult = ({
   };
 
   const handleSaveEdits = async () => {
+    let intern = false;
+    let doctor = false;
+
+    const user_type =
+      typeof window !== "undefined" && window.localStorage
+        ? localStorage.getItem("user_type")
+        : "";
+    if (user_type) {
+      doctor = user_type == "doctor";
+      intern = user_type == "intern";
+    }
+
     try {
       let model_transcription = text;
       let correct_transcription = editableText;
@@ -42,6 +52,7 @@ const TranscriptionResult = ({
       formData.append("text", correct_transcription);
 
       if (intern) {
+        console.log("intern");
         const token =
           typeof window !== "undefined" && window.localStorage
             ? localStorage.getItem("access_token")
