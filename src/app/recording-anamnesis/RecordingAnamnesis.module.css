@@ -19,9 +19,6 @@
   width: 100%;
 }
 
-.tableHeading {
-  white-space: nowrap;
-}
 .content main {
   display: flex;
   flex-direction: column;
@@ -47,25 +44,6 @@
   padding-bottom: 15px;
   z-index: 100;
   background: #fff;
-}
-
-.error {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  flex-direction: column;
-  height: 60vh;
-  text-align: center;
-}
-
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  flex-direction: column;
-  height: 75vh;
 }
 
 .title {
