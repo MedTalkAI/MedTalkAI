@@ -16,7 +16,7 @@ const Transcription = () => {
   let doctor = false;
   let username = "";
   const user =
-    typeof window !== "undefined" && window.localStorage
+    typeof window !== "undefined" && window.localtorage
       ? JSON.parse(localStorage.getItem("user"))
       : "";
   if (user) {
@@ -33,11 +33,11 @@ const Transcription = () => {
   const [transcription_id, setTranscription_id] = useState(null);
   const [isRecorded, setIsRecorded] = useState(false);
   const [metrics, setMetrics] = useState(null);
+  
 
-  const handleTrascribe = (model, result, id) => {
-    setModelTranscription(result);
-    setModel(model);
-    setTranscription_id(id);
+  const handleTrascribe = (data) => {
+    setModelTranscription(data.transcription);
+    setTranscription_id(data.id);
   };
 
   const handleCorrection = async (correctedText) => {
