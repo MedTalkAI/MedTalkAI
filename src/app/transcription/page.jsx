@@ -32,12 +32,10 @@ const Transcription = () => {
   const [correctedTranscription, setCorrectedTranscription] = useState(null);
   const [transcription_id, setTranscription_id] = useState(null);
   const [isRecorded, setIsRecorded] = useState(false);
-  const [metrics, setMetrics] = useState(null);
 
-  const handleTrascribe = (model, result, id) => {
-    setModelTranscription(result);
-    setModel(model);
-    setTranscription_id(id);
+  const handleTrascribe = (data) => {
+    setModelTranscription(data.transcription);
+    setTranscription_id(data.id);
   };
 
   const handleCorrection = async (correctedText) => {
@@ -52,19 +50,17 @@ const Transcription = () => {
         {
           method: "POST",
           body: formData,
-        }
-      );
-      await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/metrics/model/${encodeURIComponent(
-          model,
-          "utf-8"
-        )}`,
-        {
-          method: "POST",
+          headers: {
+            Authorization: `Bearer ${
+              typeof window !== "undefined" && window.localStorage
+                ? localStorage.getItem("access_token")
+                : ""
+            }`,
+          },
         }
       );
 
-      toast.success("Anamnesis saved successfully!");
+      toast.success("Correction saved successfully!");
       setCorrectedTranscription(null);
       setModelTranscription(null);
     } catch (error) {
