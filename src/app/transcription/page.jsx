@@ -34,10 +34,9 @@ const Transcription = () => {
   const [isRecorded, setIsRecorded] = useState(false);
   const [metrics, setMetrics] = useState(null);
 
-  const handleTrascribe = (model, result, id) => {
-    setModelTranscription(result);
-    setModel(model);
-    setTranscription_id(id);
+  const handleTrascribe = (data) => {
+    setModelTranscription(data.transcription);
+    setTranscription_id(data.id);
   };
 
   const handleCorrection = async (correctedText) => {

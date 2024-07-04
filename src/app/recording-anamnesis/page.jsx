@@ -158,6 +158,8 @@ const RecordingAnamnesis = () => {
     return () => clearInterval(interval);
   }, []);
 
+  
+
   const handleUpdated = (editableText) => {
     const aux_anamneses = JSON.parse(JSON.stringify(anamneses));
     const updatedAnamneses = aux_anamneses.map((anamnese) => {
@@ -284,6 +286,12 @@ const RecordingAnamnesis = () => {
     pagesVisited + itemsPerPage
   );
 
+
+
+
+
+ 
+
   return (
     <div className={Styles.container}>
       <CheckAuthExpiration />
@@ -336,7 +344,7 @@ const RecordingAnamnesis = () => {
                     />
                     <TableBody>
                       {displayedAnamneses.map((anamnese, index) => (
-                        <StyledTableRow
+                        anamnese && anamnese.text ? (<StyledTableRow
                           className={`${
                             selectedAnamnese?.id === anamnese.id
                               ? Styles.selected
@@ -409,7 +417,7 @@ const RecordingAnamnesis = () => {
                           >
                             {anamnese.words}
                           </StyledTableCell>
-                        </StyledTableRow>
+                        </StyledTableRow>) : null
                       ))}
                     </TableBody>
                   </Table>
