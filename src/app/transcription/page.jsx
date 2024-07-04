@@ -16,7 +16,7 @@ const Transcription = () => {
   let doctor = false;
   let username = "";
   const user =
-    typeof window !== "undefined" && window.localtorage
+    typeof window !== "undefined" && window.localStorage
       ? JSON.parse(localStorage.getItem("user"))
       : "";
   if (user) {
@@ -33,7 +33,6 @@ const Transcription = () => {
   const [transcription_id, setTranscription_id] = useState(null);
   const [isRecorded, setIsRecorded] = useState(false);
   const [metrics, setMetrics] = useState(null);
-  
 
   const handleTrascribe = (data) => {
     setModelTranscription(data.transcription);
