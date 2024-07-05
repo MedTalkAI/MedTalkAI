@@ -180,6 +180,7 @@ const Anamnesis = () => {
               .map((transcription) => transcription.model)
               .filter((model, index, self) => self.indexOf(model) === index)
           );
+          setLoading(false);
         } else {
           throw new Error("Failed to fetch transcriptions");
         }
@@ -215,7 +216,6 @@ const Anamnesis = () => {
 
     fetchRecordings();
     fetchData();
-    setLoading(false);
 
     const interval = setInterval(() => {
       fetchRecordings();
@@ -373,7 +373,7 @@ const Anamnesis = () => {
               </button>
             </div>
           </div>
-          {recordingsToBe > 0 && (
+          {!loading && recordingsToBe > 0 && (
             <div className={Style.recordingsTag}>
               <div className={Style.tag}>
                 <span class="material-symbols-outlined">audio_file</span>
@@ -392,13 +392,13 @@ const Anamnesis = () => {
               <ReactLoading
                 type="spinningBubbles"
                 color="#001D3B"
-                height={"5%"}
-                width={"5%"}
+                height={"100px"}
+                width={"100px"}
               />
               <p>Loading...</p>
             </div>
           )}
-          {transcriptions.length > 0 && (
+          {!loading && transcriptions.length != 0 && (
             <div>
               <div className={Style.filterContainer}>
                 <div className={Style.filterIcon}>
@@ -463,8 +463,12 @@ const Anamnesis = () => {
                         <StyledTableCell className={Style.anamneseText}>
                           {anamnese.transcription}
                         </StyledTableCell>
-                        <StyledTableCell style={{ whiteSpace: "nowrap" }}>{anamnese.model}</StyledTableCell>
-                        <StyledTableCell>{parseFloat(anamnese.wer).toFixed(2)}</StyledTableCell>
+                        <StyledTableCell style={{ whiteSpace: "nowrap" }}>
+                          {anamnese.model}
+                        </StyledTableCell>
+                        <StyledTableCell>
+                          {parseFloat(anamnese.wer).toFixed(2)}
+                        </StyledTableCell>
                         <StyledTableCell>{anamnese.user}</StyledTableCell>
                         <StyledTableCell>
                           {formatDate(anamnese.date)}

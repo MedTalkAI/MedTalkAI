@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Style from "./Dashboard.module.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ReactLoading from "react-loading";
 import { useEffect, useState } from "react";
 import ModelStatistics from "@/components/ModelStatistics";
 import Modal from "react-modal";
@@ -13,6 +14,7 @@ const Dashboard = () => {
   const [defaultModel, setDefaultModel] = useState(null);
   const [standardModel, setStandardModel] = useState(null);
   const [models, setModels] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [csvContent, setCsvContent] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -87,6 +89,7 @@ const Dashboard = () => {
             setStandardModel(
               JSON.parse(JSON.stringify(data.find((model) => model.standard)))
             );
+            setLoading(false);
           }
         });
 
@@ -120,8 +123,8 @@ const Dashboard = () => {
         return response.json();
       })
       .then((data) => {
-        setModels(data);
-        toast.success("Metrics recalculated successfully");
+        // setModels(data);
+        toast.success("Metrics recalculated successfully! Please Reload.");
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -174,50 +177,70 @@ const Dashboard = () => {
         <main>
           <div className={Style.sides}>
             <h1 className={Style.title}>Model Dashboard</h1>
-            <div className={Style.benchmarkAndGroupSelect}>
-              <button
-                className={Style.benchmark}
-                onClick={handleRecalculateMetrics}
-              >
-                <span class="material-symbols-outlined">analytics</span>
-                Recalculate Metrics
-              </button>
-              <div className={Style.groupSelect}>
-                <h2>Default Model</h2>
-                {models.length > 0 && (
-                  <select
-                    onChange={(e) => {
-                      const selectedModel = models.find(
-                        (model) => model.id == e.target.value
-                      );
-                      setDefaultModel(selectedModel);
-                      setIsModalOpen(true);
-                    }}
-                    value={defaultModel ? defaultModel.id : ""}
-                  >
-                    {models.map((model) => (
-                      <option key={model.id} value={model.id}>
-                        {model.name}
-                      </option>
-                    ))}
-                  </select>
-                )}
+            {!loading && models.length != 0 && (
+              <div className={Style.benchmarkAndGroupSelect}>
+                <button
+                  className={Style.benchmark}
+                  onClick={handleRecalculateMetrics}
+                >
+                  <span class="material-symbols-outlined">analytics</span>
+                  Recalculate Metrics
+                </button>
+                <div className={Style.groupSelect}>
+                  <h2>Default Model</h2>
+                  {models.length > 0 && (
+                    <select
+                      onChange={(e) => {
+                        const selectedModel = models.find(
+                          (model) => model.id == e.target.value
+                        );
+                        setDefaultModel(selectedModel);
+                        setIsModalOpen(true);
+                      }}
+                      value={defaultModel ? defaultModel.id : ""}
+                    >
+                      {models.map((model) => (
+                        <option key={model.id} value={model.id}>
+                          {model.name}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+          {loading && (
+            <div className={Style.loading}>
+              <ReactLoading
+                type="spinningBubbles"
+                color="#001D3B"
+                height={"100px"}
+                width={"100px"}
+              />
+              <p>Loading...</p>
+            </div>
+          )}
+          {!loading && models.length == 0 && (
+            <div className={Style.error}>
+              <p>No models found.</p>
+            </div>
+          )}
+          {!loading && models.length != 0 && (
+            <div className={Style.models}>
+              <div className={Style.modelStatistics}>
+                {models.map((model) => (
+                  <ModelStatistics
+                    key={model.id}
+                    model={model}
+                    onCsvDownloader={saveCsv}
+                    className={Style.modelItem}
+                    isStandard={standardModel?.id === model.id}
+                  />
+                ))}
               </div>
             </div>
-          </div>
-          <div className={Style.models}>
-            <div className={Style.modelStatistics}>
-              {models.map((model) => (
-                <ModelStatistics
-                  key={model.id}
-                  model={model}
-                  onCsvDownloader={saveCsv}
-                  className={Style.modelItem}
-                  isStandard={standardModel?.id === model.id}
-                />
-              ))}
-            </div>
-          </div>
+          )}
         </main>
       </div>
       <Modal

@@ -333,8 +333,8 @@ const Recordings = () => {
               <ReactLoading
                 type="spinningBubbles"
                 color="#001D3B"
-                height={"5%"}
-                width={"5%"}
+                height={"100px"}
+                width={"100px"}
               />
               <p>Loading...</p>
             </div>

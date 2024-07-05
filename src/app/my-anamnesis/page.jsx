@@ -2,6 +2,7 @@
 
 import Navbar from "@/components/Navbar";
 import Style from "./MyAnamnesis.module.css";
+import ReactLoading from "react-loading";
 import { ToastContainer, toast } from "react-toastify";
 import ReactAudioPlayer from "react-audio-player";
 import "react-toastify/dist/ReactToastify.css";
@@ -11,6 +12,7 @@ import { useState, useEffect, useRef } from "react";
 import CheckAuthExpiration from "@/hooks/CheckAuthExpiration";
 
 const MyAnamnesis = () => {
+  const [loading, setLoading] = useState(true);
   const [openDropdown, setOpenDropdown] = useState(false);
   const [orderBy, setOrderBy] = useState("");
   const [transcriptions, setTranscriptions] = useState([]);
@@ -164,6 +166,7 @@ const MyAnamnesis = () => {
           if (response.ok) {
             const transcriptions = await response.json();
             setTranscriptions(transcriptions);
+            setLoading(false);
           } else {
             throw new Error("Failed to fetch transcriptions");
           }
@@ -279,62 +282,80 @@ const MyAnamnesis = () => {
                 <div className={Style.info}>
                   <span class="material-symbols-outlined">info</span>
                   <p>
-                    You can select any anamnese, listen its audio and update its
-                    correction
+                    Here can select any anamnese, listen its audio and update
+                    its correction
                   </p>
                 </div>
               )}
-              <div className={Style.dropdown} ref={dropdownRef}>
-                <div
-                  className={Style.select}
-                  onClick={() => {
-                    setOpenDropdown(!openDropdown);
-                  }}
-                >
-                  <p>Order by {orderBy}</p>
-                  {!openDropdown && (
-                    <span class="material-symbols-outlined">expand_more</span>
-                  )}
+              {!loading && transcriptions.length != 0 && (
+                <div className={Style.dropdown} ref={dropdownRef}>
+                  <div
+                    className={Style.select}
+                    onClick={() => {
+                      setOpenDropdown(!openDropdown);
+                    }}
+                  >
+                    <p>Order by {orderBy}</p>
+                    {!openDropdown && (
+                      <span class="material-symbols-outlined">expand_more</span>
+                    )}
+                    {openDropdown && (
+                      <span class="material-symbols-outlined">expand_less</span>
+                    )}
+                  </div>
                   {openDropdown && (
-                    <span class="material-symbols-outlined">expand_less</span>
-                  )}
-                </div>
-                {openDropdown && (
-                  <div className={Style.menu}>
-                    {orderBy != "" && (
+                    <div className={Style.menu}>
+                      {orderBy != "" && (
+                        <div
+                          className={Style.item}
+                          onClick={() => {
+                            setOrderBy("");
+                          }}
+                        >
+                          Default
+                        </div>
+                      )}
                       <div
                         className={Style.item}
                         onClick={() => {
-                          setOrderBy("");
+                          setOrderBy("last");
                         }}
                       >
-                        Default
+                        Last
                       </div>
-                    )}
-                    <div
-                      className={Style.item}
-                      onClick={() => {
-                        setOrderBy("last");
-                      }}
-                    >
-                      Last
+                      <div
+                        className={Style.item}
+                        onClick={() => {
+                          setOrderBy("oldest");
+                        }}
+                      >
+                        Oldest
+                      </div>
                     </div>
-                    <div
-                      className={Style.item}
-                      onClick={() => {
-                        setOrderBy("oldest");
-                      }}
-                    >
-                      Oldest
-                    </div>
-                  </div>
-                )}
-              </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
-          <div className={Style.anamnesisGroup}>
-            {
-              transcriptions.map((transcription, index) => (
+          {loading && (
+            <div className={Style.loading}>
+              <ReactLoading
+                type="spinningBubbles"
+                color="#001D3B"
+                height={"100px"}
+                width={"100px"}
+              />
+              <p>Loading...</p>
+            </div>
+          )}
+          {!loading && transcriptions.length == 0 && (
+            <div className={Style.error}>
+              <p>No transcriptions found by you.</p>
+            </div>
+          )}
+          {!loading && transcriptions.length != 0 && (
+            <div className={Style.anamnesisGroup}>
+              {transcriptions.map((transcription, index) => (
                 <div
                   className={
                     Style.anamnese +
@@ -388,60 +409,9 @@ const MyAnamnesis = () => {
                     </>
                   )}
                 </div>
-              ))
-
-              /* transcriptions.map((transcription, index) => (
-              <div
-                className={
-                  Style.anamnese +
-                  (selectedTranscription === transcription
-                    ? " " + Style.selectedTranscription
-                    : "")
-                }
-                key={index}
-                onClick={() => {
-                  setSelectedTranscription(transcription);
-                }}
-              >
-                {selectedTranscription === transcription ? (
-                  <textarea
-                    ref={textareaRef}
-                    value={
-                      userType == "intern"
-                        ? transcription.anamnese_id
-                        : editableText
-                    }
-                    onChange={
-                      userType == "intern"
-                        ? ""
-                        : (e) => {
-                            setEditableText(e.target.value);
-                          }
-                    }
-                    contentEditable={userType == "intern" ? false : true}
-                  ></textarea>
-                ) : (
-                  <>
-                    <p>
-                      {userType == "intern"
-                        ? transcription.anamnese_id
-                        : transcription.latest_correction}
-                    </p>
-                    <div className={Style.data}>
-                      <span>
-                        {new Date(
-                          userType == "intern"
-                            ? transcription.recorded_at
-                            : transcription.date
-                        ).toLocaleDateString("en-GB")}
-                      </span>
-                    </div>
-                  </>
-                )}
-              </div>
-            ))*/
-            }
-          </div>
+              ))}
+            </div>
+          )}
         </main>
       </div>
       <Modal
