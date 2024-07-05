@@ -50,16 +50,14 @@ const Transcription = () => {
         `${process.env.NEXT_PUBLIC_API_URL}/corrections/${transcription_id}`,
         {
           method: "POST",
+          headers: {
+            Authorization: `Bearer ${
+              typeof window !== "undefined" && window.localStorage
+                ? localStorage.getItem("access_token")
+                : ""
+            }`,
+          },
           body: formData,
-        }
-      );
-      await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/metrics/model/${encodeURIComponent(
-          model,
-          "utf-8"
-        )}`,
-        {
-          method: "POST",
         }
       );
 
