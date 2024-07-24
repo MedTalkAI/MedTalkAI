@@ -152,7 +152,13 @@ const Anamnesis = () => {
   };
 
   useEffect(() => {
+    const timeoutDuration = 300000; // 5 minutos
+
     const fetchData = async () => {
+      const controller = new AbortController();
+      const signal = controller.signal;
+      const timeoutId = setTimeout(() => controller.abort(), timeoutDuration);
+
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/transcriptions`,
@@ -165,8 +171,12 @@ const Anamnesis = () => {
                   : ""
               }`,
             },
+            signal,
           }
         );
+
+        clearTimeout(timeoutId);
+
         if (response.ok) {
           const transcriptions = await response.json();
           setTranscriptions(transcriptions);
@@ -185,10 +195,23 @@ const Anamnesis = () => {
           throw new Error("Failed to fetch transcriptions");
         }
       } catch (error) {
-        console.error(error);
+        clearTimeout(timeoutId);
+
+        if (error.name === "AbortError") {
+          console.error("Request timed out");
+          toast.error("Request timed out");
+        } else {
+          console.error(error);
+          toast.error("Failed to fetch transcriptions");
+        }
       }
     };
+
     const fetchRecordings = async () => {
+      const controller = new AbortController();
+      const signal = controller.signal;
+      const timeoutId = setTimeout(() => controller.abort(), timeoutDuration);
+
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/recordings?count=true&status=false`,
@@ -201,8 +224,12 @@ const Anamnesis = () => {
                   : ""
               }`,
             },
+            signal,
           }
         );
+
+        clearTimeout(timeoutId);
+
         if (response.ok) {
           const recordings = await response.json();
           setRecordingsToBe(recordings.count);
@@ -210,7 +237,15 @@ const Anamnesis = () => {
           throw new Error("Failed to fetch recordings");
         }
       } catch (error) {
-        console.error(error);
+        clearTimeout(timeoutId);
+
+        if (error.name === "AbortError") {
+          console.error("Request timed out");
+          toast.error("Request timed out");
+        } else {
+          console.error(error);
+          toast.error("Failed to fetch recordings");
+        }
       }
     };
 
@@ -220,7 +255,8 @@ const Anamnesis = () => {
     const interval = setInterval(() => {
       fetchRecordings();
       fetchData();
-    }, 120000); // 120000 milissegundos = 2 minutos
+    }, 600000); // 8 minutos
+
     return () => clearInterval(interval);
   }, []);
 
