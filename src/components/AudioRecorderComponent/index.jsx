@@ -118,7 +118,7 @@ const AudioRecorderComponent = ({
             <audio controls src={audioUrl} />
           </div>
         )}
-        
+
         <button
           disabled={model === "" || !audioUrl || loading}
           onClick={handleTranscribe}

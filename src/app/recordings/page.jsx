@@ -116,6 +116,15 @@ const Recordings = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      const timeoutDuration = 300000; // 5 minutos
+
+      // Create an AbortController
+      const controller = new AbortController();
+      const signal = controller.signal;
+
+      // Set a timeout to abort the request
+      const timeoutId = setTimeout(() => controller.abort(), timeoutDuration);
+
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/recordings`,
@@ -128,8 +137,13 @@ const Recordings = () => {
                   : ""
               }`,
             },
+            signal, // Pass the signal to the fetch request
           }
         );
+
+        // Clear the timeout since the fetch request completed successfully
+        clearTimeout(timeoutId);
+
         if (response.ok) {
           const recordings = await response.json();
           setRecordings(recordings);
@@ -146,7 +160,15 @@ const Recordings = () => {
           throw new Error("Failed to fetch recordings");
         }
       } catch (error) {
-        console.error(error);
+        clearTimeout(timeoutId);
+
+        if (error.name === "AbortError") {
+          console.error("Request timed out");
+          toast.error("Request timed out");
+        } else {
+          console.error(error);
+          toast.error("Failed to fetch recordings");
+        }
       }
     };
 
